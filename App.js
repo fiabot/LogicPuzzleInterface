@@ -6,6 +6,11 @@ import InitialSurvey from './src/InitialSurvey';
 import PuzzleManager from './src/PuzzleManager';
 import Tutorial from './src/Tutorial';
 import * as Linking from 'expo-linking';
+import Debug from './debug';
+import CategoryInput from './src/CategoryInput';
+import ViewPuzzles from './src/ViewPuzzles';
+
+let MODE = "debug"
 
 let questions = ["The puzzle was cognitively demanding.", "I had to think very hard when playing the puzzle.",
     "The puzzle required a lot of mental gymnastics.", "The puzzle stimulated my brain.", "This puzzle doesn’t require a lot of mental effort.", 
@@ -58,86 +63,26 @@ function getFiles() {
 
 export default function App() {
 
-  //addSubject(4, 3); 
+  let [puzzles, setPuzzles] = useState(null)
 
-  let [puzzle, setPuzzle] = useState(null);
-  let [i, setI] = useState(0)
-  let [mode, setMode] = useState("survey")
-  let [pid, setPID] = useState(0)
-  let [content, setContent] = useState(<Tutorial imageFolder="tutorialSlides" numSlides={29} canSkip={12} startGame={() => { startGame() }} />);
-  //let [files, setFiles] = useState(); 
-  //useEffect(() => {setFiles(getFiles())}, [])
-  let files = getFiles()
-  useEffect(() => {
-    shuffleArray(questions)
-  }, [])
+  let [mode, setMode ] = useState("createPuzzle")
 
-  //let files = ["puzzles/example.json"]
-
-  let consent = <div className='parent'><InformedConsent consent={() => setMode("survey")} /></div>
-  let tutorial = <Tutorial imageFolder="tutorialSlides" numSlides={29} canSkip={12} startGame={() => { startGame() }} />
-  let puzzleManager = <PuzzleManager files={files} i={i} setI={setI} pid={pid} postSurvey={addPuzzleSurvey} questions = {questions}/>
-
-  let startGame = () => {
-    setMode("puzzle")
+  let showPuzzles = (p) => {
+    setPuzzles(p)
+    setMode("showPuzzles")
   }
 
-  //const userPromise = getCurrentUser(); 
-  //userPromise.then((user) => {console.log(user)});
-
-  let submitInitalSurvey = (logicPuz, gridPuzz) => {
-    setMode("tutorial");
-    addSubject(logicPuz, gridPuzz)
-  }
-
-
-  shuffleArray(files)
-
-  const url = Linking.useURL();
-
-  if (url) {
-    const { hostname, path, queryParams } = Linking.parse(url);
-
-    console.log(
-      `Linked to app with hostname: ${hostname}, path: ${path} and data: ${JSON.stringify(
-        queryParams
-      )}`
-    );
-  
-
-  if (path == "consent") {
-    if (mode == "survey") {
-      return (
-  
-        <InitialSurvey postAnswers={submitInitalSurvey} />
-      )
-    } else if (mode == "tutorial") {
-      return (<div className='parent'>{tutorial}</div>)
-    } else {
-      return (<div className='parent'>
-        <div className='codeBanner'>
-          <div>
-            Your completion code is CKKCGFDC<br />
-            You may enter this at anytime
-          </div>
-  
-        </div>
-        {puzzleManager}</div>)
-    }
+  if (mode == "createPuzzle") {
+    return <div>
+    <CategoryInput submitPuzzles={showPuzzles}/> 
+  </div>
   }else{
-    return (consent)
+    return <div>
+      <ViewPuzzles puzzles={puzzles} />
+    </div>
   }
-
-
-
-
-
-
-
-  }else{
-    return <div>Loading</div>
-  }
-
+  
+  
 
 }
 

@@ -1,0 +1,142 @@
+.categoryInput{
+    color: #624146; 
+    border: none;
+    border-bottom: 1px solid #624146;
+    font-size: 20px;
+    font-family: "Times New Roman", Times, serif;
+    background-color: transparent;
+    padding-top: 10px;
+}
+
+
+.categoryDiv{
+    text-align: left;
+}
+
+.authoringView{
+    text-align: left;
+    font-family: "Times New Roman", Times, serif;
+}
+
+.authoringView h1{
+
+    font-size: 30px; 
+    padding-bottom: 3px;
+    margin: 0;
+    font-weight: normal;
+
+}
+
+.categories{
+    background-color: #E9D0C4;
+    width: 300px;
+    height: 500px;
+    border-radius: 10px;
+    padding-left: 5px;
+    overflow: auto;
+    font-family: "Times New Roman", Times, serif;
+
+    scrollbar-color: #776274 #A07178;
+    
+}
+
+.categoryTemplate{
+    background-color: #E9D0C4;
+    width: 300px;
+    height: 100px;
+    border-radius: 10px;
+    padding-left: 5px;
+    overflow: auto;
+    font-family: "Times New Roman", Times, serif;
+
+    scrollbar-color: #776274 #A07178;
+    
+}
+
+.smallButton{
+    background-color: #776274;
+    color:white; 
+    font-size: medium;
+    width: 70px;
+    height: 30px;
+    border-radius: 15px;
+    border:  #776274; 
+    margin: 5px;
+   
+    
+}
+
+
+.smallButton:hover{
+    background-color: #4d3f4b;
+      
+}
+
+.mediumButton{
+    background-color: #776274;
+    color:white; 
+    font-size: medium;
+    width: 100px;
+    height: 40px;
+    border-radius: 10px;
+    border:  #776274; 
+    margin: 8px;
+   
+    
+}
+
+.center{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+
+.mediumButton:hover{
+    background-color: #4d3f4b;
+      
+}
+
+.largeButton{
+    background-color: #522504;
+    color:white; 
+    font-size: large;
+    width: 250px;
+    height: 40px;
+    border-radius: 10px;
+    border:  #522504; 
+    margin: 8px;
+   
+    
+}
+
+
+.largeButton:hover{
+    background-color: #2e1502;
+      
+}
+
+.entityList{
+    list-style-type: none;
+    padding-left: 0;
+  
+}
+
+.entityList li{
+    padding-top: 5px;
+ 
+}
+
+.entityList li input{
+    border-radius: 5px;
+    font-family: "Times New Roman", Times, serif;
+ 
+}
+
+.categoryDiv label{
+    font-size: 16px; 
+}
+
+
+
+
