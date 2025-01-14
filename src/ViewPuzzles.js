@@ -11,6 +11,8 @@ import simplePuzzle from './simplePuzzle';
 import PuzzleFilter from './puzzleFilter';
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
+import { like_puzzle } from './API/SendToApi';
+import PlayablePuzzleList from './PlayablePuzzleList';
 
 function createPuzzle(data) {
     let categories = []
@@ -40,7 +42,7 @@ function filterBySolution(f, puzzles ){
     })
     } 
 
-export default ViewPuzzles = ({puzzles}) => {
+export default ViewPuzzles = ({puzzles, user}) => {
 
     let [diffRange, setDiffRange] =useState([1, 10])
     let [filter, setFilter] = useState("")
@@ -57,18 +59,8 @@ export default ViewPuzzles = ({puzzles}) => {
         setPuzzleView(<Puzzle p={p}/>)
     }
 
-    let puzzleList = filterBySolution(filter, puzzles).filter((puzzle) => puzzle.diff >= diffRange[0] && puzzle.diff <= diffRange[1]).map((puzzle, idx) => {
-        return <li className='puzzleListElement' key = {idx}>
-            <h2>Difficulty: {puzzle.diff}</h2>
-            <h2>Hints</h2>
-            <ol className='hintList'>
-            {puzzle.hints.map((hint, id) => <li key={id}>{hint}</li>)}
-            </ol>
-
-            <button onClick={() =>playPuzzle(puzzle)}>Play Puzzle</button>
-
-        </li>
-    })
+    let puzzleList = filterBySolution(filter, puzzles).filter((puzzle) => puzzle.diff >= diffRange[0] && puzzle.diff <= diffRange[1])
+    
 
     return <div className='puzzleView'>
         <div className='puzzleViewLeft'>
@@ -97,11 +89,7 @@ export default ViewPuzzles = ({puzzles}) => {
 
         <div className='puzzleViewRight'>
             <h1>Puzzles</h1>
-            <ol className='puzzleList'>
-            {puzzleList}
-            </ol>
-
-            {puzzleView}
+            <PlayablePuzzleList puzzles={puzzleList} user={user}/> 
 
         </div>
     </div>

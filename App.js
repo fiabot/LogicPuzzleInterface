@@ -5,10 +5,15 @@ import InformedConsent from './src/InformedConsent';
 import InitialSurvey from './src/InitialSurvey';
 import PuzzleManager from './src/PuzzleManager';
 import Tutorial from './src/Tutorial';
-import * as Linking from 'expo-linking';
 import Debug from './debug';
 import CategoryInput from './src/CategoryInput';
 import ViewPuzzles from './src/ViewPuzzles';
+import HomePage from './src/home';
+import Puzzle from './src/puzzle';
+import Category from './src/categoryModel';
+import PuzzleModel from './src/puzzleModel';
+import lzString from  "lz-string"
+
 
 let MODE = "debug"
 
@@ -29,7 +34,7 @@ function shuffleArray(array) {
   }
 }
 
-function createPuzzle(data, setPuzzle) {
+/*function createPuzzle(data, setPuzzle) {
   console.log(data)
   let categories = []
   for (cat in data.categories) {
@@ -39,7 +44,7 @@ function createPuzzle(data, setPuzzle) {
 
   setPuzzle(new PuzzleModel(categories, data.hints, data.solution))
 
-}
+}*/ 
 
 function getFiles() {
   let columns = [0, 1, 3, 5]
@@ -57,32 +62,80 @@ function getFiles() {
 
 }
 
+function createPuzzle(data) {
+  let categories = []
+  for (cat in data.categories) {
+      cat = data.categories[cat]
+      categories.push(new Category(cat.name, cat.entities))
+  }
+
+  return new PuzzleModel(categories, data.hints, data.solution, data.id)
+
+}
 
 
 
+let PlayPuzzle = () => {
+  const queryParameters = new URLSearchParams(window.location.search)
+  const param = queryParameters.get("puzzle")
 
-export default function App() {
+
+  try{
+    const decom = lzString.decompressFromEncodedURIComponent(param)
+    console.log("decom" + decom)
+    puzzleObj = JSON.parse(decom)
+    let p = createPuzzle(puzzleObj)
+    return <Puzzle p={p}/> 
+  }catch (e) {
+    console.log("execept" + e)
+    return <div>Input error</div>
+  }
+ 
+}
+
+
+ export default function Main({}) {
 
   let [puzzles, setPuzzles] = useState(null)
 
-  let [mode, setMode ] = useState("createPuzzle")
+  let [mode, setMode ] = useState("home")
+
+  let [user, setUser] = useState(null) 
+
+  let startGeneration =() =>{
+    setMode("createPuzzle")
+  }
 
   let showPuzzles = (p) => {
     setPuzzles(p)
     setMode("showPuzzles")
   }
 
-  if (mode == "createPuzzle") {
-    return <div>
-    <CategoryInput submitPuzzles={showPuzzles}/> 
-  </div>
+  pathname = window.location.pathname
+
+  if (pathname == "/play"){
+    return <PlayPuzzle/> 
   }else{
-    return <div>
-      <ViewPuzzles puzzles={puzzles} />
+
+ 
+    if (mode == "home"){
+      return <HomePage startGeneration={startGeneration} user={user} setUser={setUser}/> 
+    }
+    else if (mode == "createPuzzle") {
+      return <div>
+      <CategoryInput submitPuzzles={showPuzzles}/> 
     </div>
-  }
+    }else{
+      return <div>
+        <ViewPuzzles puzzles={puzzles} user={user}/>
+      </div>
+    }
+}
+
   
   
 
 }
+
+
 
