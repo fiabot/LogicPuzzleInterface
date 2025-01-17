@@ -1,10 +1,27 @@
-import {api, EVOLVE_URL, ADD_ACCOUNT_URL, LIKE_PUZZLE} from './config' 
+import {api, EVOLVE_URL, ADD_ACCOUNT_URL, LIKE_PUZZLE, ITER_EVOLVE} from './config' 
 
 
 let postEvolution = async(categories, gens = 100, popsize = 50) => {
     request = {"puzzle": {"categories": categories}, "gens":gens, "pop_size": popsize}
 
     response = await api.post(EVOLVE_URL, request)
+
+    return response.data 
+}
+
+
+let startIterEvolve = async(categories, user,  gens = 40, popsize = 50) => {
+    request = {"puzzle": {"categories": categories}, "gens":gens, "pop_size": popsize, "user": user}
+
+    response = await api.post(ITER_EVOLVE, request)
+
+    return response.data 
+}
+
+let continueIterEvolve = async(id, user, gens = 40, popsize = 50) => {
+    request = {"id": id, "gens":gens, "pop_size": popsize, "user": user}
+
+    response = await api.post(ITER_EVOLVE, request)
 
     return response.data 
 }
@@ -37,4 +54,4 @@ let like_puzzle = async(puzzle, user) => {
 
 
 
-export {postEvolution, add_account, like_puzzle}
+export {postEvolution, add_account, like_puzzle, startIterEvolve, continueIterEvolve}

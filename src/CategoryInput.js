@@ -81,7 +81,7 @@ let CategoryMaker = ({categories, setCategories, index, numEntities}) => {
 
 
 
-export default PuzzleMaker = ({submitPuzzles}) =>{
+export default PuzzleMaker = ({startEvolve}) =>{
     let [categories, setCategories] = useState([]); 
     let [numEntites, setNumEntities] = useState(4); 
     let [templates, setTemplates] = useState(<div>Loading</div>)
@@ -123,14 +123,14 @@ export default PuzzleMaker = ({submitPuzzles}) =>{
 
     
 
-    let startEvolution = () => {
+   /* let startEvolution = () => {
         console.log("evolving")
         if(categories.length > 1){
             evolvePuzzle().then((puzzle) => {
 
                 submitPuzzles(puzzle)
             })} 
-        }
+        }*/ 
       
 
     tempbutton =  tempCats.map((cat, idx) => {
@@ -170,7 +170,7 @@ export default PuzzleMaker = ({submitPuzzles}) =>{
 
 
         <div className="center">
-            <button className="largeButton" onClick={startEvolution}>Start Evolution</button>
+            <button className="largeButton" onClick={() => startEvolve(categories)}>Start Evolution</button>
         </div>
 
 

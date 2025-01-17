@@ -82,8 +82,8 @@ export default ViewPuzzles = ({puzzles, user}) => {
                     />
                 </Box>
             </div>
-
-            <PuzzleFilter p={createPuzzle(puzzles[0])} setFilter={setFilter}/> 
+            {puzzles.length > 0 ? <PuzzleFilter p={createPuzzle(puzzles[0])} setFilter={setFilter}/>  : <div> Loading</div>}
+            
 
         </div>
 

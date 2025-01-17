@@ -13,6 +13,7 @@ import Puzzle from './src/puzzle';
 import Category from './src/categoryModel';
 import PuzzleModel from './src/puzzleModel';
 import lzString from  "lz-string"
+import EvolveManager from './src/EvolveManager';
 
 
 let MODE = "debug"
@@ -96,7 +97,9 @@ let PlayPuzzle = () => {
 
  export default function Main({}) {
 
-  let [puzzles, setPuzzles] = useState(null)
+  let [puzzles, setPuzzles] = useState([])
+  
+  let [categories, setCategories] = useState(null); 
 
   let [mode, setMode ] = useState("home")
 
@@ -111,6 +114,13 @@ let PlayPuzzle = () => {
     setMode("showPuzzles")
   }
 
+
+  let startEvolve = (categories) => {
+    setCategories(categories)
+    setMode("evolve")
+
+  }
+
   pathname = window.location.pathname
 
   if (pathname == "/play"){
@@ -123,11 +133,11 @@ let PlayPuzzle = () => {
     }
     else if (mode == "createPuzzle") {
       return <div>
-      <CategoryInput submitPuzzles={showPuzzles}/> 
+      <CategoryInput startEvolve={startEvolve}/> 
     </div>
     }else{
       return <div>
-        <ViewPuzzles puzzles={puzzles} user={user}/>
+        <EvolveManager categories={categories} user={user}/>
       </div>
     }
 }
