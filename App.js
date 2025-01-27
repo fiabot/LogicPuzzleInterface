@@ -133,7 +133,7 @@ let PlayPuzzle = () => {
     }
     else if (mode == "createPuzzle") {
       return <div>
-      <CategoryInput startEvolve={startEvolve}/> 
+      <CategoryInput startEvolve={startEvolve} user={user}/> 
     </div>
     }else{
       return <div>

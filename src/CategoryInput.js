@@ -1,11 +1,12 @@
 import { useEffect, useState} from "react"
-import { postEvolution } from "./API/SendToApi"
+import { postEvolution, add_cat } from "./API/SendToApi"
 import { getSampleCategories } from "./API/GetFromApi"
 import "./AuthoringStyle.css"
+import EditTemplate from "./EditTemplate"
 
 
-let CategoryMaker = ({categories, setCategories, index, numEntities}) => {
-    console.log(categories)
+
+let CategoryMaker = ({categories, setCategories, index, numEntities, can_save = false, user=null}) => {
 
     let [list, setList] = useState([])
     let [name, setName] = useState(categories[index].name)
@@ -29,6 +30,11 @@ let CategoryMaker = ({categories, setCategories, index, numEntities}) => {
     }, [name, list,is_numeric])
 
 
+    let save_categories = () => {
+        add_cat(categories[index], user)
+        can_save = false 
+
+    }
   
 
 
@@ -73,6 +79,7 @@ let CategoryMaker = ({categories, setCategories, index, numEntities}) => {
             {listInput}
         </ol>
         <label> Category is numeric:</label><input checked={is_numeric} type="checkbox" onChange={() => setNumeric(!is_numeric)}/> 
+        {can_save ? <button onClick={save_categories}>save</button>: ""}
     </div>)
     
 }
@@ -81,15 +88,16 @@ let CategoryMaker = ({categories, setCategories, index, numEntities}) => {
 
 
 
-export default PuzzleMaker = ({startEvolve}) =>{
+export default PuzzleMaker = ({startEvolve, user}) =>{
     let [categories, setCategories] = useState([]); 
     let [numEntites, setNumEntities] = useState(4); 
     let [templates, setTemplates] = useState(<div>Loading</div>)
     let [tempCats, setTempCats] = useState([])
+    let [numEmpty, setNumEmpy] = useState([0])
 
 
     let categoryCreators = categories.map((cat, idx) => {
-        return <CategoryMaker key={idx} categories={categories} setCategories={setCategories} index ={idx} numEntities={numEntites} starterName="name"/> 
+        return <CategoryMaker key={idx} categories={categories} setCategories={setCategories} index ={idx} numEntities={numEntites} starterName="name" can_save user={user}/> 
     })
 
     let evolvePuzzle=() => {
@@ -103,7 +111,7 @@ export default PuzzleMaker = ({startEvolve}) =>{
     let getCats =() => {
         return new Promise(async (resolve, reject) =>{
             
-            cats = await getSampleCategories()
+            cats = await getSampleCategories(user)
             resolve(cats)
         })
     }
@@ -120,61 +128,79 @@ export default PuzzleMaker = ({startEvolve}) =>{
             fetch()
     
             }, []  )
-
     
-
-   /* let startEvolution = () => {
-        console.log("evolving")
-        if(categories.length > 1){
-            evolvePuzzle().then((puzzle) => {
-
-                submitPuzzles(puzzle)
-            })} 
-        }*/ 
+   
       
 
     tempbutton =  tempCats.map((cat, idx) => {
         return <button className="smallButton" key={idx}  onClick={()=>setCategories([...categories, cat])} >{cat.name}</button>
         })
 
-    return <div className="authoringView">
+    return <div className="puzzleView">
 
-        <div>
-            Number of entities: <button onClick={()=>{if(numEntites > 3) {setNumEntities(numEntites - 1)}}}>-</button> {numEntites}     <button onClick={()=>setNumEntities(numEntites + 1)}>+</button>
-        </div>
+    <div className="puzzleViewLeft">
+
+    
+        <div className="authoringView">
+
+       
+
+        
+
+            <div>
+                Number of entities: <button onClick={()=>{if(numEntites > 3) {setNumEntities(numEntites - 1)}}}>-</button> {numEntites}     <button onClick={()=>setNumEntities(numEntites + 1)}>+</button>
+            </div>
+
+        
+
+
+            <h1>Categories</h1>
+            <div className="categories">
+
+            {categoryCreators}
+            
+            </div>
+
+            <h1>Example Categories</h1>
+            <div className="categoryTemplate">
+                {tempbutton}
+            </div>
+
+  
+
+
+
+            <button className="mediumButton" onClick={()=>setCategories([...categories, {name:"Name", entities:[], is_numeric:false}])}>Add category</button>
+            <button className="mediumButton" onClick={()=>setCategories(
+                        categories.slice(0, categories.length -1)
+                    )}>Remove Category</button>
 
     
 
+           
+                <div>
 
-        <h1>Categories</h1>
-        <div className="categories">
+              
 
-        {categoryCreators}
-        
-        </div>
+                <button className="largeButton" onClick={() => startEvolve(categories)}>Start Evolution</button>
 
-        <h1>Example Categories</h1>
-        <div className="categoryTemplate">
-            {tempbutton}
-        </div>
-
-        <div className="center">
+                </div>
+     
 
 
-        <button className="mediumButton" onClick={()=>setCategories([...categories, {name:"Name", entities:[], is_numeric:false}])}>Add category</button>
-        <button className="mediumButton" onClick={()=>setCategories(
-                    categories.slice(0, categories.length -1)
-                )}>Remove Category</button>
+        </div> 
 
-        </div>
+    </div>
 
+    <div className="puzzleViewRight">
 
-        <div className="center">
-            <button className="largeButton" onClick={() => startEvolve(categories)}>Start Evolution</button>
-        </div>
+                <div className="authoringView">
+                <EditTemplate categories={categories} user={user}/>
+            </div>
 
+    </div>
 
-    </div> 
+    </div>
     
     
 }

@@ -57,7 +57,6 @@
     background-color: #776274;
     color:white; 
     font-size: medium;
-    width: 70px;
     height: 30px;
     border-radius: 15px;
     border:  #776274; 
@@ -83,7 +82,13 @@
     margin: 8px;
    
     
+}.mediumButton[highlighted=true]{
+    background-color: #8b2109;
 }
+
+
+
+
 
 .center{
     width: 100%;
