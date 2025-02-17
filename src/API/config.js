@@ -1,6 +1,7 @@
 import _axios from "axios";
 import { useState } from "react";
-const API_URL = 'http://127.0.0.1:3000' 
+//const API_URL = 'http://127.0.0.1:3000' 
+const API_URL = 'https://christie.khoury.northeastern.edu' 
 
 const EVOLVE_URL = API_URL + "/map_evolve"
 const SAMPLE_CAT_URL = API_URL + '/sample_categories'
@@ -13,7 +14,7 @@ const ADD_GRAMMAR_RULE = API_URL + "/add_grammar_rule"
 const ADD_CATEGORY = API_URL + "/add_category"
 const GET_TEMPLATE = API_URL +'/get_template' 
 
-
+const GET_PUBLIC_KEY = API_URL  + "/get_public_key"
 
 
 
@@ -26,9 +27,9 @@ const handleErr = (err) => {
     return err;
 };
 
-const api = _axios.create({ withCredentials: false });
+const api = _axios.create( {credentials: false});
 api.interceptors.request.use(handleRes, handleErr);
 api.interceptors.response.use(handleRes, handleErr);
 
-export { API_URL, EVOLVE_URL, SAMPLE_CAT_URL, ADD_ACCOUNT_URL, LIKE_PUZZLE, GET_LIKED_PUZZLES, ITER_EVOLVE, GET_UNUSED_GRAMMARS, ADD_GRAMMAR_RULE, ADD_CATEGORY, GET_TEMPLATE,  api };
+export { API_URL, EVOLVE_URL, SAMPLE_CAT_URL, ADD_ACCOUNT_URL, LIKE_PUZZLE, GET_LIKED_PUZZLES, ITER_EVOLVE, GET_UNUSED_GRAMMARS, ADD_GRAMMAR_RULE, ADD_CATEGORY, GET_TEMPLATE, GET_PUBLIC_KEY, api };
 

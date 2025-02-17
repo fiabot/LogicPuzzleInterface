@@ -1,4 +1,4 @@
-import {api, EVOLVE_URL, ADD_ACCOUNT_URL, LIKE_PUZZLE, ITER_EVOLVE, ADD_GRAMMAR_RULE, ADD_CATEGORY} from './config' 
+import {api, EVOLVE_URL, ADD_ACCOUNT_URL, LIKE_PUZZLE, ITER_EVOLVE, ADD_GRAMMAR_RULE, ADD_CATEGORY, GET_PUBLIC_KEY} from './config' 
 
 
 let postEvolution = async(categories, gens = 100, popsize = 50) => {
@@ -27,17 +27,35 @@ let continueIterEvolve = async(id, user, gens = 40, popsize = 50) => {
 }
 
 
+let login = async(username, setUserId, setPublicKey) => {
+    request= {"user": username }
+    response = await api.post(GET_PUBLIC_KEY, request)
 
-let add_account = async(username, setUser) => {
-    request= {"username": username }
+    if (response.status < 300){
+        setUserId(username)
+        setPublicKey(response.data.publicKey)
+        return "success"
+        
+    }else{
+        return null 
+    }
+
+   
+}
+
+
+
+let add_account = async(username, privateKey, publicKey) => {
+    request= {"user": username, "privateKey": privateKey, "publicKey": publicKey}
     response = await api.post(ADD_ACCOUNT_URL, request)
 
     if (response.status < 300){
-        setUser(username)
+        return "success"
         
+    }else {
+        return "failure"
     }
 
-    return response 
 }
 
 let like_puzzle = async(puzzle, user) => {
@@ -89,4 +107,4 @@ let add_cat = async (cat, user) => {
 
 
 
-export {postEvolution, add_account, like_puzzle, startIterEvolve, continueIterEvolve, add_is, add_not, add_before, add_or, add_cat}
+export {postEvolution, add_account, like_puzzle, startIterEvolve, continueIterEvolve, add_is, add_not, add_before, add_or, add_cat, login}
