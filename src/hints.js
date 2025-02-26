@@ -10,7 +10,7 @@ let recordHint = (time, hint, strikes, i, instanceId) =>{
 }
 
 
-export default HintDisplay = ({hints, time, strikes, setStrikes, instanceId}) => {
+export default HintDisplay = ({hints, time, strikes, setStrikes, instanceId, printable}) => {
 
 
     let toggleStrike = (idx) => {
@@ -30,12 +30,14 @@ export default HintDisplay = ({hints, time, strikes, setStrikes, instanceId}) =>
     let makeHint = (hint, setStrikes, idx) =>{
 
         let strike= false; 
-
+        if (!printable){
         if(strikes.length <= idx){
             setStrikes([...strikes, false]); 
         }else{
             strike=strikes[idx]
         }
+    }
+
         
 
         if (strike){
@@ -51,7 +53,7 @@ export default HintDisplay = ({hints, time, strikes, setStrikes, instanceId}) =>
     return (
         <div>
             <h1>Hints</h1>
-            <p className="smalltext"> (click to cross out/uncross) </p>
+            {printable? "" : <p className="smalltext"> (click to cross out/uncross) </p>} 
             {hintsList}
         </div>);
 }

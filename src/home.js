@@ -35,19 +35,20 @@ export default HomePage = ({startGeneration, user, setUser}) => {
        }
     }
 
+    async function fetch() { 
+        getPuzzles().then(
+            
+            (p) =>{
+
+                if (p != "LOGIN" && p != null){
+                    setPuzzles(p)
+                }
+         
+            
+        })}
     
     useEffect (() => 
-            {async function fetch() { 
-                getPuzzles().then(
-                    
-                    (p) =>{
-
-                        if (p != "LOGIN" && p != null){
-                            setPuzzles(p)
-                        }
-                 
-                    
-                })}
+            {
             fetch()
     
             }, [user]  )
@@ -83,7 +84,7 @@ export default HomePage = ({startGeneration, user, setUser}) => {
         <h2>Generate puzzles</h2>
         <button onClick={startGeneration}>Start</button>
         <h2>View Liked Puzzles</h2>
-        <PlayablePuzzleList puzzles={puzzles}/>
+        <PlayablePuzzleList puzzles={puzzles} user={user} setPuzzles={setPuzzles} r={fetch}/>
     </div>
     
     }else{
@@ -93,7 +94,7 @@ export default HomePage = ({startGeneration, user, setUser}) => {
             <h2>Start Generating</h2>
             <button onClick={startGeneration}>Start</button>
             <h2>View Liked Puzzles</h2>
-            <PlayablePuzzleList puzzles={puzzles}/>
+            <PlayablePuzzleList puzzles={puzzles} user={user}  setPuzzles={setPuzzles} r={fetch}/>
         </div>
     }
     

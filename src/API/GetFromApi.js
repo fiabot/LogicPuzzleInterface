@@ -1,4 +1,4 @@
-import {api, API_URL, SAMPLE_CAT_URL, GET_LIKED_PUZZLES, GET_UNUSED_GRAMMARS, GET_TEMPLATE} from './config'
+import {api, API_URL, SAMPLE_CAT_URL, GET_LIKED_PUZZLES, GET_UNUSED_GRAMMARS, GET_TEMPLATE, GET_BRAINSTORMS} from './config'
 
 
 let getLikedPuzzles = async(user) => {
@@ -58,4 +58,31 @@ let get_before_template = async(cat1, cat2, num_cat, user)  => {
 }
 
 
-export {getSampleCategories, getLikedPuzzles, get_unused_grammar, get_is_template, get_not_template, get_before_template, get_or_template}
+let get_is_brainstorm = async(cat1, cat2, user)  => {
+    request = {"user": user, "cat1": cat1, "cat2": cat2, type:"is"}
+    response = await api.post(GET_BRAINSTORMS, request)
+    return response.data 
+}
+
+let get_not_brainstorm= async(cat1, cat2, user)  => {
+    request = {"user": user, "cat1": cat1, "cat2": cat2, type:"not"}
+    response = await api.post(GET_BRAINSTORMS, request)
+    return response.data 
+}
+
+let get_or_brainstorm = async(cat1, cat2, is_cat, user)  => {
+    request = {"user": user, "cat1": cat1, "cat2": cat2, "is_cat": is_cat, type:"or"}
+    response = await api.post(GET_BRAINSTORMS, request)
+    console.log(response)
+    return response.data 
+}
+
+let get_before_brainstorm = async(cat1, cat2, num_cat, user)  => {
+    request = {"user": user, "cat1": cat1, "cat2": cat2, "num_cat": num_cat, type:"before"}
+    response = await api.post(GET_BRAINSTORMS, request)
+    return response.data 
+}
+
+
+
+export {getSampleCategories, getLikedPuzzles, get_unused_grammar, get_is_template, get_not_template, get_before_template, get_or_template, get_before_brainstorm, get_is_brainstorm, get_not_brainstorm,get_or_brainstorm}

@@ -176,8 +176,39 @@ body {
     margin: 5vmin, 10vmin;
     overflow-y: scroll;
     justify-content: center;
+    width: 100%;
 
 
+}
+
+.printable{
+    display: flex;
+    margin: 5vmin, 10vmin;
+    justify-content: center;
+    width: 100%;
+    flex-direction: column;
+    background-color: white;
+
+}
+
+.printableRight{
+    display: flex;
+    flex-direction: initial;
+}
+
+.printArea {
+
+    margin: 5vmin, 10vmin;
+    overflow-y: scroll;
+    justify-content: center;
+    width: 100%;
+
+
+}
+
+.scenario{
+    font-size: 2vmin;
+    text-align: center;
 }
 
 h1 {
@@ -250,10 +281,10 @@ li {
     width:50vmin;
 }
 
-.puzzleRight{
-    width: 30vmin;
-}
 
+.puzzleLeft{
+    width: 40%;
+}
 .nextButton {
     float: right;
     margin-right: 30%;
@@ -349,4 +380,62 @@ li {
     font-size: 2vmin;
     width: 45%;
 
+}
+
+.hints{
+    background-color: #E6CCBE; 
+    width: 95%; 
+    margin: 10px;
+    padding: 10px;
+    padding-bottom: 10px;
+    padding-top: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+
+}
+
+.hintsBlack{
+    background-color: white; 
+    width: 95%; 
+    margin: 10px;
+
+    padding-bottom: 10px;
+    padding-top: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+
+}
+
+.hints p, .hintsBlack p{
+    font-size: 1.7vmin;
+    text-align: justify;
+    padding: 0.5vmin;
+    margin: 0.5vmin;
+    
+}
+
+.hints h1{
+    background-color: #A07178; 
+    color:#E9D0C4; 
+    font-size: 4vmin;
+    border: 5px solid #624146; 
+}
+
+.hintsBlack h1{
+    background-color: White; 
+    color:Black; 
+    font-size: 4vmin;
+    border: 5px solid Black; 
+}
+
+.hints ol, .hintsBlack ol{
+    text-align: justify; 
+    width: 90%;
+    
+}
+
+.hints ol li, .hintsBlack ol li{
+    margin: 5px;
+    font-size: 2.5vmin;
+    width: 90%;
 }

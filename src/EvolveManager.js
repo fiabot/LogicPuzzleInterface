@@ -39,7 +39,7 @@ export default EvolveManager = ({categories, user}) => {
     return <div>
         <h1>Generating New Puzzles</h1>
         <h2> Generation: {iters * 40}, total puzzles: {puzzles.length}</h2>
-        <ViewPuzzles puzzles={puzzles} user={user}/> 
+        <ViewPuzzles puzzles={puzzles} user={user} setPuzzles={setPuzzles}/> 
     </div>
 
 

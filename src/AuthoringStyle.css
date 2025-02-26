@@ -65,6 +65,77 @@
     
 }
 
+.editor{
+    background-color: #E9D0C4;
+    overflow: auto;
+    scrollbar-color: #776274 #A07178;
+    height: 70%; 
+    width: 100%;
+}
+
+.hintEditor{
+    width: 70%;
+
+
+ 
+    margin: 10px;
+
+    padding: 20px;
+}
+
+.hintEditor li{
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+.scenarioInput{
+    margin-bottom: 5px;
+    height: 100px;
+    width: 70%;
+
+    margin: 10px;
+
+    padding: 20px;
+
+    background-color:#faf2f9;
+    border-radius: 5px;
+    border-color:  #A07178;
+    border-style: solid;
+    padding: 12px 20px;
+
+}
+    
+.nameInput{
+        margin-bottom: 5px;
+        height: 10px;
+        width: 70%;
+    
+        margin: 10px;
+    
+        padding: 20px;
+    
+        background-color:#faf2f9;
+        border-radius: 5px;
+        border-color:  #A07178;
+        border-style: solid;
+        padding: 12px 20px;
+    
+    }
+
+.hintEditor li input{
+    width: 100%;
+    height: fit-content;
+    background-color:#faf2f9;
+    border-radius: 5px;
+    border-color:  #A07178;
+    border-style: solid;
+    padding: 12px 20px;
+}
+
+.puzzleArea{
+   background-color: white; 
+}
+
 
 .smallButton:hover{
     background-color: #4d3f4b;
@@ -141,6 +212,31 @@
 .categoryDiv label{
     font-size: 16px; 
 }
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+    /* color of the span text */
+    color: rgb(119, 162, 241);
+  }
+  
+  .tooltip .tooltiptext {
+    visibility: hidden;
+    width: 600px;
+    background-color: black;
+    /* color of the tooltip text */
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+  }
+  
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+  }
 
 
 

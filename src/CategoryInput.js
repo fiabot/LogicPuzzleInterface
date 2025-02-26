@@ -3,7 +3,7 @@ import { postEvolution, add_cat } from "./API/SendToApi"
 import { getSampleCategories } from "./API/GetFromApi"
 import "./AuthoringStyle.css"
 import EditTemplate from "./EditTemplate"
-
+import EditBrainstorm from "./EditBrainstorm"
 
 
 let CategoryMaker = ({categories, setCategories, index, numEntities, can_save = false, user=null}) => {
@@ -196,6 +196,7 @@ export default PuzzleMaker = ({startEvolve, user}) =>{
 
                 <div className="authoringView">
                 <EditTemplate categories={categories} user={user}/>
+                <EditBrainstorm categories={categories} user={user} />  
             </div>
 
     </div>

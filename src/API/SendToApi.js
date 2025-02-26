@@ -1,4 +1,4 @@
-import {api, EVOLVE_URL, ADD_ACCOUNT_URL, LIKE_PUZZLE, ITER_EVOLVE, ADD_GRAMMAR_RULE, ADD_CATEGORY, GET_PUBLIC_KEY} from './config' 
+import {api, EVOLVE_URL, ADD_ACCOUNT_URL, LIKE_PUZZLE, ITER_EVOLVE, ADD_GRAMMAR_RULE, ADD_CATEGORY, GET_PUBLIC_KEY, ADD_BRAINSTORM, REMOVE_PUZZLE, UPDATE_PUZZLE} from './config' 
 
 
 let postEvolution = async(categories, gens = 100, popsize = 50) => {
@@ -10,7 +10,7 @@ let postEvolution = async(categories, gens = 100, popsize = 50) => {
 }
 
 
-let startIterEvolve = async(categories, user,  gens = 40, popsize = 50) => {
+let startIterEvolve = async(categories, user,  gens = 10, popsize = 200) => {
     request = {"puzzle": {"categories": categories}, "gens":gens, "pop_size": popsize, "user": user}
 
     response = await api.post(ITER_EVOLVE, request)
@@ -18,7 +18,7 @@ let startIterEvolve = async(categories, user,  gens = 40, popsize = 50) => {
     return response.data 
 }
 
-let continueIterEvolve = async(id, user, gens = 40, popsize = 50) => {
+let continueIterEvolve = async(id, user, gens = 40, popsize = 200) => {
     request = {"id": id, "gens":gens, "pop_size": popsize, "user": user}
 
     response = await api.post(ITER_EVOLVE, request)
@@ -67,6 +67,30 @@ let like_puzzle = async(puzzle, user) => {
 
   
 
+    return response
+}
+
+let remove_puzzle = async(key, user) => {
+    if (user == null){
+        return "LOGIN"
+    }
+    request= {"username":user, "key":key }
+    response = await api.post(REMOVE_PUZZLE, request)
+
+  
+
+    return response 
+}
+
+let update_puzzle = async(key, puzzle, user) => {
+    if (user == null){
+        return "LOGIN"
+    }
+    request= {"username":user, "key":key, "puzzle":puzzle }
+    response = await api.post(UPDATE_PUZZLE, request)
+
+  
+
     return response 
 }
 
@@ -105,6 +129,34 @@ let add_cat = async (cat, user) => {
 
 }
 
+let add_is_brain = async (cat1, cat2, template, user) => {
+    request = {"user": user, "cat1": cat1, "cat2": cat2, "template": template, type:"is"}
+    response = await api.post(ADD_BRAINSTORM, request)
+    return response 
+
+}
+
+let add_not_brain = async (cat1, cat2, template, user) => {
+    request = {"user": user, "cat1": cat1, "cat2": cat2, "template": template, type:"not"}
+    response = await api.post(ADD_BRAINSTORM, request)
+    return response 
+
+}
+
+let add_before_brain  = async (cat1, cat2, num_cat,  template, timed,  user) => {
+    request = {"user": user, "cat1": cat1, "cat2": cat2, "num_cat": num_cat, "template": template, "timed": timed,  type:"before"}
+    response = await api.post(ADD_BRAINSTORM, request)
+    return response 
+}
 
 
-export {postEvolution, add_account, like_puzzle, startIterEvolve, continueIterEvolve, add_is, add_not, add_before, add_or, add_cat, login}
+let add_or_brain  = async (cat1, cat2, is_cat,  template, user) => {
+    request = {"user": user, "cat1": cat1, "cat2": cat2, "is_cat": is_cat, "template": template, type:"or"}
+    response = await api.post(ADD_BRAINSTORM, request)
+    return response 
+
+}
+
+
+
+export {postEvolution, add_account, like_puzzle, startIterEvolve, continueIterEvolve, add_is, add_not, add_before, add_or, add_cat, login,add_before_brain, add_is_brain, add_or_brain, add_not_brain, remove_puzzle, update_puzzle}

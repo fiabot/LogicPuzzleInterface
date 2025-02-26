@@ -1,10 +1,56 @@
 import { useEffect, useState } from "react";
+import React from "react";
 import FinishButtons from "./EndPuzzleButtons";
 import Hints from "./hints";
 import StateSelector from "./stateSelector";
 import SubGrid from "./subgrid";
 import { createGamePlayInstance, addCellChange, addButtonPress } from "./Firestore/sendData";
+import { printDocument } from "./utils";
+import { useReactToPrint } from "react-to-print";
+import "./narrative.css";
 
+ClueViewer = ({ clues, n, printable, black }) => {
+
+    clues  = clues.map((clue) => {
+        paragraphs = clue.split("\n")
+        paragraphs = paragraphs.map((p) => p==""? <br/> : <p>{p}</p>)
+        return paragraphs
+    })
+
+    if (!printable){
+        [selectedClue, selectClue] = useState(0)
+
+
+        let buttons = clues.map((ele, i) =>
+            <button className={i == selectedClue ? "selected_n" : "unselected_n"} key={ele} onClick={() => selectClue(i)}>
+
+                {i == 0 ? "Story" : "Clue " + i}
+
+            </button>)
+
+
+
+
+        return <div>
+            <h1>{n}</h1>
+            {buttons}
+            <div className='clueBlock' >{clues[selectedClue]}</div>
+        </div>
+    }else{
+        let block = clues.map((clue, i) => {
+            return <div key={i}>
+                <h1>{i == 0 ? n : "Clue " + i}</h1>
+                <p>{clue}</p>
+            </div>
+
+        })
+
+        return <div className={!printable || !black ? "hints":"hintsBlack"}>
+            {block}
+
+        </div>
+    }
+}
 function initializeSubGrid(numRows, numCols, puzzle, recordPuzzle) {
     let subgrid = []
     for (let i = 0; i < numRows; i++) {
@@ -169,6 +215,11 @@ export default Puzzle =({p, time, concede, finish})=>{
     let [strikes, setStrikes] = useState([]);
     let [isCorrect, setCorrect] = useState(false);
     let [instanceId, setInstanceId] = useState(null); 
+    let [printable, setPrintable] = useState(false)
+    let [black, setBlack] = useState(false)
+    let [narrative, setNarrative] = useState(false)
+
+    let ref = React.useRef(null)
 
     useEffect(() => {async function fetchData() {
         // You can await here
@@ -225,33 +276,65 @@ export default Puzzle =({p, time, concede, finish})=>{
     /*setInterval(() => {
       setTime( 1)
   }, 1000);*/
-
+  const reactToPrintContent = () => {
+    return ref.current;
+  };
     
     //let [hints, setHints] = useState(<Hints hints={p.hints} time={time} setStrikes ={setStrikes} strikes={strikes}/>); 
+    const reactToPrintFn = useReactToPrint({
+        documentTitle: "SuperFileName"
+      });
 
 
-    return (<div className="puzzleArea">
-        <div className="puzzleLeft">
-            <h1>Puzzle</h1>
+    return (<div className="printArea" ><div>
+
+      {("narratives" in p && p["narratives"].length > 0)? <button onClick={()=>setNarrative(!narrative)}>{narrative? "Show Logic": "Show Narrative"}</button>:""}
+    <button onClick={()=> setPrintable(!printable)}>{printable? "Show Interactive": "Show printable"}</button>
+
+    
+    {printable?   <button onClick={()=> setBlack(!black)}>{black? "Make Full Color": "Make Black and White"}</button>: ""}
+    {printable? <button onClick={() =>reactToPrintFn(reactToPrintContent)}>Save as PdF</button>: ""}
+    
+    </div> 
+    <div className={printable? "printable":"puzzleArea"} id={"divToPrint"} ref={ref}>
+             <div className={printable? "":"puzzleLeft"}>
+            
+             {narrative? <ClueViewer  clues={[p.scenarioText].concat(p["narratives"])} n={p.title} printable={printable} black={black}/>:
+            <div className={!printable || !black ? "hints":"hintsBlack"}>
+                <h1>{p.title}</h1>
+                <p>{p.scenarioText}</p>
+                
+            
+                <Hints hints={p.hints} time={time} setStrikes ={setStrikes} strikes={strikes} instanceId={instanceId} printable={printable}/>
+
+            
+                </div>}
+        </div>
+        <div className={printable? "printableRight" : "puzzleRight"}>
+            <h1>Puzzle Grid</h1>
             <div className="puzzleGrid">
                 {displayGrid}
             </div>
 
-            <h1>Select Mark</h1>
-            <StateSelector selected={select} setSelect={setSelect} />
-        </div>
-        <div className="puzzleRight">
-            <Hints hints={p.hints} time={time} setStrikes ={setStrikes} strikes={strikes} instanceId={instanceId}/>
-            <FinishButtons 
-                giveUp={() => {recordAndConcede()}}
-                isCorrect = {() => isSolved(puzzle, p.solutionString)}
-                clearPuzzle = {function () {clearPuzzle(puzzle,strikes, setStrikes,instanceId, time)}}
-                finish = {() => {recordAndSubmit()}}
-                puzzle={puzzle}
-                instanceId={instanceId}
-                time={time}
+            {!printable?  <div><h1>Select Mark</h1>
+            <StateSelector selected={select} setSelect={setSelect} /></div>  : ""}
 
-            />
+            {!printable? <FinishButtons 
+                    giveUp={() => {recordAndConcede()}}
+                    isCorrect = {() => isSolved(puzzle, p.solutionString)}
+                    clearPuzzle = {function () {clearPuzzle(puzzle,strikes, setStrikes,instanceId, time)}}
+                    finish = {() => {recordAndSubmit()}}
+                    puzzle={puzzle}
+                    instanceId={instanceId}
+                    time={time}
+
+                />: ""}
+
+             
         </div>
+   
+    </div>
+
+    
     </div>);
 }

@@ -3,9 +3,10 @@ import { useState,} from "react";
 import { Slider } from '@mui/material';
 import Box from '@mui/material/Box';
 
+
 import Category from "./categoryModel";
 import Puzzle from "./simplePuzzle";
-import PuzzleModel from "./puzzleModel";
+import {createPuzzle} from "./puzzleModel";
 import "./ViewPuzzlesStyle.css"; 
 import simplePuzzle from './simplePuzzle';
 import PuzzleFilter from './puzzleFilter';
@@ -14,16 +15,6 @@ import 'reactjs-popup/dist/index.css';
 import { like_puzzle } from './API/SendToApi';
 import PlayablePuzzleList from './PlayablePuzzleList';
 
-function createPuzzle(data) {
-    let categories = []
-    for (cat in data.categories) {
-        cat = data.categories[cat]
-        categories.push(new Category(cat.name, cat.entities))
-    }
-
-    return new PuzzleModel(categories, data.hints, data.solution, data.id)
-
-}
 
 function filterBySolution(f, puzzles ){
 
@@ -42,7 +33,7 @@ function filterBySolution(f, puzzles ){
     })
     } 
 
-export default ViewPuzzles = ({puzzles, user}) => {
+export default ViewPuzzles = ({puzzles, user, setPuzzles}) => {
 
     let [diffRange, setDiffRange] =useState([1, 10])
     let [filter, setFilter] = useState("")
@@ -89,7 +80,7 @@ export default ViewPuzzles = ({puzzles, user}) => {
 
         <div className='puzzleViewRight'>
             <h1>Puzzles</h1>
-            <PlayablePuzzleList puzzles={puzzleList} user={user}/> 
+            <PlayablePuzzleList puzzles={puzzleList} user={user} setPuzzles={setPuzzles}/> 
 
         </div>
     </div>
