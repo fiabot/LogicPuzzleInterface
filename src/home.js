@@ -8,11 +8,12 @@ import PlayablePuzzleList from "./PlayablePuzzleList";
 let adminPublicKeys = ["Admin 1"]
 
 
-export default HomePage = ({startGeneration, user, setUser}) => {
+export default HomePage = ({startGeneration, user, setUser, mode, setMode}) => {
     let [puzzles, setPuzzles] = useState([])
     //let puzzles = []
     let [username, setUsername] = useState("")
     let [publicKey, setPublicKey] = useState("")
+    let [userMode, setUserMode] = useState("mixed")
 
     let [newPrivateKey, setNewPrivateKey] = useState("")
     let [newPublicKey, setNewPublicKey] = useState("")
@@ -26,12 +27,9 @@ export default HomePage = ({startGeneration, user, setUser}) => {
     }
 
     let log_user_in = async () => {
-       result =  await login(username, setUser, setPublicKey); 
-       console.log(result)
+       result =  await login(username, setUser, setPublicKey, setMode); 
        if (result == null){
             alert("Key Not Regonized, try again")
-       }else{
-            alert("success")
        }
     }
 
@@ -64,7 +62,7 @@ export default HomePage = ({startGeneration, user, setUser}) => {
         // admin view 
 
         let add_user = async () => {
-            result =  await add_account(username, newPrivateKey, newPublicKey) 
+            result =  await add_account(username, newPrivateKey, newPublicKey, userMode) 
             if (result == "failure"){
                  alert("Failed to add user")
             }else{
@@ -80,11 +78,16 @@ export default HomePage = ({startGeneration, user, setUser}) => {
 
             <p>Enter Private Key</p>
             <input value={newPrivateKey} onChange={(e) => setNewPrivateKey(e.target.value)}></input>
+            <p>Select Mode</p><select value={userMode} onChange={(e) => setUserMode(e.target.value)}>
+                <option value="mixed">mixed</option>
+                <option value="serious">serious</option>
+                <option value="casual">casual</option>
+            </select>
             <button onClick={() => {add_user()}}>Add User</button>
         <h2>Generate puzzles</h2>
         <button onClick={startGeneration}>Start</button>
         <h2>View Liked Puzzles</h2>
-        <PlayablePuzzleList puzzles={puzzles} user={user} setPuzzles={setPuzzles} r={fetch}/>
+        <PlayablePuzzleList puzzles={puzzles} user={user} setPuzzles={setPuzzles} r={fetch} appMode={mode}/>
     </div>
     
     }else{
@@ -94,7 +97,7 @@ export default HomePage = ({startGeneration, user, setUser}) => {
             <h2>Start Generating</h2>
             <button onClick={startGeneration}>Start</button>
             <h2>View Liked Puzzles</h2>
-            <PlayablePuzzleList puzzles={puzzles} user={user}  setPuzzles={setPuzzles} r={fetch}/>
+            <PlayablePuzzleList puzzles={puzzles} user={user}  setPuzzles={setPuzzles} r={fetch}  appMode={mode}/>
         </div>
     }
     

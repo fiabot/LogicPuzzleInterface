@@ -88,12 +88,14 @@ let CategoryMaker = ({categories, setCategories, index, numEntities, can_save = 
 
 
 
-export default PuzzleMaker = ({startEvolve, user}) =>{
+export default PuzzleMaker = ({startEvolve, user, mode}) =>{
     let [categories, setCategories] = useState([]); 
     let [numEntites, setNumEntities] = useState(4); 
     let [templates, setTemplates] = useState(<div>Loading</div>)
     let [tempCats, setTempCats] = useState([])
     let [numEmpty, setNumEmpy] = useState([0])
+
+    console.log(mode)
 
 
     let categoryCreators = categories.map((cat, idx) => {
@@ -161,30 +163,28 @@ export default PuzzleMaker = ({startEvolve, user}) =>{
             
             </div>
 
-            <h1>Example Categories</h1>
+            {mode == "casual" || mode == "mixed" ?<div><h1>Example Categories</h1>
             <div className="categoryTemplate">
                 {tempbutton}
-            </div>
+            </div> </div>: ""}
 
   
 
 
 
-            <button className="mediumButton" onClick={()=>setCategories([...categories, {name:"Name", entities:[], is_numeric:false}])}>Add category</button>
+            {mode == "serious" || mode == "mixed"? <div><button className="mediumButton" onClick={()=>setCategories([...categories, {name:"Name", entities:[], is_numeric:false}])}>Add category</button>
             <button className="mediumButton" onClick={()=>setCategories(
                         categories.slice(0, categories.length -1)
                     )}>Remove Category</button>
-
-    
-
-           
-                <div>
+                 
 
               
 
-                <button className="largeButton" onClick={() => startEvolve(categories)}>Start Evolution</button>
+                
 
-                </div>
+                </div> : ""} 
+
+                <button className="largeButton" onClick={() => startEvolve(categories)}>Start Evolution</button>
      
 
 
@@ -192,14 +192,14 @@ export default PuzzleMaker = ({startEvolve, user}) =>{
 
     </div>
 
-    <div className="puzzleViewRight">
+    {mode == "serious" || mode == "mixed" ? <div className="puzzleViewRight">
 
                 <div className="authoringView">
                 <EditTemplate categories={categories} user={user}/>
                 <EditBrainstorm categories={categories} user={user} />  
             </div>
 
-    </div>
+    </div> :""} 
 
     </div>
     

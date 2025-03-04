@@ -10,7 +10,7 @@ import { findMutants } from "./utils";
 
 
 
-export default PuzzleList= ({puzzles, setPuzzles, user, reload, showMutants=false}) => {
+export default PuzzleList= ({puzzles, setPuzzles, user, reload, showMutants=false, appMode="mixed"}) => {
 
     let [mode, setMode] = useState("view")
     let [puzzleToEdit, setPuzzleToEdit] = useState(null)
@@ -128,7 +128,7 @@ export default PuzzleList= ({puzzles, setPuzzles, user, reload, showMutants=fals
         {puzzle.hints.map((hint, id) => <li key={id}>{hint}</li>)}
         </ol>
         <button onClick={()=> playPuzzle(puzzle)}>Play Puzzle</button>
-        <button onClick={()=> editPuzzle(puzzle)}>Edit Puzzle</button>
+        {(appMode == "serious" || appMode == "mixed")? <button onClick={()=> editPuzzle(puzzle)}>Edit Puzzle</button> : ""}
         {("key" in puzzle && puzzle["key"] != null)?<button onClick={() => unlikeButton(puzzle,idx)}>Unlike Puzzle</button>:   <button onClick={() => likeButton(puzzle,idx)}>Like Puzzle</button> }
         {showMutants? <button onClick={() => seeMutants(puzzle)}>See Mutants</button>: ""}
         </li>}

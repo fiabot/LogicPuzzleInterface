@@ -17,7 +17,9 @@ import EvolveManager from './src/EvolveManager';
 import EditPuzzle from './src/EditPuzzle';
 
 
-let MODE = "debug"
+let MODE = "mixed"
+
+
 
 let questions = ["The puzzle was cognitively demanding.", "I had to think very hard when playing the puzzle.",
     "The puzzle required a lot of mental gymnastics.", "The puzzle stimulated my brain.", "This puzzle doesn’t require a lot of mental effort.", 
@@ -92,6 +94,7 @@ let PlayPuzzle = () => {
 
   let [puzzles, setPuzzles] = useState([])
   
+  let [userMode, setUserMode] = useState(MODE)
   let [categories, setCategories] = useState(null); 
 
   let [mode, setMode ] = useState("home")
@@ -122,15 +125,15 @@ let PlayPuzzle = () => {
 
  
     if (mode == "home"){
-      return <HomePage startGeneration={startGeneration} user={user} setUser={setUser}/> 
+      return <HomePage startGeneration={startGeneration} user={user} setUser={setUser} mode={userMode} setMode={setUserMode}/> 
     }
     else if (mode == "createPuzzle") {
       return <div>
-      <CategoryInput startEvolve={startEvolve} user={user}/> 
+      <CategoryInput startEvolve={startEvolve} user={user} mode={userMode}/> 
     </div>
     }else{
       return <div>
-        <EvolveManager categories={categories} user={user}/>
+        <EvolveManager categories={categories} user={user} mode={userMode}/>
       </div>
     }
 }

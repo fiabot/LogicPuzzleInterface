@@ -30,14 +30,14 @@ let archivePuzzles =(oldPuzzles, newPuzzles) => {
 
 }
 
-export default EvolveManager = ({categories, user}) => {
+export default EvolveManager = ({categories, user, mode = "mixed"}) => {
 
     let [puzzles, setPuzzles] = useState([]); 
     let [archive, setArchive] = useState([]); 
     let [id, setId] = useState(-1); 
     let [iters, setIters] = useState(0); 
     let [maxIters, setMaxIters] = useState(10)
-    let [conEvolve, setContinue] = useState(true); 
+   
 
     let [showArchive, setShowArchive] = useState(false); 
 
@@ -79,7 +79,7 @@ export default EvolveManager = ({categories, user}) => {
         <h1>Generating New Puzzles</h1>
         <h2> Generation: {iters * 40}, total puzzles: {showArchive? puzzles.length + archive.length: puzzles.length}</h2>
         <button onClick={()=> setShowArchive(!showArchive)}>{showArchive? "Show Best": "Show All"}</button>
-        <ViewPuzzles puzzles={showArchive? puzzles.concat(archive): puzzles} user={user} setPuzzles={setPuzzles}/> 
+        <ViewPuzzles puzzles={showArchive? puzzles.concat(archive): puzzles} user={user} setPuzzles={setPuzzles} mode={mode}/> 
     </div>
 
 

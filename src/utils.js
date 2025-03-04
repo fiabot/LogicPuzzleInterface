@@ -195,8 +195,13 @@ let printDocument=(ref) =>{
     let test_kind = Object.keys(g2)[0]
     let test_attributes = g2[kind]
 
+    
 
-    if (kind != "compound_or" && test_kind == kind){
+    if (attributes && test_attributes && attributes.length != test_attributes.length){
+      return false 
+    }
+
+    else if (kind != "compound_or" && test_kind == kind){
       let matches = test_attributes.filter((a, i) => a == attributes[i])
       return matches.length == test_attributes.length 
     }else if (kind == "compound_or" && test_kind == kind){

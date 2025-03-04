@@ -12,8 +12,10 @@
 .puzzleViewLeft{
     position: absolute;
     left: 0px;
-    width: 50%;
-    height: 100%;
+    width: 40%;
+    height: 85%;
+    overflow: auto;
+    scrollbar-color: #776274 #A07178;
 
 }
 
@@ -21,7 +23,7 @@
 
     position: absolute;
     right: 0px;
-    width: 50%;
+    width: 60%;
     height: 100%;
     overflow: auto;
     scrollbar-color: #776274 #A07178;
@@ -33,7 +35,7 @@
     background-color: #E9D0C4;
     overflow: auto;
     scrollbar-color: #776274 #A07178;
-    height: 70%; 
+    height: 80%; 
     width: 100%;
 }
 

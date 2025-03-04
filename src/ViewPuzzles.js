@@ -120,11 +120,13 @@ let CreateHintFilter = ({filter, setFilter, categories}) => {
                         a[5] = amount
                     }
 
+                    console.log(a)
+
                     setAttrs(a)
                 }
             }
 
-            return <select disabled={!attrs[4] || attrs[4] == ""} value={attrs.length==6? attrs[5]: ""} onChange={() => setAmount(e.target.value)}> {options}</select>
+            return <select disabled={!attrs[4] || attrs[4] == ""} value={attrs.length==6? attrs[5]: ""} onChange={(e) => setAmount(e.target.value)}> {options}</select>
         }else if (attr == "is") {
             return <div>TODO</div>
         }
@@ -216,7 +218,7 @@ function filterBySolution(f, puzzles ){
     })
     } 
 
-export default ViewPuzzles = ({puzzles, user, setPuzzles}) => {
+export default ViewPuzzles = ({puzzles, user, setPuzzles, mode}) => {
 
     let [diffRange, setDiffRange] =useState([1, 10])
     let [hintRange, setHintRange] = useState([1, 10])
@@ -239,7 +241,7 @@ export default ViewPuzzles = ({puzzles, user, setPuzzles}) => {
     
 
     return <div className='puzzleView'>
-        <div className='puzzleViewLeft'>
+        {mode == "serious" || mode == "mixed"? <div className='puzzleViewLeft'>
             <h1>Filter</h1>
 
             <h2>Filter Hints</h2>
@@ -278,11 +280,11 @@ export default ViewPuzzles = ({puzzles, user, setPuzzles}) => {
             {puzzles.length > 0 ? <PuzzleFilter p={createPuzzle(puzzles[0])} setFilter={setFilter}/>  : <div> Loading</div>}
             
 
-        </div>
+        </div>: ""}
 
         <div className='puzzleViewRight'>
             <h1>Puzzles</h1>
-            <PlayablePuzzleList puzzles={puzzleList} user={user} setPuzzles={setPuzzles} showMutants={true}/> 
+            <PlayablePuzzleList puzzles={puzzleList} user={user} setPuzzles={setPuzzles} showMutants={mode == "casual" || mode == "mixed"} appMode={mode}/> 
 
         </div>
     </div>
