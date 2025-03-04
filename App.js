@@ -11,9 +11,10 @@ import ViewPuzzles from './src/ViewPuzzles';
 import HomePage from './src/home';
 import Puzzle from './src/puzzle';
 import Category from './src/categoryModel';
-import PuzzleModel from './src/puzzleModel';
+import {PuzzleModel,createPuzzle} from './src/puzzleModel';
 import lzString from  "lz-string"
 import EvolveManager from './src/EvolveManager';
+import EditPuzzle from './src/EditPuzzle';
 
 
 let MODE = "debug"
@@ -63,17 +64,6 @@ function getFiles() {
 
 }
 
-function createPuzzle(data) {
-  let categories = []
-  for (cat in data.categories) {
-      cat = data.categories[cat]
-      categories.push(new Category(cat.name, cat.entities))
-  }
-
-  return new PuzzleModel(categories, data.hints, data.solution, data.id)
-
-}
-
 
 
 let PlayPuzzle = () => {
@@ -87,12 +77,15 @@ let PlayPuzzle = () => {
     puzzleObj = JSON.parse(decom)
     let p = createPuzzle(puzzleObj)
     return <Puzzle p={p}/> 
+
   }catch (e) {
     console.log("execept" + e)
     return <div>Input error</div>
   }
  
 }
+
+
 
 
  export default function Main({}) {

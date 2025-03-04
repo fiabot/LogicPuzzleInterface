@@ -1,5 +1,6 @@
 import { useReactToPrint } from "react-to-print";
 import { get_is_brainstorm, get_not_brainstorm, get_or_brainstorm, get_before_brainstorm } from "./API/GetFromApi";
+import { stringSimilarity } from "string-similarity-js"; 
 let printDocument=(ref) =>{
     const reactToPrintFn = useReactToPrint({ ref })
 
@@ -187,6 +188,95 @@ let printDocument=(ref) =>{
 
   }
 
-  export {printDocument, getClueLogic, getBrainStormIdeas}
+  let grammar_equal= (g1, g2) => {
+    let kind = Object.keys(g1)[0]
+    let attributes = g1[kind]
+
+    let test_kind = Object.keys(g2)[0]
+    let test_attributes = g2[kind]
+
+
+    if (kind != "compound_or" && test_kind == kind){
+      let matches = test_attributes.filter((a, i) => a == attributes[i])
+      return matches.length == test_attributes.length 
+    }else if (kind == "compound_or" && test_kind == kind){
+        let test1 = grammar_equal(attributes[0], test_attributes[0])
+        let test2 = grammar_equal(attributes[1], test_attributes[1])
+
+        return test1 && test2 
+    
+    }else{
+      return false 
+    }
+  }
+
+
+  let hasHint =(hintTemplate, puzzleGrammar) => {
+
+      let sameHints = puzzleGrammar.filter((g) => {return grammar_equal(hintTemplate, g)})
+
+      return sameHints.length > 0
+
+  }
+
+  let numberHintsInCommon = (hints1, hints2) => {
+    let matches = hints1.filter((h) => hasHint(h, hints2))
+    return matches.length 
+
+  }
+
+  let hasHints = (hints, puzzleList) => {
+    let filter = puzzleList.filter((p) => {
+      let puzzleGrammar = p["hint_grammar"]
+      let matches = hints.filter((h) => hasHint(h, puzzleGrammar))
+      return matches.length == hints.length
+    })
+
+    return filter 
+  }
+
+
+  let findMutants = (puzzle, puzzleList) => {
+    puzzleList = puzzleList.filter((p) => p != puzzle)
+    let puzzleGrammar = puzzle["hint_grammar"]
+
+
+    // sort by hints in common 
+    let sorted = puzzleList.toSorted((a, b) =>{
+      let matches1 = numberHintsInCommon(puzzleGrammar, a["hint_grammar"])
+      let matches2= numberHintsInCommon(puzzleGrammar, b["hint_grammar"])
+
+    
+
+      if (matches1 > matches2) {
+        return -1 
+      }else if (matches1 < matches2) {
+        return 1 
+      }else{
+        let stringSimilarity1 = stringSimilarity(puzzle["solution"], a["solution"])
+        let stringSimilarity2 = stringSimilarity(puzzle["solution"], b["solution"])
+
+        if (stringSimilarity1 > stringSimilarity2){
+          return -1 
+        }else if (stringSimilarity1 < stringSimilarity2){
+          return 1
+        }else{
+          return 0 
+        }
+      }
+    
+    } )
+
+    let sameDiff = sorted.filter((a) => a["diff"] == puzzle["diff"])
+    let harder = sorted.filter((a) => a["diff"] > puzzle["diff"])
+    let easier = sorted.filter((a) => a["diff"] < puzzle["diff"])
+
+    return [sameDiff, harder, easier]
+
+
+
+  }
+
+  export {printDocument, getClueLogic, getBrainStormIdeas, hasHints, findMutants}
 
 
