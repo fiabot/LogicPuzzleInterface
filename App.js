@@ -5,14 +5,14 @@ import InformedConsent from './src/InformedConsent';
 import InitialSurvey from './src/InitialSurvey';
 import PuzzleManager from './src/PuzzleManager';
 import Tutorial from './src/Tutorial';
-import Debug from './debug';
+// import Debug from './debug';
 import CategoryInput from './src/CategoryInput';
 import ViewPuzzles from './src/ViewPuzzles';
 import HomePage from './src/home';
 import Puzzle from './src/puzzle';
 import Category from './src/categoryModel';
-import PuzzleModel from './src/puzzleModel';
-import lzString from  "lz-string"
+import { PuzzleModel } from './src/puzzleModel';
+import lzString from  "lz-string";
 import EvolveManager from './src/EvolveManager';
 
 
@@ -81,13 +81,13 @@ let PlayPuzzle = () => {
   const param = queryParameters.get("puzzle")
 
 
-  try{
+  try {
     const decom = lzString.decompressFromEncodedURIComponent(param)
     console.log("decom" + decom)
     puzzleObj = JSON.parse(decom)
     let p = createPuzzle(puzzleObj)
     return <Puzzle p={p}/> 
-  }catch (e) {
+  } catch (e) {
     console.log("execept" + e)
     return <div>Input error</div>
   }

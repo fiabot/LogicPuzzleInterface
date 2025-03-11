@@ -211,7 +211,6 @@ export default Puzzle =({p, time, concede, finish})=>{
     let displayGrid = [];
     let [select, setSelect] = useState("O");
     let displayRowIdx = 1;
-    let rowLength = p.leftRight.length;
     let [strikes, setStrikes] = useState([]);
     let [isCorrect, setCorrect] = useState(false);
     let [instanceId, setInstanceId] = useState(null); 
@@ -243,13 +242,14 @@ export default Puzzle =({p, time, concede, finish})=>{
         finish();
     }
   
-
-   
+    let rowLength = p.leftRight.length;
     for (let row = 0; row < p.topBottom.length; row++) {
         puzzle[row] = []
         let displayColIdx = 1;
         for (let col = 0; col < rowLength; col++) {
+            console.log("inner loop col row")
             let subgrid = initializeSubGrid(p.numEnt, p.numEnt, puzzle, ()=>{recordPuzzle(puzzle, p.solutionString, time, instanceId)});
+            console.log("got subgrid")
             puzzle[row][col] = subgrid;
 
             topCat = null;
@@ -263,6 +263,7 @@ export default Puzzle =({p, time, concede, finish})=>{
             }
             displayGrid.push(<div style={{ gridRow: displayRowIdx, gridColumn: displayColIdx }} key={row + "," + col}><SubGrid numCols={p.numEnt} numRows={p.numEnt} cells={subgrid} select={select} topCat={topCat} leftCat={leftCat} /></div>);
             displayColIdx++;
+            console.log("got subgrid")
         }
         rowLength--;
         displayRowIdx++;

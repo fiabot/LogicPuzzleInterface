@@ -31,7 +31,7 @@ export default HomePage = ({startGeneration, user, setUser}) => {
        if (result == null){
             alert("Key Not Regonized, try again")
        }else{
-            alert("success")
+            // alert("success")
        }
     }
 
