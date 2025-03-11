@@ -32,7 +32,8 @@
     "react-native-web": "~0.19.6",
     "react-pdf": "^7.7.1",
     "react-to-print": "^3.0.5",
-    "reactjs-popup": "^2.0.6"
+    "reactjs-popup": "^2.0.6",
+    "string-similarity-js": "^2.1.4"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

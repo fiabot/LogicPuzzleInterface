@@ -10,7 +10,7 @@ let postEvolution = async(categories, gens = 100, popsize = 50) => {
 }
 
 
-let startIterEvolve = async(categories, user,  gens = 10, popsize = 200) => {
+let startIterEvolve = async(categories, user,  gens = 10, popsize = 100) => {
     request = {"puzzle": {"categories": categories}, "gens":gens, "pop_size": popsize, "user": user}
 
     response = await api.post(ITER_EVOLVE, request)
@@ -18,7 +18,7 @@ let startIterEvolve = async(categories, user,  gens = 10, popsize = 200) => {
     return response.data 
 }
 
-let continueIterEvolve = async(id, user, gens = 40, popsize = 200) => {
+let continueIterEvolve = async(id, user, gens = 40, popsize = 100) => {
     request = {"id": id, "gens":gens, "pop_size": popsize, "user": user}
 
     response = await api.post(ITER_EVOLVE, request)
@@ -27,13 +27,16 @@ let continueIterEvolve = async(id, user, gens = 40, popsize = 200) => {
 }
 
 
-let login = async(username, setUserId, setPublicKey) => {
+let login = async(username, setUserId, setPublicKey, setMode) => {
     request= {"user": username }
     response = await api.post(GET_PUBLIC_KEY, request)
 
     if (response.status < 300){
         setUserId(username)
         setPublicKey(response.data.publicKey)
+
+        setMode(response.data.mode)
+        
         return "success"
         
     }else{
@@ -45,8 +48,8 @@ let login = async(username, setUserId, setPublicKey) => {
 
 
 
-let add_account = async(username, privateKey, publicKey) => {
-    request= {"user": username, "privateKey": privateKey, "publicKey": publicKey}
+let add_account = async(username, privateKey, publicKey, mode) => {
+    request= {"user": username, "privateKey": privateKey, "publicKey": publicKey, "mode":mode}
     response = await api.post(ADD_ACCOUNT_URL, request)
 
     if (response.status < 300){

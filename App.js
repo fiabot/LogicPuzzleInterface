@@ -11,12 +11,15 @@ import ViewPuzzles from './src/ViewPuzzles';
 import HomePage from './src/home';
 import Puzzle from './src/puzzle';
 import Category from './src/categoryModel';
-import { PuzzleModel } from './src/puzzleModel';
-import lzString from  "lz-string";
+import {PuzzleModel,createPuzzle} from './src/puzzleModel';
+import lzString from  "lz-string"
 import EvolveManager from './src/EvolveManager';
+import EditPuzzle from './src/EditPuzzle';
 
 
-let MODE = "debug"
+let MODE = "mixed"
+
+
 
 let questions = ["The puzzle was cognitively demanding.", "I had to think very hard when playing the puzzle.",
     "The puzzle required a lot of mental gymnastics.", "The puzzle stimulated my brain.", "This puzzle doesn’t require a lot of mental effort.", 
@@ -63,17 +66,6 @@ function getFiles() {
 
 }
 
-function createPuzzle(data) {
-  let categories = []
-  for (cat in data.categories) {
-      cat = data.categories[cat]
-      categories.push(new Category(cat.name, cat.entities))
-  }
-
-  return new PuzzleModel(categories, data.hints, data.solution, data.id)
-
-}
-
 
 
 let PlayPuzzle = () => {
@@ -87,7 +79,8 @@ let PlayPuzzle = () => {
     puzzleObj = JSON.parse(decom)
     let p = createPuzzle(puzzleObj)
     return <Puzzle p={p}/> 
-  } catch (e) {
+
+  }catch (e) {
     console.log("execept" + e)
     return <div>Input error</div>
   }
@@ -95,10 +88,13 @@ let PlayPuzzle = () => {
 }
 
 
+
+
  export default function Main({}) {
 
   let [puzzles, setPuzzles] = useState([])
   
+  let [userMode, setUserMode] = useState(MODE)
   let [categories, setCategories] = useState(null); 
 
   let [mode, setMode ] = useState("home")
@@ -129,15 +125,15 @@ let PlayPuzzle = () => {
 
  
     if (mode == "home"){
-      return <HomePage startGeneration={startGeneration} user={user} setUser={setUser}/> 
+      return <HomePage startGeneration={startGeneration} user={user} setUser={setUser} mode={userMode} setMode={setUserMode}/> 
     }
     else if (mode == "createPuzzle") {
       return <div>
-      <CategoryInput startEvolve={startEvolve} user={user}/> 
+      <CategoryInput startEvolve={startEvolve} user={user} mode={userMode}/> 
     </div>
     }else{
       return <div>
-        <EvolveManager categories={categories} user={user}/>
+        <EvolveManager categories={categories} user={user} mode={userMode}/>
       </div>
     }
 }
