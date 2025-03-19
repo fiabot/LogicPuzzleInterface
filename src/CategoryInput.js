@@ -4,6 +4,7 @@ import { getSampleCategories, getScenarios } from "./API/GetFromApi"
 import "./AuthoringStyle.css"
 import EditTemplate from "./EditTemplate"
 import EditBrainstorm from "./EditBrainstorm"
+import Collapseable from "./Collapseable"
 
 
 let CategoryMaker = ({categories, setCategories, index, numEntities, can_save = false, user=null}) => {
@@ -172,7 +173,29 @@ export default PuzzleMaker = ({startEvolve, user, mode, scenario, setScenario, n
             return <button className="smallButton" key={idx}  onClick={()=>setCategories([...categories, cat])} >{cat.name}</button>
             })
 
-    
+    let sampleCategories = <div>
+
+            <h1>Pick a Scenario</h1>
+                <div className="categoryTemplate">
+                    {scenarioButton}
+                </div>
+
+            <h1>Suggested Categories</h1>
+                <div className="categoryTemplate">
+                    {suggestedButton}
+                </div>
+            
+                <h1>Other Categories</h1>
+                <div className="categoryTemplate">
+                    {otherButton}
+                </div>
+        </div>
+
+    let editGrammar = <div>
+
+            <EditTemplate categories={categories} user={user}/>
+            <EditBrainstorm categories={categories} user={user} />  
+    </div>
 
     return <div className="puzzleView">
 
@@ -202,8 +225,21 @@ export default PuzzleMaker = ({startEvolve, user, mode, scenario, setScenario, n
             </div>
 
 
-  
+            <div>
             <button className="mediumButton" onClick={()=>add_scen(user, name, scenario, categories)}>Save Scenario</button>
+            <button className="mediumButton" onClick={()=>setCategories([...categories, {name:"Name", entities:[], is_numeric:false, inc:1}])}>Add Custom category</button>
+            <button className="mediumButton" onClick={()=>setCategories(
+                        categories.slice(0, categories.length -1)
+                    )}>Remove Last Category</button>
+                 
+
+              
+
+                
+
+                </div>
+  
+           
 
 
 
@@ -219,38 +255,11 @@ export default PuzzleMaker = ({startEvolve, user, mode, scenario, setScenario, n
     <div className="puzzleViewRight">
         <div className="authoringView">
 
-            <h1>Pick a Scenario</h1>
-                <div className="categoryTemplate">
-                    {scenarioButton}
-                </div>
-
-            <h1>Suggested Categories</h1>
-                <div className="categoryTemplate">
-                    {suggestedButton}
-                </div>
-            
-                <h1>Other Categories</h1>
-                <div className="categoryTemplate">
-                    {otherButton}
-                </div>
-
-                <div><button className="mediumButton" onClick={()=>setCategories([...categories, {name:"Name", entities:[], is_numeric:false, inc:1}])}>Add Custom category</button>
-            <button className="mediumButton" onClick={()=>setCategories(
-                        categories.slice(0, categories.length -1)
-                    )}>Remove Last Category</button>
-                 
-
-              
+                <Collapseable content={sampleCategories} title="Scenarios" showByDefault={true}/> 
+                <Collapseable content={editGrammar} title="Edit Grammar and Ideas" showByDefault={mode == "serious"}/> 
 
                 
 
-                </div>
-
-                
-
-               
-                <EditTemplate categories={categories} user={user}/>
-                <EditBrainstorm categories={categories} user={user} />  
             </div>
 
     </div> 

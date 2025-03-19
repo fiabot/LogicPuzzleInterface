@@ -239,6 +239,17 @@
     visibility: visible;
   }
 
+  .collapseButton {
+    width: 100%;
+    text-align: left;
+    background-color: #A07178;
+    /* color of the tooltip text */
+    color: white;
+    font-size: x-large; 
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
 
 
 
