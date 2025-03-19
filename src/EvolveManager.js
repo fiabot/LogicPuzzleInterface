@@ -30,7 +30,7 @@ let archivePuzzles =(oldPuzzles, newPuzzles) => {
 
 }
 
-export default EvolveManager = ({categories, user, mode = "mixed"}) => {
+export default EvolveManager = ({categories, user, scenario, name, mode = "mixed"}) => {
 
     let [puzzles, setPuzzles] = useState([]); 
     let [archive, setArchive] = useState([]); 
@@ -55,7 +55,7 @@ export default EvolveManager = ({categories, user, mode = "mixed"}) => {
             }
         }
         if (id == -1) {
-            data = await  startIterEvolve(categories, user);
+            data = await  startIterEvolve(categories, user,name, scenario);
             setPuzzles(puzzles.concat(data["puzzles"]))
             setId(data["id"])
         }else{

@@ -35,10 +35,7 @@ export default FinishButtons = ({ giveUp, isCorrect, clearPuzzle, puzzle, finish
         <br/> 
         <button onClick={clearPuzzle}>Clear Solution</button>
         <br/> 
-        <button onClick={giveUp}>Exit to Survey</button>
-       
-        <br/> 
-
+      
     </div>)
         let resetButtons = () => {
             setShowPopup(false)

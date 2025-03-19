@@ -15,6 +15,7 @@ import {PuzzleModel,createPuzzle} from './src/puzzleModel';
 import lzString from  "lz-string"
 import EvolveManager from './src/EvolveManager';
 import EditPuzzle from './src/EditPuzzle';
+import { setRef } from '@mui/material';
 
 
 let MODE = "mixed"
@@ -96,6 +97,8 @@ let PlayPuzzle = () => {
   
   let [userMode, setUserMode] = useState(MODE)
   let [categories, setCategories] = useState(null); 
+  let [scenario, setScenario] = useState("")
+  let [name, setName] = useState("")
 
   let [mode, setMode ] = useState("home")
 
@@ -129,11 +132,11 @@ let PlayPuzzle = () => {
     }
     else if (mode == "createPuzzle") {
       return <div>
-      <CategoryInput startEvolve={startEvolve} user={user} mode={userMode}/> 
+      <CategoryInput startEvolve={startEvolve} user={user} mode={userMode} scenario={scenario} setScenario={setScenario} name={name} setName={setName}/> 
     </div>
     }else{
       return <div>
-        <EvolveManager categories={categories} user={user} mode={userMode}/>
+        <EvolveManager categories={categories} user={user} mode={userMode} name={name} scenario={scenario}/>
       </div>
     }
 }
@@ -145,3 +148,4 @@ let PlayPuzzle = () => {
 
 
 
+setRef

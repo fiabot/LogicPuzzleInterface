@@ -1,4 +1,4 @@
-import {api, EVOLVE_URL, ADD_ACCOUNT_URL, LIKE_PUZZLE, ITER_EVOLVE, ADD_GRAMMAR_RULE, ADD_CATEGORY, GET_PUBLIC_KEY, ADD_BRAINSTORM, REMOVE_PUZZLE, UPDATE_PUZZLE} from './config' 
+import {api, EVOLVE_URL, ADD_ACCOUNT_URL, LIKE_PUZZLE, ITER_EVOLVE, ADD_GRAMMAR_RULE, ADD_CATEGORY, GET_PUBLIC_KEY, ADD_BRAINSTORM, REMOVE_PUZZLE, UPDATE_PUZZLE, ADD_SCEN} from './config' 
 
 
 let postEvolution = async(categories, gens = 100, popsize = 50) => {
@@ -10,8 +10,16 @@ let postEvolution = async(categories, gens = 100, popsize = 50) => {
 }
 
 
-let startIterEvolve = async(categories, user,  gens = 10, popsize = 100) => {
+let startIterEvolve = async(categories, user, name =null, scenario =null,  gens = 10, popsize = 100) => {
     request = {"puzzle": {"categories": categories}, "gens":gens, "pop_size": popsize, "user": user}
+
+    if (name) {
+        request["name"] = name
+    }
+
+    if (scenario){
+        request["scenario"] = scenario
+    }
 
     response = await api.post(ITER_EVOLVE, request)
 
@@ -97,6 +105,23 @@ let update_puzzle = async(key, puzzle, user) => {
     return response 
 }
 
+let add_cat = async (cat, user) => {
+    request = {"user": user, "category": cat}
+    response = await api.post(ADD_CATEGORY, request)
+    return response 
+
+
+
+}
+
+
+let add_scen = async (user, name, scen, cats) => {
+    request = {"user": user, "name": name, "scenario":scen, categories: cats}
+    response = await api.post(ADD_SCEN, request)
+    return response 
+
+}
+
 let add_is = async (cat1, cat2, template, user) => {
     request = {"user": user, "cat1": cat1, "cat2": cat2, "template": template, type:"is"}
     response = await api.post(ADD_GRAMMAR_RULE, request)
@@ -125,12 +150,7 @@ let add_or  = async (cat1, cat2, is_cat,  template, user) => {
 
 }
 
-let add_cat = async (cat, user) => {
-    request = {"user": user, "category": cat}
-    response = await api.post(ADD_CATEGORY, request)
-    return response 
 
-}
 
 let add_is_brain = async (cat1, cat2, template, user) => {
     request = {"user": user, "cat1": cat1, "cat2": cat2, "template": template, type:"is"}
@@ -162,4 +182,4 @@ let add_or_brain  = async (cat1, cat2, is_cat,  template, user) => {
 
 
 
-export {postEvolution, add_account, like_puzzle, startIterEvolve, continueIterEvolve, add_is, add_not, add_before, add_or, add_cat, login,add_before_brain, add_is_brain, add_or_brain, add_not_brain, remove_puzzle, update_puzzle}
+export {postEvolution, add_account, like_puzzle, startIterEvolve, continueIterEvolve, add_is, add_not, add_before, add_or, add_cat, login,add_before_brain, add_is_brain, add_or_brain, add_not_brain, remove_puzzle, update_puzzle, add_scen}
