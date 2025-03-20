@@ -93,11 +93,16 @@ export default HomePage = ({startGeneration, user, setUser, mode, setMode}) => {
     }else{
 
         return <div className='puzzlesView'>
+            
             <h1>Welcome {publicKey}</h1>
             <h2>Start Generating</h2>
             <button onClick={startGeneration}>Start</button>
             <h2>View Liked Puzzles</h2>
+        
+            <div className="body">
             <PlayablePuzzleList puzzles={puzzles} user={user}  setPuzzles={setPuzzles} r={fetch}  appMode={mode}/>
+            </div>
+           
         </div>
     }
     

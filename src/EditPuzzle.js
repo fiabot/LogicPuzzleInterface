@@ -59,7 +59,7 @@ let EditNarratives = ({narratives, setNarratives, grammar, user}) => {
     
 }
 
-export default EditPuzzle = ({puzzleData, r, user}) => {
+export default EditPuzzle = ({puzzleData, setPlayable, r, user}) => {
 
     let [key, setKey] = useState("key" in puzzleData? puzzleData["key"]: null)
 
@@ -70,7 +70,6 @@ export default EditPuzzle = ({puzzleData, r, user}) => {
     let [scenario, setScenario] = useState(puzzle.scenarioText)
     let [title, setTitle] = useState(puzzle.title)
 
-    let [playable, setPlayable] = useState(<div>Loading</div>)
     let [editNarrative, setEditNarrative] = useState(false)
     let [narratives, setNarratives] = useState("narratives" in puzzleData? puzzleData["narratives"] :  Array(puzzleData.hints.length).join(".").split("."))
 
@@ -123,11 +122,8 @@ export default EditPuzzle = ({puzzleData, r, user}) => {
     }
 
     useEffect(()=>{
-        p = puzzle 
-        p.hints = hints 
-        p.scenarioText = scenario
-        p.title = title 
-        setPlayable(<Puzzle className="playable" p={p}/>)
+        let newPuzzle = getNewPuzzle()
+        setPlayable(newPuzzle)
     }, [hints, scenario, title, narratives])
     let editHint =(i,newHint) => {
         let newHints = [...hints]
@@ -152,7 +148,7 @@ export default EditPuzzle = ({puzzleData, r, user}) => {
 
 
     return <div className="editor">
-    <button onClick={r}>Return</button>
+    {r!= null? <button onClick={r}>Return</button>: ""}
     <button onClick={() => setEditNarrative(true)}>Edit Narrative</button>
 
     <h1> Editing Puzzle</h1>
@@ -171,7 +167,6 @@ export default EditPuzzle = ({puzzleData, r, user}) => {
         <button onClick={likeButton}>Save as New Puzzle</button>
     </div>
 
-    {playable}
 </div>
 
 }

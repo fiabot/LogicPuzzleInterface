@@ -32,9 +32,9 @@ export default FinishButtons = ({ giveUp, isCorrect, clearPuzzle, puzzle, finish
     
     let buttons = (<div>
         <button onClick = {checkSolution}> Check my Solution</button>
-        <br/> 
+   
         <button onClick={clearPuzzle}>Clear Solution</button>
-        <br/> 
+ 
       
     </div>)
         let resetButtons = () => {
