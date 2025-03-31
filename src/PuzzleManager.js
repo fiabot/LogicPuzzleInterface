@@ -20,7 +20,7 @@ function createPuzzle(data) {
     let categories = []
     for (cat in data.categories) {
         cat = data.categories[cat]
-        categories.push(new Category(cat.name, cat.entities))
+        categories.push(new Category(cat.name, cat.entities, cat.is_numeric))
     }
 
     return new PuzzleModel(categories, data.hints, data.solution, data.id)

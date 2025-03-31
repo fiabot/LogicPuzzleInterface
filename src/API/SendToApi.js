@@ -129,7 +129,6 @@ let add_cat = async (cat, user) => {
     request = {"user": user, "category": cat}
     response = await api.post(ADD_CATEGORY, request)
     return response 
-
 }
 
 let add_is_brain = async (cat1, cat2, template, user) => {

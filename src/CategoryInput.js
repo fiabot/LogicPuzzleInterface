@@ -27,13 +27,12 @@ let CategoryMaker = ({categories, setCategories, index, numEntities, can_save = 
 
     useEffect(() =>{
         setCategories(newCategories)
-    }, [name, list,is_numeric])
+    }, [name, list, is_numeric])
 
 
     let save_categories = () => {
         add_cat(categories[index], user)
         can_save = false 
-
     }
   
 
@@ -94,9 +93,6 @@ export default PuzzleMaker = ({startEvolve, user, mode}) =>{
     let [templates, setTemplates] = useState(<div>Loading</div>)
     let [tempCats, setTempCats] = useState([])
     let [numEmpty, setNumEmpy] = useState([0])
-
-    console.log(mode)
-
 
     let categoryCreators = categories.map((cat, idx) => {
         return <CategoryMaker key={idx} categories={categories} setCategories={setCategories} index ={idx} numEntities={numEntites} starterName="name" can_save user={user}/> 

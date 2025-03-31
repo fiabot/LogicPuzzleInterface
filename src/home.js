@@ -39,6 +39,8 @@ export default HomePage = ({startGeneration, user, setUser, mode, setMode}) => {
             (p) =>{
 
                 if (p != "LOGIN" && p != null){
+                    console.log("fetched puzzles...")
+                    console.log(p)
                     setPuzzles(p)
                 }
          
