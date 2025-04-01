@@ -186,7 +186,7 @@ export default Puzzle =({p, setFilter})=>{
 
 
     return (<div className="puzzleArea">
-        <div className="puzzleLeft">
+        <div className="puzzleRight">
             <div className="puzzleGrid">
                 {displayGrid}
             </div>

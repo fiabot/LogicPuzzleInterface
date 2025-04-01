@@ -16,7 +16,7 @@
 .authoringView{
     text-align: left;
     font-family: "Times New Roman", Times, serif;
-    height: 100%;
+    height: inherit;
 }
 
 .authoringView h1{
@@ -250,6 +250,34 @@
     margin-bottom: 10px;
   }
 
+
+  .personaArea{
+    width: 100%;
+    height: inherit;
+    display: grid; 
+    grid-template-columns: 1fr 1fr 1fr; 
+    grid-gap: 20px; 
+
+  }
+
+  .persona{
+    width: 100%;
+  
+  }
+
+  .persona .puzzleListElement{
+    height: 400px;
+  }
+
+
+  .filterView{
+    width: 100%;
+    height: inherit;
+    display: grid; 
+    grid-template-columns: 4fr 3fr; 
+    grid-gap: 20px; 
+
+  }
 
 
 

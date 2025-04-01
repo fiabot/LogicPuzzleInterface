@@ -1,6 +1,7 @@
 import { startIterEvolve, continueIterEvolve } from "./API/SendToApi"
 import { useState, useEffect } from "react"
 import ViewPuzzles from "./ViewPuzzles";
+import "./ViewPuzzlesStyle.css"; 
 
 
 let archivePuzzles =(oldPuzzles, newPuzzles) => {
@@ -75,8 +76,8 @@ export default EvolveManager = ({categories, user, scenario, name, mode = "mixed
     }
 
 
-    return <div>
-        <div>
+    return <div className="puzzlesView">
+        <div className="header">
 
        
         <h1>Generating New Puzzles</h1>
@@ -84,11 +85,11 @@ export default EvolveManager = ({categories, user, scenario, name, mode = "mixed
         <button onClick={()=> setShowArchive(!showArchive)}>{showArchive? "Show Best": "Show All"}</button>
         </div>
 
-        <div className="body">
+
 
        
         <ViewPuzzles puzzles={showArchive? puzzles.concat(archive): puzzles} user={user} setPuzzles={setPuzzles} mode={mode}/> 
-        </div>
+ 
     </div>
 
 

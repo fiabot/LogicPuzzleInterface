@@ -7,16 +7,20 @@
     overflow-y: auto;
     justify-content: center;
     width: 100%;
-    height:100%; 
+    height:80%; 
     position: relative;
 }
 
 .selectHeader{
-    height: 20%;
+    height: 20%
 }
 
+.header {
+    height: 20%;
+    min-width:100%;
+}
 .body {
-    height: 75%;
+    height: 100%;
     overflow: auto;
 }
 
@@ -53,7 +57,7 @@
     background-color: #E9D0C4;
     overflow: auto;
     scrollbar-color: #776274 #A07178;
-    height: 80%; 
+    height: 100%; 
     width: 100%;
 }
 
@@ -63,10 +67,17 @@
     border-radius: 5px;
     border: #A07178;
     margin: 10px;
+   
     
 
     list-style-type: none;
-    padding: 20px;
+    padding: 20px;    
+    overflow-y: auto;
+    overflow-x: hidden; 
+    overflow-wrap: break-word;
+    hyphens: manual;
+
+
     
 }
 
@@ -106,5 +117,9 @@
 }
 
 .hintList {
-    width: 100%;
+    width: inherit; 
+}
+
+.cropped {
+    height: 900px;
 }

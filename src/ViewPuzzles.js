@@ -15,6 +15,8 @@ import 'reactjs-popup/dist/index.css';
 import { like_puzzle } from './API/SendToApi';
 import PlayablePuzzleList from './PlayablePuzzleList';
 import { hasHints } from './utils';
+import Personas from './Personas';
+import Collapseable from "./Collapseable" 
 
 
 let CreateHintFilter = ({filter, setFilter, categories}) => {
@@ -240,8 +242,8 @@ export default ViewPuzzles = ({puzzles, user, setPuzzles, mode}) => {
     let puzzleList = filterBySolution(filter, hasHints(hintFilters, puzzles)).filter((puzzle) => (puzzle.diff >= diffRange[0] && puzzle.diff <= diffRange[1]) && (puzzle.hints.length >= hintRange[0] && puzzle.hints.length <= hintRange[1]))
     
 
-    return <div className='puzzleView'>
-        {mode == "serious" || mode == "mixed"? <div className='puzzleViewLeft'>
+    let viewAll = <div className='filterView'>
+        <div>
             <h1>Filter</h1>
 
             <h2>Filter Hints</h2>
@@ -277,16 +279,31 @@ export default ViewPuzzles = ({puzzles, user, setPuzzles, mode}) => {
                     />
                 </Box>
             </div>
-            {puzzles.length > 0 ? <PuzzleFilter p={createPuzzle(puzzles[0])} setFilter={setFilter}/>  : <div> Loading</div>}
+            {puzzles.length > 0 ? <PuzzleFilter className="playable" p={createPuzzle(puzzles[0])} setFilter={setFilter}/>  : <div> Loading</div>}
             
 
-        </div>: ""}
+        </div>
 
-        <div className='puzzleViewRight'>
+        <div className='cropped'>
             <h1>Puzzles</h1>
             <PlayablePuzzleList puzzles={puzzleList} user={user} setPuzzles={setPuzzles} showMutants={mode == "casual" || mode == "mixed"} appMode={mode}/> 
 
         </div>
     </div>
+
+    let personas = <Personas puzzles={puzzleList} user={user} appMode={mode} />
+
+    if (mode == "serious"){
+        return viewAll
+    }else if (mode == "casual"){
+        return personas
+    }else{
+        return <div className='body'>
+           
+            <Collapseable title={"Evaluators Recommendations"} content={personas}  /> 
+            <Collapseable title={"View All Puzzles"} content={viewAll} showByDefault={false} />
+            
+        </div>
+    }
 
 }
