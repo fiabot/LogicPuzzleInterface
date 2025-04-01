@@ -204,28 +204,39 @@ const chooseFromAvailableMoves = (available_moves) => {
             }
         }
     }
+    return best_move
 }
 
 const showNextMove = async (puzzleDesc, stateGrid) => {
     let available_moves_info = await getAvailableMoves(puzzleDesc, stateGridToArray(puzzleDesc, stateGrid));
     let chosen_move = available_moves_info["available_moves"][0]
+    
     if (!available_moves_info["is_valid"]) {
     }
     else {
-        chosen_move = chooseFromAvailableMoves(available_moves);
+        chosen_move = chooseFromAvailableMoves(available_moves_info["available_moves"]);
         result_grid = chosen_move["result"]["curr_grid"];
-        setSuggestedGrid(result_grid);
+        setSuggestedGrid(puzzleDesc, stateGrid, result_grid);
     }
     if (result == null) {
         alert("Unable to retrieve suggested move")
     }
 }
 
-const setSuggestedGrid = (suggestedGrid) => {
-    for (const [r, row] of suggestedGrid) {
-        for (const [c, col] of row) {
-            let key = row + "," + col;
-            // Make displaygrid its own file; import in F's changes
+const setSuggestedGrid = (puzzleDesc, currGrid, suggestedGrid) => {
+    for (const [R, leftCat] of puzzleDesc.topBottom.entries()) {
+        for (const [C, topCat] of puzzleDesc.leftRight.entries()) {
+            let key = topCat.name + ":" + leftCat.name
+            if (suggestedGrid[key]) {
+                let suggestedSubGrid = suggestedGrid[key]
+                for (const [i, cellrow] of suggestedSubGrid.entries()) {
+                    for (const [j, cell] of cellrow.entries()) {
+                        if (cell != currGrid[R][C][i][j].state) {
+                            currGrid[R][C][i][j].setState(cell)
+                        }
+                    } 
+                }
+            }
         }
     }
 }
