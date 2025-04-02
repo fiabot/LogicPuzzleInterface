@@ -1,6 +1,6 @@
 import { useEffect, useState} from "react"
 import { get_is_brainstorm, get_not_brainstorm, get_or_brainstorm, get_before_brainstorm } from "./API/GetFromApi"
-import { add_is_brain, add_not_brain, add_or_brain, add_before_brain } from "./API/SendToApi"
+import { add_is_brain, add_not_brain, add_or_brain, add_before_brain, add_click } from "./API/SendToApi"
 
 
 let  get_ideas = (current, currentEx, setCurrentEx, create_example)  => {
@@ -36,7 +36,7 @@ let  get_ideas = (current, currentEx, setCurrentEx, create_example)  => {
 }
 
 
-let EditIs = ({ categories, user, type = "is"}) => {
+let EditIs = ({ categories, user, type = "is", sessionId, sessionStart}) => {
     let [cat1, setCat1] = useState(null)
     let [cat2, setCat2] = useState(null)
     let [current, setCurrent] = useState(null) 
@@ -72,8 +72,11 @@ let EditIs = ({ categories, user, type = "is"}) => {
 
         }
 
-        let catNames = categories.map((value, idx) => {return  <option key={idx} value={value.name}>{value.name}</option>})
-        catNames =  [<option key={-1} value={null}>Select....</option>].concat(catNames)
+        let cat1Names = categories.filter((c) => c.name != cat2).map((value, idx) => {return  <option key={idx} value={value.name}>{value.name}</option>})
+        cat1Names =  [<option key={-1} value={null}>Select....</option>].concat(cat1Names)
+
+        let cat2Names = categories.filter((c) => c.name != cat1).map((value, idx) => {return  <option key={idx} value={value.name}>{value.name}</option>})
+        cat2Names =  [<option key={-1} value={null}>Select....</option>].concat(cat2Names)
       
 
 
@@ -92,6 +95,8 @@ let EditIs = ({ categories, user, type = "is"}) => {
         }
 
         let submit = async () => {
+            add_click(sessionId, "add brainstorm", sessionStart)
+
             if (type == "is"){
                 await add_is_brain(cat1, cat2, template, user)
             }else{
@@ -123,15 +128,15 @@ let EditIs = ({ categories, user, type = "is"}) => {
  
         <h2>Select categories</h2>
         <div>
-            <p>Select category 1: <select className="form-control" value={cat1} onChange={(e) => changeCat(1, e.target.value)}>{catNames}</select></p>
-            <p>Select category 2: <select className="form-control" value={cat2} onChange={(e) => changeCat(2, e.target.value)}>{catNames}</select></p>
+            <p>Select category 1: <select className="form-control" value={cat1} onChange={(e) => changeCat(1, e.target.value)}>{cat1Names}</select></p>
+            <p>Select category 2: <select className="form-control" value={cat2} onChange={(e) => changeCat(2, e.target.value)}>{cat2Names}</select></p>
         </div>
         <h2>Add Brainstorm</h2>
         {edit}
     </div>
 }
 
-let EditOr = ({categories, user}) => {
+let EditOr = ({categories, user, sessionId, sessionStart}) => {
     let [cat1, setCat1] = useState(null)
     let [cat2, setCat2] = useState(null)
     let [isCat, setIsCat] = useState(null)
@@ -174,10 +179,13 @@ let EditOr = ({categories, user}) => {
         let catNames = categories.map((value, idx) => {return  <option key={idx} value={value.name}>{value.name}</option>})
         catNames =  [<option key={-1} value={null}>Select....</option>].concat(catNames)
 
+        let isNames = categories.filter((c) => c.name != cat1 && c.name!= cat2  ).map((value, idx) => {return  <option key={idx} value={value.name}>{value.name}</option>})
+        isNames =  [<option key={-1} value={null}>Select....</option>].concat(catNames)
+
         create = <div>
             <p>Select category 1: <select value={cat1} onChange={(e) => changeCat(1, e.target.value)}>{catNames}</select></p>
             <p>Select category 2: <select  value={cat2} onChange={(e) => changeCat(2, e.target.value)}>{catNames}</select></p>
-            <p>Select is category: <select value={isCat} onChange={(e) => changeCat(3, e.target.value)}>{catNames}</select></p>
+            <p>Select is category: <select value={isCat} onChange={(e) => changeCat(3, e.target.value)}>{isNames}</select></p>
         </div>
       
 
@@ -203,6 +211,7 @@ let EditOr = ({categories, user}) => {
         }
 
         let submit = async () => {
+            add_click(sessionId, "add brainstorm", sessionStart)
             await add_or_brain(cat1, cat2, isCat, template, user)
             setCat1(null)
             setCat2(null)
@@ -237,7 +246,7 @@ let EditOr = ({categories, user}) => {
     </div>
 }
 
-let EditBefore = ({categories, user}) => {
+let EditBefore = ({categories, user, sessionId, sessionStart}) => {
     let [cat1, setCat1] = useState(null)
     let [cat2, setCat2] = useState(null)
     let [numCat, setNumCat] = useState(null)
@@ -325,7 +334,7 @@ let EditBefore = ({categories, user}) => {
       
 
         let submit = async (timed=true) => {
-
+            add_click(sessionId, "add brainstorm", sessionStart)
             if (timed){
                 await add_before_brain(cat1, cat2, numCat, specifiedTemplate, true, user)
             } else{
@@ -378,7 +387,7 @@ let EditBefore = ({categories, user}) => {
     </div>
 }
 
-export default EditTemplates = ({categories, user}) => {
+export default EditTemplates = ({categories, user, sessionId, sessionStart}) => {
 
 
     let [empty, setEmpty] = useState({})
@@ -390,13 +399,13 @@ export default EditTemplates = ({categories, user}) => {
     let content = <div>Select type</div>
     
     if (editType == "is"){
-        content = <EditIs  categories={categories} user={user}/>
+        content = <EditIs  categories={categories} user={user} sessionId={sessionId} sessionStart={sessionStart}/>
     }else if (editType == "not"){
-        content = <EditIs  categories={categories} user={user} type ="not"/>
+        content = <EditIs  categories={categories} user={user} type ="not" sessionId={sessionId} sessionStart={sessionStart}/>
     }else if (editType == "or"){
-        content = <EditOr categories={categories} user={user} />
+        content = <EditOr categories={categories} user={user} sessionId={sessionId} sessionStart={sessionStart}/>
     }else if (editType == "before"){
-        content = <EditBefore categories={categories} user={user} />
+        content = <EditBefore categories={categories} user={user} sessionId={sessionId} sessionStart={sessionStart}/>
     }
 
 

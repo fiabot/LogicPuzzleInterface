@@ -31,7 +31,7 @@ let archivePuzzles =(oldPuzzles, newPuzzles) => {
 
 }
 
-export default EvolveManager = ({categories, user, scenario, name, mode = "mixed"}) => {
+export default EvolveManager = ({categories, user, scenario, name, sessionId, sessionStart, mode = "mixed"}) => {
 
     let [puzzles, setPuzzles] = useState([]); 
     let [archive, setArchive] = useState([]); 
@@ -88,7 +88,7 @@ export default EvolveManager = ({categories, user, scenario, name, mode = "mixed
 
 
        
-        <ViewPuzzles puzzles={showArchive? puzzles.concat(archive): puzzles} user={user} setPuzzles={setPuzzles} mode={mode}/> 
+        <ViewPuzzles puzzles={showArchive? puzzles.concat(archive): puzzles} user={user} setPuzzles={setPuzzles} mode={mode} sessionId={sessionId} sessionStart={sessionStart}/> 
  
     </div>
 

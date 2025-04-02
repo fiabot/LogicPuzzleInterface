@@ -5,22 +5,30 @@ import "./AuthoringStyle.css"
 import { update_puzzle, like_puzzle } from "./API/SendToApi"
 import "./narrative.css";
 import { getBrainStormIdeas, getClueLogic } from "./utils"
+import { add_click } from "./API/SendToApi"
 
 
-let GetClues = ({brainstorms}) => {
-        let [idea, setIdea] = useState(  brainstorms[Math.floor(Math.random() * brainstorms.length)])
+let GetClues = ({brainstorms, setNarrative, sessionStart, sessionId}) => {
+        let [idea, setIdea] = useState("")
         let newIdea = () => {
+            add_click(sessionId, "get brainstorm", sessionStart)
             setIdea(brainstorms[Math.floor(Math.random() * brainstorms.length)])
+        }
+
+        let setAsNar= () => {
+            add_click(sessionId, "copy narrative", sessionStart)
+            setNarrative(idea)
         }
         return <div>
             <h2>Get Ideas: {brainstorms.length} available</h2>
             <p>{brainstorms.length == 0? "No Ideas available": idea}</p>
             <button disabled={brainstorms.length == 0} onClick={newIdea}>New Idea</button>
+            <button disabled={brainstorms.length == 0 && idea != ""} onClick={setAsNar}>Set as narrative</button>
 
         </div>
 }
 
-let EditNarratives = ({narratives, setNarratives, grammar, user}) => {
+let EditNarratives = ({narratives, setNarratives, grammar, user, sessionId, sessionStart}) => {
 
     let [content, setContent] = useState(<div>Loading</div>)
     let setNarrative = (newNarrative, idx) => {
@@ -37,9 +45,9 @@ let EditNarratives = ({narratives, setNarratives, grammar, user}) => {
             <h1>Clue: {idx + 1}</h1>
             <h2>Editing Clue with base logic:</h2>
             <p>{clueLogic}</p>
-            <GetClues brainstorms={brainstorms}/>
+            <GetClues brainstorms={brainstorms} sessionId={sessionId} sessionStart={sessionStart}/>
             <h2>Write Narrative</h2> 
-            <textarea className={"scenarioInput"} value={narratives[idx]} onChange={(e)=> setNarrative(e.target.value, idx)} />
+            <textarea className={"scenarioInput"} value={narratives[idx]} onChange={(e)=> setNarrative(e.target.value, idx)} onClick={() => add_click(sessionId, "edit narrative", sessionStart)} />
 
         </div>
 
@@ -59,7 +67,7 @@ let EditNarratives = ({narratives, setNarratives, grammar, user}) => {
     
 }
 
-export default EditPuzzle = ({puzzleData, setPlayable, r, user}) => {
+export default EditPuzzle = ({puzzleData, setPlayable, r, user, sessionId, sessionStart}) => {
 
     let [key, setKey] = useState("key" in puzzleData? puzzleData["key"]: null)
 
@@ -133,7 +141,7 @@ export default EditPuzzle = ({puzzleData, setPlayable, r, user}) => {
     let content = ""
     if (!editNarrative){
         let editHints = hints.map((hint, i) => {
-            return <li  key={i}><input value={hints[i]} onChange={(e) => editHint(i, e.target.value)}/> <div class="tooltip">See Logic
+            return <li  key={i}><input value={hints[i]} onClick={() => add_click(sessionId, "edit hint", sessionStart)} onChange={(e) => editHint(i, e.target.value)}/> <div class="tooltip">See Logic
             <span class="tooltiptext">{getClueLogic(puzzleData.hint_grammar[i])}</span>
           </div> </li>})
         content  = <ol className="hintEditor">
@@ -142,7 +150,7 @@ export default EditPuzzle = ({puzzleData, setPlayable, r, user}) => {
 
          
     }else{
-        content= <EditNarratives narratives={narratives} setNarratives={setNarratives} grammar={puzzleData.hint_grammar} user={user}/> 
+        content= <EditNarratives narratives={narratives} setNarratives={setNarratives} grammar={puzzleData.hint_grammar} user={user} sessionStart={sessionStart} sessionId={sessionId}/> 
         
     }
 
@@ -157,7 +165,7 @@ export default EditPuzzle = ({puzzleData, setPlayable, r, user}) => {
     <input className={"nameInput"} value={title} onChange={(e)=> setTitle(e.target.value)} />
 
     <h2>Edit Scenario Text</h2>
-    <textarea className={"scenarioInput"} value={scenario} onChange={(e)=> setScenario(e.target.value)} />
+    <textarea className={"scenarioInput"} value={scenario} onClick={() => add_click(sessionId, "edit narrative")} onChange={(e)=> setScenario(e.target.value)} />
 
     <h2>Edit Hints</h2>
     {content}

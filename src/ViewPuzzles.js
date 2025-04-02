@@ -17,6 +17,7 @@ import PlayablePuzzleList from './PlayablePuzzleList';
 import { hasHints } from './utils';
 import Personas from './Personas';
 import Collapseable from "./Collapseable" 
+import { add_click } from './API/SendToApi';
 
 
 let CreateHintFilter = ({filter, setFilter, categories}) => {
@@ -166,7 +167,7 @@ let CreateHintFilter = ({filter, setFilter, categories}) => {
 }
 
 
-let HintFilters = ({filters, setFilters, categories}) => {
+let HintFilters = ({filters, setFilters, categories, sessionId, sessionStart}) => {
 
 
     let manageFilter = (idx) => {
@@ -184,6 +185,7 @@ let HintFilters = ({filters, setFilters, categories}) => {
     let filterManagers = filters.map((f, i) => manageFilter(i)) 
 
     let add_filter = () => {
+        add_click(sessionId, "filter by hint", sessionStart)
         f = [...filters]
         f.push({"is": ["", "", "",""]})
         setFilters(f)
@@ -220,7 +222,7 @@ function filterBySolution(f, puzzles ){
     })
     } 
 
-export default ViewPuzzles = ({puzzles, user, setPuzzles, mode}) => {
+export default ViewPuzzles = ({puzzles, user, setPuzzles, mode, sessionId, sessionStart}) => {
 
     let [diffRange, setDiffRange] =useState([1, 10])
     let [hintRange, setHintRange] = useState([1, 10])
@@ -229,10 +231,12 @@ export default ViewPuzzles = ({puzzles, user, setPuzzles, mode}) => {
 
 
     const handleRangeChange = (event, newValue) => {
+        add_click(sessionId, "filter by difficulty", sessionStart )
         setDiffRange(newValue);
     };
 
     const handleHintRangeChange = (event, newValue) => {
+        add_click(sessionId, "filter by hint size", sessionStart )
         setHintRange(newValue);
     };
 
@@ -247,7 +251,7 @@ export default ViewPuzzles = ({puzzles, user, setPuzzles, mode}) => {
             <h1>Filter</h1>
 
             <h2>Filter Hints</h2>
-            {puzzles.length > 0 ? <HintFilters setFilters={setHintFilters} filters={hintFilters}  categories={createPuzzle(puzzles[0]).categories}/> : ""} 
+            {puzzles.length > 0 ? <HintFilters setFilters={setHintFilters} filters={hintFilters}  categories={createPuzzle(puzzles[0]).categories} sessionId={sessionId} sessionStart={sessionStart}/> : ""} 
 
             <h2>Hint Range</h2>
         
@@ -279,19 +283,19 @@ export default ViewPuzzles = ({puzzles, user, setPuzzles, mode}) => {
                     />
                 </Box>
             </div>
-            {puzzles.length > 0 ? <PuzzleFilter className="playable" p={createPuzzle(puzzles[0])} setFilter={setFilter}/>  : <div> Loading</div>}
+            {puzzles.length > 0 ? <PuzzleFilter className="playable" p={createPuzzle(puzzles[0])} setFilter={setFilter} sessionId={sessionId} sessionStart={sessionStart}/>  : <div> Loading</div>}
             
 
         </div>
 
         <div className='cropped'>
             <h1>Puzzles</h1>
-            <PlayablePuzzleList puzzles={puzzleList} user={user} setPuzzles={setPuzzles} showMutants={mode == "casual" || mode == "mixed"} appMode={mode}/> 
+            <PlayablePuzzleList puzzles={puzzleList} user={user} setPuzzles={setPuzzles} showMutants={mode == "casual" || mode == "mixed"} appMode={mode} sessionId={sessionId} sessionStart={sessionStart}/> 
 
         </div>
     </div>
 
-    let personas = <Personas puzzles={puzzleList} user={user} appMode={mode} />
+    let personas = <Personas puzzles={puzzleList} user={user} appMode={mode} sessionId={sessionId} sessionStart={sessionStart}/>
 
     if (mode == "serious"){
         return viewAll

@@ -103,6 +103,8 @@ let PlayPuzzle = () => {
   let [mode, setMode ] = useState("home")
 
   let [user, setUser] = useState(null) 
+  let [sessionId, setSessionID] = useState(null)
+  let [sessionStart, setSessionStart] = useState(null)
 
   let startGeneration =() =>{
     setMode("createPuzzle")
@@ -128,16 +130,14 @@ let PlayPuzzle = () => {
 
  
     if (mode == "home"){
-      return <HomePage startGeneration={startGeneration} user={user} setUser={setUser} mode={userMode} setMode={setUserMode}/> 
+      return <HomePage startGeneration={startGeneration} user={user} setUser={setUser} mode={userMode} setMode={setUserMode} sessionId={sessionId} setSessionId={setSessionID} sessionStart={sessionStart} setSessionStart={setSessionStart}/> 
     }
     else if (mode == "createPuzzle") {
-      return <div>
-      <CategoryInput startEvolve={startEvolve} user={user} mode={userMode} scenario={scenario} setScenario={setScenario} name={name} setName={setName}/> 
-    </div>
+      return <CategoryInput startEvolve={startEvolve} user={user} mode={userMode} scenario={scenario} setScenario={setScenario} name={name} setName={setName}  sessionStart={sessionStart} sessionId={sessionId}/> 
+  
     }else{
-      return <div>
-        <EvolveManager categories={categories} user={user} mode={userMode} name={name} scenario={scenario}/>
-      </div>
+      return <EvolveManager categories={categories} user={user} mode={userMode} name={name} scenario={scenario} sessionStart={sessionStart} sessionId={sessionId}/>
+     
     }
 }
 

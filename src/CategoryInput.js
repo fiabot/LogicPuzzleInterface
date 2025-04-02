@@ -5,9 +5,10 @@ import "./AuthoringStyle.css"
 import EditTemplate from "./EditTemplate"
 import EditBrainstorm from "./EditBrainstorm"
 import Collapseable from "./Collapseable"
+import { add_click } from "./API/SendToApi"
 
 
-let CategoryMaker = ({categories, setCategories, index, numEntities, can_save = false, user=null}) => {
+let CategoryMaker = ({categories, setCategories, index, numEntities, sessionId, sessionStart, can_save = false, user=null}) => {
 
     let [list, setList] = useState([])
     let [name, setName] = useState(categories[index].name)
@@ -65,7 +66,7 @@ let CategoryMaker = ({categories, setCategories, index, numEntities, can_save = 
     }
     
 
-    let listInput = list.map((element, idx) => <li key={idx}><input value ={element} onChange={e => {
+    let listInput = list.map((element, idx) => <li key={idx}><input value ={element} onClick = {() => add_click(sessionId, "edit entity", sessionStart)}onChange={e => {
         const nextList= list.map((element, i) => {
             if (i === idx) {
               return e.target.value;
@@ -92,7 +93,7 @@ let CategoryMaker = ({categories, setCategories, index, numEntities, can_save = 
 
 
 
-export default PuzzleMaker = ({startEvolve, user, mode, scenario, setScenario, name, setName}) =>{
+export default PuzzleMaker = ({startEvolve, user, mode, scenario, setScenario, name, setName, sessionId, sessionStart}) =>{
     let [categories, setCategories] = useState([]); 
     let [numEntites, setNumEntities] = useState(4); 
     let [templates, setTemplates] = useState(<div>Loading</div>)
@@ -103,10 +104,12 @@ export default PuzzleMaker = ({startEvolve, user, mode, scenario, setScenario, n
     let [suggest, setSuggest] = useState([])
     let [other, setOther] = useState([])
 
+    let [updatedScen, setUpdatedScen] = useState(false)
+
 
 
     let categoryCreators = categories.map((cat, idx) => {
-        return <CategoryMaker key={idx} categories={categories} setCategories={setCategories} index ={idx} numEntities={numEntites} starterName="name" can_save user={user}/> 
+        return <CategoryMaker key={idx} categories={categories} setCategories={setCategories} index ={idx} numEntities={numEntites} starterName="name" can_save user={user} sessionId={sessionId} sessionStart={sessionStart}/> 
     })
 
     let evolvePuzzle=() => {
@@ -132,7 +135,17 @@ export default PuzzleMaker = ({startEvolve, user, mode, scenario, setScenario, n
                     
                     (scens) =>{
                         console.log(scens)
-                 
+                    scens.map((s) => {
+                        let c = s.categories.map((cat) => {
+                            let cat2 = cat
+                            cat2["origin"] = s.origin 
+                            return cat 
+
+                        })
+
+                        s.categories = c 
+                        return s 
+                    })
                     setScens(scens)
                 })}
             fetch()
@@ -141,36 +154,42 @@ export default PuzzleMaker = ({startEvolve, user, mode, scenario, setScenario, n
     
             
         let updateScenario = (s) => {
+
+           
+          
             setScenario(s.scenario)
             setName(s.name)
+            
             setSuggest(s.categories) 
 
             let others = scens.filter((s2) => s2 != s).map((s2) => s2.categories) 
             others = others.flat()
             setOther(others)
+            setUpdatedScen(true)
 
 
         }
       
-
+    console.log(other)
     tempbutton =  tempCats.map((cat, idx) => {
         return <button className="smallButton" key={idx}  onClick={()=>setCategories([...categories, cat])} >{cat.name}</button>
         })
 
 
     scenarioButton = scens.map((s, idx) => {
-        return <button className="smallButton" key={idx}  onClick={() => updateScenario(s)} >{s.name}</button>
+        return <button className={s.origin == "sample"? "smallButton": "userButton"} key={idx}  onClick={() => {updateScenario(s); add_click(sessionId, "select scenario", sessionStart)}} >{s.name}</button>
 
     })
 
-    scenarioButton.push(<button button className="smallButton" key={scens.length}  onClick={() => updateScenario({"name": "custom scenario", "scenario": "Enter scenario text", "categories": []})}>Create New Scenario</button>)
+
+    scenarioButton.push(<button button className="userButton" key={scens.length}  onClick={() => {updateScenario({"name": "custom scenario", "scenario": "Enter scenario text", "categories": []}); add_click(sessionId, "new scenario", sessionStart)}}>Create New Scenario</button>)
 
     suggestedButton =  suggest.map((cat, idx) => {
-        return <button className="smallButton" key={idx}  onClick={()=>setCategories([...categories, cat])} >{cat.name}</button>
+        return <button className={cat.origin == "sample"? "smallButton": "userButton"} key={idx}  onClick={()=>{setCategories([...categories, cat]); cat.origin == "sample"? add_click(sessionId, "add example category", sessionStart): ""}} >{cat.name}</button>
         })
 
     otherButton =  other.map((cat, idx) => {
-            return <button className="smallButton" key={idx}  onClick={()=>setCategories([...categories, cat])} >{cat.name}</button>
+            return <button className={cat.origin == "sample"? "smallButton": "userButton"} key={idx}   onClick={()=>{setCategories([...categories, cat]); cat.origin == "sample"? add_click(sessionId, "add example category", sessionStart): ""}} >{cat.name}</button>
             })
 
     let sampleCategories = <div>
@@ -193,8 +212,8 @@ export default PuzzleMaker = ({startEvolve, user, mode, scenario, setScenario, n
 
     let editGrammar = <div>
 
-            <EditTemplate categories={categories} user={user}/>
-            <EditBrainstorm categories={categories} user={user} />  
+            <EditTemplate categories={categories} user={user} sessionId={sessionId} sessionStart={sessionStart}/>
+            <EditBrainstorm categories={categories} user={user}  sessionId={sessionId} sessionStart={sessionStart}/>  
     </div>
 
     return <div className="puzzleView">
@@ -202,12 +221,12 @@ export default PuzzleMaker = ({startEvolve, user, mode, scenario, setScenario, n
     <div className="puzzleViewLeft">
 
     
-        <div className="authoringView">
+        {updatedScen? <div className="authoringView">
             <h1>Name</h1>
             <input className="categoryInput" value={name} onChange={e => setName(e.target.value)}/>
        
         <h1> Scenario</h1>
-        <textarea className={"scenarioInput"} value={scenario} onChange={(e)=> setScenario(e.target.value)} />
+        <textarea className={"scenarioInput"} value={scenario} onChange={(e)=> setScenario(e.target.value)} onClick={() => add_click(sessionId, "edit narrative", sessionStart)}/>
         
 
             <div>
@@ -227,7 +246,7 @@ export default PuzzleMaker = ({startEvolve, user, mode, scenario, setScenario, n
 
             <div>
             <button className="mediumButton" onClick={()=>add_scen(user, name, scenario, categories)}>Save Scenario</button>
-            <button className="mediumButton" onClick={()=>setCategories([...categories, {name:"Name", entities:[], is_numeric:false, inc:1}])}>Add Custom category</button>
+            <button className="mediumButton" onClick={()=>{setCategories([...categories, {name:"Name", entities:[], is_numeric:false, inc:1}]);add_click(sessionId, "new category", sessionStart)}}>Add Custom category</button>
             <button className="mediumButton" onClick={()=>setCategories(
                         categories.slice(0, categories.length -1)
                     )}>Remove Last Category</button>
@@ -248,7 +267,7 @@ export default PuzzleMaker = ({startEvolve, user, mode, scenario, setScenario, n
      
 
 
-        </div> 
+        </div> : <div>Select Scenario</div>}
 
     </div>
 

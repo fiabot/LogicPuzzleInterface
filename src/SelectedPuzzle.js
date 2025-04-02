@@ -6,9 +6,10 @@ import { useState, useEffect } from "react"
 import { findMutants } from "./utils";
 import { createPuzzle } from "./puzzleModel";
 import Puzzle from "./puzzle";
+import { add_click } from "./API/SendToApi";
 
 
-export default selectedPuzzle = ({puzzle, setPuzzle, user, r, appMode, otherPuzzles = [], reload=null}) => {
+export default selectedPuzzle = ({puzzle, setPuzzle, user, r, appMode, sessionId, sessionStart, otherPuzzles = [], reload=null}) => {
 
     let [mode, setMode] = useState("view")
     let [puzzleToEdit, setPuzzleToEdit] = useState(null)
@@ -125,11 +126,13 @@ export default selectedPuzzle = ({puzzle, setPuzzle, user, r, appMode, otherPuzz
     
 
     let editPuzzle = () => {
-        setContent( <EditPuzzle puzzleData={puzzle} setPlayable={setPuzzle} user={user} r={null}/>)
+        add_click(sessionId, "edit puzzle", sessionStart)
+        setContent( <EditPuzzle puzzleData={puzzle} setPlayable={setPuzzle} user={user} r={null} sessionId={sessionId} sessionStart={sessionStart}/>)
        
     }
 
     let seeMutants = () => {
+        add_click(sessionId, "view similar", sessionStart)
         setContent(<ShowMutants puzzle={puzzle} puzzleList={otherPuzzles}/> )
       
     }

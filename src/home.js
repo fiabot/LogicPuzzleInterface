@@ -1,5 +1,5 @@
 
-import { add_account, login } from "./API/SendToApi"
+import { add_account, login, new_session } from "./API/SendToApi"
 import { getLikedPuzzles } from "./API/GetFromApi"
 import { useEffect, useState } from "react"
 
@@ -8,7 +8,7 @@ import PlayablePuzzleList from "./PlayablePuzzleList";
 let adminPublicKeys = ["Admin 1"]
 
 
-export default HomePage = ({startGeneration, user, setUser, mode, setMode}) => {
+export default HomePage = ({startGeneration, user, setUser, mode, setMode, sessionId, setSessionId, sessionStart, setSessionStart}) => {
     let [puzzles, setPuzzles] = useState([])
     //let puzzles = []
     let [username, setUsername] = useState("")
@@ -28,9 +28,18 @@ export default HomePage = ({startGeneration, user, setUser, mode, setMode}) => {
 
     let log_user_in = async () => {
        result =  await login(username, setUser, setPublicKey, setMode); 
+       
        if (result == null){
             alert("Key Not Regonized, try again")
+       }else{
+        start = new Date()
+        let session = await new_session(username, start.toJSON())
+
+        setSessionStart(start)
+        setSessionId(session)
        }
+
+
     }
 
     async function fetch() { 
@@ -55,7 +64,7 @@ export default HomePage = ({startGeneration, user, setUser, mode, setMode}) => {
     
         return <div  className='puzzlesView'>
             <h1>Enter Private Key</h1>
-            <input value={username} onChange={(e) => setUsername(e.target.value)}></input>
+            <input value={username} onChange={(e) => setUsername(e.target.value)} ></input>
             <button onClick={() => {log_user_in()}}>Login</button>
         </div>
     }else if (adminPublicKeys.includes(publicKey)){
@@ -87,7 +96,7 @@ export default HomePage = ({startGeneration, user, setUser, mode, setMode}) => {
         <h2>Generate puzzles</h2>
         <button onClick={startGeneration}>Start</button>
         <h2>View Liked Puzzles</h2>
-        <PlayablePuzzleList puzzles={puzzles} user={user} setPuzzles={setPuzzles} r={fetch} appMode={mode}/>
+        <PlayablePuzzleList puzzles={puzzles} user={user} setPuzzles={setPuzzles} r={fetch} appMode={mode} sessionId = {sessionId} sessionStart={sessionStart}/>
     </div>
     
     }else{
@@ -102,7 +111,7 @@ export default HomePage = ({startGeneration, user, setUser, mode, setMode}) => {
             
         
             <div className="body">
-            <PlayablePuzzleList puzzles={puzzles} user={user}  setPuzzles={setPuzzles} r={fetch}  appMode={mode}/>
+            <PlayablePuzzleList puzzles={puzzles} user={user}  setPuzzles={setPuzzles} r={fetch}  appMode={mode}  sessionId = {sessionId} sessionStart={sessionStart}/>
             </div>
            
         </div>

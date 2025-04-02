@@ -66,6 +66,19 @@
     
 }
 
+.userButton{
+    background-color:  #a1404f; 
+    
+    color:white; 
+    font-size: medium;
+    height: 30px;
+    border-radius: 15px;
+    border:  #8b2109; 
+    margin: 5px;
+   
+    
+}
+
 .editor{
     background-color: #E9D0C4;
     overflow: auto;
@@ -140,6 +153,11 @@
 
 .smallButton:hover{
     background-color: #4d3f4b;
+      
+}
+
+.userButton:hover{
+    background-color: #4d1f25; 
       
 }
 
@@ -271,7 +289,7 @@
 
 
   .filterView{
-    width: 100%;
+    width: 95%;
     height: inherit;
     display: grid; 
     grid-template-columns: 4fr 3fr; 

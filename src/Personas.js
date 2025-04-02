@@ -1,7 +1,8 @@
 import { useState } from "react"
 import SelectedPuzzle from "./SelectedPuzzle"
+import { add_click } from "./API/SendToApi"
 
-let Persona = ({puzzles, filter, selectFunction, title, description}) => {
+let Persona = ({puzzles, filter, selectFunction, title, description, sessionId, sessionStart}) => {
     if (puzzles.length > 0){
         let sorted = puzzles.slice()
 
@@ -51,12 +52,13 @@ let numberOfHintKinds = (puzzle) => {
 }
 
 
-export default PersonaArea = ({puzzles, user, appMode}) => {
+export default PersonaArea = ({puzzles, user, appMode, sessionId, sessionStart}) => {
 
     let [mode, setMode] = useState("personas")
     let [selected, setSelected] = useState(null)
 
     let selectFun = (puzzle) => {
+        add_click(sessionId, "select recommendation", sessionStart); 
         setMode("selected"); 
         setSelected(puzzle)
     }
@@ -67,23 +69,23 @@ export default PersonaArea = ({puzzles, user, appMode}) => {
  
     let challengeFilter = (a,b ) => {return b.diff - a.diff}
 
-    let challengePersona = <Persona puzzles={puzzles}  filter={challengeFilter} selectFunction={selectFun} title="Logistician" description="This is the hardest puzzle I could find."/> 
+    let challengePersona = <Persona puzzles={puzzles}  filter={challengeFilter} selectFunction={selectFun} title="Logistician" description="This is the hardest puzzle I could find." /> 
 
     let minimalFilter = (a, b) => {
-        if (a.diff != b.diff) {
+        if (a.diff == b.diff) {
             return a.hints.length - b.hints.length 
         }else{
             return a.diff - b.diff
         }
     }
 
-    let minPersona = <Persona puzzles={puzzles}  filter={minimalFilter} selectFunction={selectFun} title="Minimalist" description="This is the simplest puzzle I could find."/> 
+    let minPersona = <Persona puzzles={puzzles}  filter={minimalFilter} selectFunction={selectFun} title="Minimalist" description="This is the simplest puzzle I could find." /> 
 
     let explorerFilter = (a, b) => {
        return numberOfHintKinds(b) - numberOfHintKinds(a)
     }
 
-    let explorerPersona = <Persona puzzles={puzzles}  filter={explorerFilter} selectFunction={selectFun} title="Exploreer" description="This puzzle has the most different kind of hints."/> 
+    let explorerPersona = <Persona puzzles={puzzles}  filter={explorerFilter} selectFunction={selectFun} title="Exploreer" description="This puzzle has the most different kind of hints." /> 
 
 
     if (mode == "personas") {
@@ -93,7 +95,7 @@ export default PersonaArea = ({puzzles, user, appMode}) => {
             {explorerPersona}
         </div>
     }else{
-        return <SelectedPuzzle puzzle={selected} setPuzzle={setSelected} user={user} r={() => setMode("personas")} appMode={appMode} otherPuzzles={puzzles}/> 
+        return <SelectedPuzzle puzzle={selected} setPuzzle={setSelected} user={user} r={() => setMode("personas")} appMode={appMode} otherPuzzles={puzzles} sessionId={sessionId} sessionStart={sessionStart}/> 
     }
 
 

@@ -23,7 +23,8 @@ const GET_BRAINSTORMS = API_URL +'/get_brainstorm'
 const ADD_BRAINSTORM = API_URL +'/add_brainstorm' 
 
 const GET_PUBLIC_KEY = API_URL  + "/get_public_key"
-
+const NEW_SESSION = API_URL + "/new_session"
+const ADD_CLICK = API_URL + "/add_click"
 
 
 const handleRes = (res) => {
@@ -39,5 +40,5 @@ const api = _axios.create( {credentials: false});
 api.interceptors.request.use(handleRes, handleErr);
 api.interceptors.response.use(handleRes, handleErr);
 
-export { API_URL, EVOLVE_URL, REMOVE_PUZZLE, UPDATE_PUZZLE, SAMPLE_CAT_URL, ADD_ACCOUNT_URL, LIKE_PUZZLE, GET_LIKED_PUZZLES, ITER_EVOLVE, GET_UNUSED_GRAMMARS, ADD_GRAMMAR_RULE, ADD_CATEGORY, GET_TEMPLATE, GET_PUBLIC_KEY, api, GET_BRAINSTORMS, ADD_BRAINSTORM, GET_SCEN, ADD_SCEN };
+export { API_URL, EVOLVE_URL, REMOVE_PUZZLE, UPDATE_PUZZLE, SAMPLE_CAT_URL, ADD_ACCOUNT_URL, LIKE_PUZZLE, GET_LIKED_PUZZLES, ITER_EVOLVE, GET_UNUSED_GRAMMARS, ADD_GRAMMAR_RULE, ADD_CATEGORY, GET_TEMPLATE, GET_PUBLIC_KEY, api, GET_BRAINSTORMS, ADD_BRAINSTORM, GET_SCEN, ADD_SCEN, NEW_SESSION, ADD_CLICK };
 

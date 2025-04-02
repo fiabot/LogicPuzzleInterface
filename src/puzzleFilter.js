@@ -5,6 +5,8 @@ import StateSelector from "./stateSelector";
 import SubGrid from "./subgrid";
 import { createGamePlayInstance, addCellChange, addButtonPress } from "./Firestore/sendData";
 
+import { add_click } from "./API/SendToApi";
+
 function initializeSubGrid(numRows, numCols, puzzle, recordPuzzle) {
     let subgrid = []
     for (let i = 0; i < numRows; i++) {
@@ -114,8 +116,8 @@ const isSolved = (puzzle, solution) => {
     }
 }
 
-const recordPuzzle = (puzzle, setFilter) => {
-
+const recordPuzzle = (puzzle, setFilter, sessionId, sessionStart) => {
+    add_click(sessionId, "filter by solution", sessionStart)
     str = puzzleToString(puzzle)
     setFilter(str)
 
@@ -147,7 +149,7 @@ let clearPuzzle = (puzzle, strikes, setStrikes) => {
     
 }
 
-export default Puzzle =({p, setFilter})=>{
+export default Puzzle =({p, setFilter, sessionId, sessionStart})=>{
     let puzzle = [[]];
     let displayGrid = [];
     let [select, setSelect] = useState("O");
@@ -163,7 +165,7 @@ export default Puzzle =({p, setFilter})=>{
         puzzle[row] = []
         let displayColIdx = 1;
         for (let col = 0; col < rowLength; col++) {
-            let subgrid = initializeSubGrid(p.numEnt, p.numEnt, puzzle, ()=>{recordPuzzle(puzzle, setFilter)});
+            let subgrid = initializeSubGrid(p.numEnt, p.numEnt, puzzle, ()=>{recordPuzzle(puzzle, setFilter, sessionId, sessionStart)});
             puzzle[row][col] = subgrid;
 
             topCat = null;
