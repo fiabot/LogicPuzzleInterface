@@ -8,66 +8,15 @@ import PlayablePuzzleList from "./PlayablePuzzleList";
 let adminPublicKeys = ["Admin 1"]
 
 
-export default HomePage = ({startGeneration, user, setUser, mode, setMode, sessionId, setSessionId, sessionStart, setSessionStart}) => {
-    let [puzzles, setPuzzles] = useState([])
-    //let puzzles = []
-    let [username, setUsername] = useState("")
+export default HomePage = ({username}) => {
+
     let [publicKey, setPublicKey] = useState("")
     let [userMode, setUserMode] = useState("mixed")
 
     let [newPrivateKey, setNewPrivateKey] = useState("")
     let [newPublicKey, setNewPublicKey] = useState("")
 
-    let getPuzzles =() => {
-        return new Promise(async (resolve, reject) =>{
-            
-            puzzles = await getLikedPuzzles(user)
-            resolve(puzzles)
-        })
-    }
-
-    let log_user_in = async () => {
-       result =  await login(username, setUser, setPublicKey, setMode); 
-       
-       if (result == null){
-            alert("Key Not Regonized, try again")
-       }else{
-        start = new Date()
-        let session = await new_session(username, start.toJSON())
-
-        setSessionStart(start)
-        setSessionId(session)
-       }
-
-
-    }
-
-    async function fetch() { 
-        getPuzzles().then(
-            
-            (p) =>{
-
-                if (p != "LOGIN" && p != null){
-                    setPuzzles(p)
-                }
-         
-            
-        })}
-    
-    useEffect (() => 
-            {
-            fetch()
-    
-            }, [user]  )
-    if (user== null){
-     
-    
-        return <div  className='puzzlesView'>
-            <h1>Enter Private Key</h1>
-            <input value={username} onChange={(e) => setUsername(e.target.value)} ></input>
-            <button onClick={() => {log_user_in()}}>Login</button>
-        </div>
-    }else if (adminPublicKeys.includes(publicKey)){
+     if (adminPublicKeys.includes(publicKey)){
         // admin view 
 
         let add_user = async () => {
@@ -80,7 +29,7 @@ export default HomePage = ({startGeneration, user, setUser, mode, setMode, sessi
          }
 
         return <div className='puzzlesView'>
-        <h1>Welcome {publicKey}</h1>
+        <h1>Welcome {username}</h1>
         <h2>Add users</h2>
             <p>Enter Public Key</p>
             <input value={newPublicKey} onChange={(e) => setNewPublicKey(e.target.value)}></input>
@@ -93,26 +42,16 @@ export default HomePage = ({startGeneration, user, setUser, mode, setMode, sessi
                 <option value="casual">casual</option>
             </select>
             <button onClick={() => {add_user()}}>Add User</button>
-        <h2>Generate puzzles</h2>
-        <button onClick={startGeneration}>Start</button>
-        <h2>View Liked Puzzles</h2>
-        <PlayablePuzzleList puzzles={puzzles} user={user} setPuzzles={setPuzzles} r={fetch} appMode={mode} sessionId = {sessionId} sessionStart={sessionStart}/>
+
     </div>
     
     }else{
 
         return <div className='puzzlesView'>
-            <div className="header">
-            <h1>Welcome {publicKey}</h1>
-            <h2>Start Generating</h2>
-            <button onClick={startGeneration}>Start</button>
-            <h2>View Liked Puzzles</h2>
-            </div>
-            
-        
-            <div className="body">
-            <PlayablePuzzleList puzzles={puzzles} user={user}  setPuzzles={setPuzzles} r={fetch}  appMode={mode}  sessionId = {sessionId} sessionStart={sessionStart}/>
-            </div>
+            <h1>Welcome {username}</h1>
+            <p>Here we will give an overview of the system</p>
+            <p>Here we will have a FAQ page</p>
+            <p> Here</p>
            
         </div>
     }

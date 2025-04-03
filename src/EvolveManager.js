@@ -79,8 +79,7 @@ export default EvolveManager = ({categories, user, scenario, name, sessionId, se
     return <div className="puzzlesView">
         <div className="header">
 
-       
-        <h1>Generating New Puzzles</h1>
+    
         <h2> Generation: {iters * 40}, total puzzles: {showArchive? puzzles.length + archive.length: puzzles.length}</h2>
         <button onClick={()=> setShowArchive(!showArchive)}>{showArchive? "Show Best": "Show All"}</button>
         </div>

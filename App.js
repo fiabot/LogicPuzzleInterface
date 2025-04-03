@@ -16,8 +16,9 @@ import lzString from  "lz-string"
 import EvolveManager from './src/EvolveManager';
 import EditPuzzle from './src/EditPuzzle';
 import { setRef } from '@mui/material';
-
-
+import './src/style.css';
+import Login from './src/Login';
+import ViewLikedPuzzles from './src/ViewLikedPuzzles';
 let MODE = "mixed"
 
 
@@ -103,17 +104,23 @@ let PlayPuzzle = () => {
   let [mode, setMode ] = useState("home")
 
   let [user, setUser] = useState(null) 
+  let [username, setUsername] = useState("user")
   let [sessionId, setSessionID] = useState(null)
-  let [sessionStart, setSessionStart] = useState(null)
+  let [sessionStart, setSessionStart] = useState(null) 
+  
+
+  let checkIfSaved = () => {
+    if (mode == "createPuzzle" || mode == "evolve") {
+      return confirm("Are you sure you want to leave the page? Any unsaved content will be lost")
+    }else {
+      return true 
+    }
+  }
 
   let startGeneration =() =>{
     setMode("createPuzzle")
   }
 
-  let showPuzzles = (p) => {
-    setPuzzles(p)
-    setMode("showPuzzles")
-  }
 
 
   let startEvolve = (categories) => {
@@ -122,24 +129,64 @@ let PlayPuzzle = () => {
 
   }
 
+
+  let goHome = () => {
+    if (checkIfSaved()){
+      setMode("home")
+    }
+    
+  }
+
+  let showLikedPuzzles = () => {
+    if (checkIfSaved()){
+      setMode("liked")
+    }
+    
+  }
+
+   let showCommunity = () => {
+    if (checkIfSaved()) {
+      setMode("community")
+    }
+    
+   }
+
   pathname = window.location.pathname
+
+  let header = 
+ <div className="topnav">
+  <button className={mode == "home"? "active": ""} onClick={goHome}>Home</button>
+  <button className={mode == "createPuzzle" || mode == "evolve"? "active": ""} onClick={startGeneration} >Generate Puzzles</button>
+  <button className={mode == "liked"? "active": ""} onClick={showLikedPuzzles}>View Liked Puzzles</button>
+  <button className={mode == "community"? "active": ""} onClick={showCommunity} >Community Puzzles</button>
+</div>
+
+   let content = <div>None</div>
+   if (mode == "home"){
+    content = <HomePage username={username}/> 
+    
+   }else if (mode == "createPuzzle"){
+    content = <CategoryInput startEvolve={startEvolve} user={user} mode={userMode} scenario={scenario} setScenario={setScenario} name={name} setName={setName}  sessionStart={sessionStart} sessionId={sessionId}/> 
+  
+   }else if (mode == "evolve"){
+    content =  <EvolveManager categories={categories} user={user} mode={userMode} name={name} scenario={scenario} sessionStart={sessionStart} sessionId={sessionId}/>
+   }else if (mode == "liked"){
+    content = <ViewLikedPuzzles  user={user} mode={userMode}  sessionStart={sessionStart} sessionId={sessionId}/> 
+   }
+ 
 
   if (pathname == "/play"){
     return <PlayPuzzle/> 
-  }else{
+  }else if (user == null){
+    return <Login  user={user} setUser={setUser} mode={userMode} setMode={setUserMode} sessionId={sessionId} setSessionId={setSessionID} sessionStart={sessionStart} setSessionStart={setSessionStart} username={username} setUsername={setUsername}/>
+  } else{
+    return <div className='puzzleView'>
+      {header}
+      {content}
+    </div>
+  }
 
  
-    if (mode == "home"){
-      return <HomePage startGeneration={startGeneration} user={user} setUser={setUser} mode={userMode} setMode={setUserMode} sessionId={sessionId} setSessionId={setSessionID} sessionStart={sessionStart} setSessionStart={setSessionStart}/> 
-    }
-    else if (mode == "createPuzzle") {
-      return <CategoryInput startEvolve={startEvolve} user={user} mode={userMode} scenario={scenario} setScenario={setScenario} name={name} setName={setName}  sessionStart={sessionStart} sessionId={sessionId}/> 
-  
-    }else{
-      return <EvolveManager categories={categories} user={user} mode={userMode} name={name} scenario={scenario} sessionStart={sessionStart} sessionId={sessionId}/>
-     
-    }
-}
 
   
   
