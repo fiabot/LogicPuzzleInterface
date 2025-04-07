@@ -159,6 +159,19 @@ const isSolved = (puzzle, solution) => {
     }
 }
 
+const cleanState = (state) => {
+    if (state == "!" || state == "?") {
+        return "*"
+    }
+    if (state == "x") {
+        return "X"
+    }
+    if (state == "o") {
+        return "O"
+    }
+    return state
+}
+
 const stateGridToArray = (puzzleDesc, stateGrid) => {
     let grid = {};
     for (const [I, subgridrow] of stateGrid.entries()) {
@@ -170,7 +183,7 @@ const stateGridToArray = (puzzleDesc, stateGrid) => {
             for (const [i, row] of subgrid.entries()) {
                 grid[catKey][i] = []
                 for (const [j, cell] of row.entries()) {
-                    grid[catKey][i][j] = cell.state
+                    grid[catKey][i][j] = cleanState(cell.state)
                 }
             }
         }
@@ -215,21 +228,25 @@ const showNextMove = async (puzzleDesc, stateGrid) => {
 
     if (available_moves_info["available_moves"] && available_moves_info["available_moves"].length > 0) {
         chosen_move = available_moves_info["available_moves"][0]
-    }
-
-    if (available_moves_info["suggested_lazy_move"]) {
-        chosen_move = available_moves_info["suggested_lazy_move"]
-    }
-
-    if (!available_moves_info["is_valid"]) {
-    }
-    else {
-        chosen_move = chooseFromAvailableMoves(available_moves_info["available_moves"]);
-        result_grid = chosen_move["result"]["curr_grid"];
-        setSuggestedGrid(puzzleDesc, stateGrid, result_grid);
+        if (!available_moves_info["is_valid"]) {
+            chosen_move = null
+            for (move of available_moves_info["available_moves"]) {
+                console.log(move)
+                if (move["type"] == "repair") {
+                    chosen_move = move
+                }
+            }
+        } else if (available_moves_info["suggested_lazy_move"]) {
+            chosen_move = available_moves_info["suggested_lazy_move"]
+        } else {
+            chosen_move = chooseFromAvailableMoves(available_moves_info["available_moves"]);
+        }
     }
     if (chosen_move == null) {
         alert("Unable to retrieve suggested move")
+    } else {
+        result_grid = chosen_move["result"]["curr_grid"];
+        setSuggestedGrid(puzzleDesc, stateGrid, result_grid);
     }
 }
 
@@ -242,7 +259,18 @@ const setSuggestedGrid = (puzzleDesc, currGrid, suggestedGrid) => {
                 for (const [i, cellrow] of suggestedSubGrid.entries()) {
                     for (const [j, cell] of cellrow.entries()) {
                         if (cell != currGrid[R][C][i][j].state) {
-                            currGrid[R][C][i][j].setState(cell)
+                            newState = cell
+                            if (cell == "X") {
+                                newState = "x"
+                            } else if (cell == "O") {
+                                newState = "o"
+                            } else if (cell == "*") {
+                                if (currGrid[R][C][i][j].state != "X" && currGrid[R][C][i][j].state != "O") {
+                                    // Don't unset pencilmarks on repair
+                                    newState = currGrid[R][C][i][j].state
+                                }
+                            }
+                            currGrid[R][C][i][j].setState(newState)
                         }
                     }
                 }
