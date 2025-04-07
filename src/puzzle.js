@@ -162,10 +162,10 @@ const isSolved = (puzzle, solution) => {
 const stateGridToArray = (puzzleDesc, stateGrid) => {
     let grid = {};
     for (const [I, subgridrow] of stateGrid.entries()) {
-        let catI = puzzleDesc.leftRight[I].name
+        let catI = puzzleDesc.topBottom[I].name
         for (const [J, subgrid] of subgridrow.entries()) {
-            let catJ = puzzleDesc.topBottom[J].name
-            let catKey = catI + ":" + catJ
+            let catJ = puzzleDesc.leftRight[J].name
+            let catKey = catJ + ":" + catI
             grid[catKey] = []
             for (const [i, row] of subgrid.entries()) {
                 grid[catKey][i] = []
@@ -208,9 +208,19 @@ const chooseFromAvailableMoves = (available_moves) => {
 }
 
 const showNextMove = async (puzzleDesc, stateGrid) => {
+    let chosen_move = null
     let available_moves_info = await getAvailableMoves(puzzleDesc, stateGridToArray(puzzleDesc, stateGrid));
-    let chosen_move = available_moves_info["available_moves"][0]
-    
+
+    console.log(available_moves_info)
+
+    if (available_moves_info["available_moves"] && available_moves_info["available_moves"].length > 0) {
+        chosen_move = available_moves_info["available_moves"][0]
+    }
+
+    if (available_moves_info["suggested_lazy_move"]) {
+        chosen_move = available_moves_info["suggested_lazy_move"]
+    }
+
     if (!available_moves_info["is_valid"]) {
     }
     else {
@@ -218,7 +228,7 @@ const showNextMove = async (puzzleDesc, stateGrid) => {
         result_grid = chosen_move["result"]["curr_grid"];
         setSuggestedGrid(puzzleDesc, stateGrid, result_grid);
     }
-    if (result == null) {
+    if (chosen_move == null) {
         alert("Unable to retrieve suggested move")
     }
 }
@@ -234,7 +244,7 @@ const setSuggestedGrid = (puzzleDesc, currGrid, suggestedGrid) => {
                         if (cell != currGrid[R][C][i][j].state) {
                             currGrid[R][C][i][j].setState(cell)
                         }
-                    } 
+                    }
                 }
             }
         }
