@@ -20,7 +20,7 @@ let CorrectPop = ({isCorrect, time}) => {
     </div>)
 };
 
-export default FinishButtons = ({ giveUp, isCorrect, clearPuzzle, puzzle, finish,instanceId, time}) => {
+export default FinishButtons = ({ giveUp, isCorrect, clearPuzzle, showNextMove, puzzle, finish,instanceId, time}) => {
 
     let checkSolution = () => {
 
@@ -34,8 +34,10 @@ export default FinishButtons = ({ giveUp, isCorrect, clearPuzzle, puzzle, finish
         <button onClick = {checkSolution}> Check my Solution</button>
    
         <button onClick={clearPuzzle}>Clear Solution</button>
- 
-      
+
+        <button onClick={showNextMove}>Show Next Move</button>
+       
+        <br/> 
     </div>)
         let resetButtons = () => {
             setShowPopup(false)

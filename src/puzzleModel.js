@@ -2,7 +2,7 @@ import Category from "./categoryModel";
 defaultText = "Play a logic puzzle!"
 defaultName = "Untitled"
 class PuzzleModel {
-    constructor(categories, hints, solutionString, num, scenarioText, title, narratives){
+    constructor(categories, hint_grammar, hints, solutionString, num, scenarioText, title, narratives){
         this.title = title
         this.categories = categories; 
         this.numEnt = categories[0].entities.length 
@@ -17,6 +17,7 @@ class PuzzleModel {
         }
 
         this.topBottom = []
+        this.hint_grammar = hint_grammar
         this.hints = hints 
 
         for(let i = this.categories.length - 1; i > 0; i --){
@@ -30,14 +31,14 @@ function createPuzzle(data) {
     let categories = []
     for (cat in data.categories) {
         cat = data.categories[cat]
-        categories.push(new Category(cat.name, cat.entities))
+        categories.push(new Category(cat.name, cat.entities, cat.is_numeric))
     }
 
     text = "scenario" in data ? data["scenario"] : defaultText
     title = "name" in data ? data["name"] : defaultName
     narratives = "narratives" in data? data["narratives"] : []
   
-    return new PuzzleModel(categories, data.hints, data.solution, data.id, text, title, narratives)
+    return new PuzzleModel(categories, data.hint_grammar, data.hints, data.solution, data.id, text, title, narratives)
   
   }
 

@@ -56,7 +56,7 @@ let CreateHintFilter = ({filter, setFilter, categories}) => {
             }else if (attr == "num_cat"){
                 idx = 4
 
-                catNames = [<option value={""}>{"Select category"}</option>].concat(categories.filter((value) => value.is_numerical = true).map((value, idx) => {return  <option key={idx} value={value.name}>{value.name}</option>}))
+                catNames = [<option value={""}>{"Select category"}</option>].concat(categories.filter((value) => value.is_numeric = true).map((value, idx) => {return  <option key={idx} value={value.name}>{value.name}</option>}))
             }
 
             return <select value={attrs[idx]} onChange={(e) => {

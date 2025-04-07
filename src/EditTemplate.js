@@ -292,7 +292,7 @@ let EditBefore = ({empty, categories, user, update, sessionId, sessionStart}) =>
         let catNames = categories.map((value, idx) => {return  <option key={idx} value={value.name}>{value.name}</option>})
         catNames =  [<option key={-1} value={null}>Select....</option>].concat(catNames)
 
-        let numCatName = categories.filter((value) => value.is_numerical = true && value.name != cat1 && value.name != cat2).map((value, idx) => {return  <option key={idx} value={value.name}>{value.name}</option>})
+        let numCatName = categories.filter((value) => value.is_numeric = true && value.name != cat1 && value.name != cat2).map((value, idx) => {return  <option key={idx} value={value.name}>{value.name}</option>})
         numCatName =  [<option key={-1} value={null}>Select....</option>].concat(numCatName)
 
         create = <div>

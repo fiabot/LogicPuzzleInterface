@@ -37,7 +37,6 @@ let CategoryMaker = ({categories, setCategories, index, numEntities, sessionId, 
     let save_categories = () => {
         add_cat(categories[index], user)
         can_save = false 
-
     }
   
 
