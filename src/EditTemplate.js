@@ -1,9 +1,10 @@
 import { useEffect, useState} from "react"
 import { get_unused_grammar, get_is_template, get_not_template, get_or_template, get_before_template } from "./API/GetFromApi"
 import { add_is, add_not, add_or, add_before } from "./API/SendToApi"
+import { add_click } from "./API/SendToApi"
 
 
-let EditIs = ({empty, categories, user, update, type = "is"}) => {
+let EditIs = ({empty, categories, user, update, sessionId, sessionStart,  type = "is"}) => {
     let [cat1, setCat1] = useState(null)
     let [cat2, setCat2] = useState(null)
     let [current, setCurrent] = useState("") 
@@ -48,12 +49,16 @@ let EditIs = ({empty, categories, user, update, type = "is"}) => {
 
         }
 
-        let catNames = categories.map((value, idx) => {return  <option key={idx} value={value.name}>{value.name}</option>})
-        catNames =  [<option key={-1} value={null}>Select....</option>].concat(catNames)
+        let cat1Names = categories.filter((c) => c.name != cat2).map((value, idx) => {return  <option key={idx} value={value.name}>{value.name}</option>})
+        cat1Names =  [<option key={-1} value={null}>Select....</option>].concat(cat1Names)
+
+        let cat2Names = categories.filter((c) => c.name != cat1).map((value, idx) => {return  <option key={idx} value={value.name}>{value.name}</option>})
+        cat2Names =  [<option key={-1} value={null}>Select....</option>].concat(cat2Names)
+      
 
         create = <div>
-            <p>Select category 1: <select onChange={(e) => changeCat(1, e.target.value)}>{catNames}</select></p>
-            <p>Select category 2: <select onChange={(e) => changeCat(2, e.target.value)}>{catNames}</select></p>
+            <p>Select category 1: <select onChange={(e) => changeCat(1, e.target.value)}>{cat1Names}</select></p>
+            <p>Select category 2: <select onChange={(e) => changeCat(2, e.target.value)}>{cat2Names}</select></p>
         </div>
       
 
@@ -74,6 +79,7 @@ let EditIs = ({empty, categories, user, update, type = "is"}) => {
         }
 
         let submit = async () => {
+            add_click(sessionId, "add grammar", sessionStart)
             if (type == "is"){
                 await add_is(cat1, cat2, template, user)
             }else{
@@ -84,6 +90,7 @@ let EditIs = ({empty, categories, user, update, type = "is"}) => {
             setUnspecifiedTemplate(null)
             setSpecifiedTemplate(null)
             update()
+            
         }
         if (cat1 != null && cat2 != null){
         current_example = create_example(current)
@@ -110,7 +117,7 @@ let EditIs = ({empty, categories, user, update, type = "is"}) => {
     </div>
 }
 
-let EditOr = ({empty, categories, user, update}) => {
+let EditOr = ({empty, categories, user, update, sessionId, sessionStart}) => {
     let [cat1, setCat1] = useState(null)
     let [cat2, setCat2] = useState(null)
     let [isCat, setIsCat] = useState(null)
@@ -160,10 +167,14 @@ let EditOr = ({empty, categories, user, update}) => {
         let catNames = categories.map((value, idx) => {return  <option key={idx} value={value.name}>{value.name}</option>})
         catNames =  [<option key={-1} value={null}>Select....</option>].concat(catNames)
 
+        let isNames = categories.filter((c) => c.name != cat1 && c.name!= cat2  ).map((value, idx) => {return  <option key={idx} value={value.name}>{value.name}</option>})
+        isNames =  [<option key={-1} value={null}>Select....</option>].concat(catNames)
+
+
         create = <div>
             <p>Select category 1: <select value={cat1} onChange={(e) => changeCat(1, e.target.value)}>{catNames}</select></p>
             <p>Select category 2: <select  value={cat2} onChange={(e) => changeCat(2, e.target.value)}>{catNames}</select></p>
-            <p>Select is category: <select value={isCat} onChange={(e) => changeCat(3, e.target.value)}>{catNames}</select></p>
+            <p>Select is category: <select value={isCat} onChange={(e) => changeCat(3, e.target.value)}>{isNames}</select></p>
         </div>
       
 
@@ -189,6 +200,7 @@ let EditOr = ({empty, categories, user, update}) => {
         }
 
         let submit = async () => {
+            add_click(sessionId, "add grammar", sessionStart)
             await add_or(cat1, cat2, isCat, template, user)
             setCat1(null)
             setCat2(null)
@@ -223,7 +235,7 @@ let EditOr = ({empty, categories, user, update}) => {
     </div>
 }
 
-let EditBefore = ({empty, categories, user, update}) => {
+let EditBefore = ({empty, categories, user, update, sessionId, sessionStart}) => {
     let [cat1, setCat1] = useState(null)
     let [cat2, setCat2] = useState(null)
     let [numCat, setNumCat] = useState(null)
@@ -280,7 +292,7 @@ let EditBefore = ({empty, categories, user, update}) => {
         let catNames = categories.map((value, idx) => {return  <option key={idx} value={value.name}>{value.name}</option>})
         catNames =  [<option key={-1} value={null}>Select....</option>].concat(catNames)
 
-        let numCatName = categories.filter((value) => value.is_numeric = true).map((value, idx) => {return  <option key={idx} value={value.name}>{value.name}</option>})
+        let numCatName = categories.filter((value) => value.is_numerical = true && value.name != cat1 && value.name != cat2).map((value, idx) => {return  <option key={idx} value={value.name}>{value.name}</option>})
         numCatName =  [<option key={-1} value={null}>Select....</option>].concat(numCatName)
 
         create = <div>
@@ -318,6 +330,7 @@ let EditBefore = ({empty, categories, user, update}) => {
       
 
         let submit = async () => {
+            add_click(sessionId, "add grammar", sessionStart)
             await add_before(cat1, cat2, numCat, specifiedTemplate, unspecifiedTemplate, step, user)
     
             setCat1(null)
@@ -365,7 +378,7 @@ let EditBefore = ({empty, categories, user, update}) => {
     </div>
 }
 
-export default EditTemplates = ({categories, user}) => {
+export default EditTemplates = ({categories, user, sessionId, sessionStart}) => {
 
     let [numEmpty, setNumEmpty] = useState(0); 
     let [empty, setEmpty] = useState({})
@@ -390,13 +403,13 @@ export default EditTemplates = ({categories, user}) => {
     let content = <div>Select type</div>
     
     if (editType == "is"){
-        content = <EditIs empty={empty} categories={categories} user={user} update={update}/>
+        content = <EditIs empty={empty} categories={categories} user={user} update={update} sessionId={sessionId}  sessionStart={sessionStart}/>
     }else if (editType == "not"){
-        content = <EditIs empty={empty} categories={categories} user={user} update={update} type ="not"/>
+        content = <EditIs empty={empty} categories={categories} user={user} update={update} type ="not" sessionId={sessionId}  sessionStart={sessionStart}/>
     }else if (editType == "or"){
-        content = <EditOr empty={empty} categories={categories} user={user} update={update}/>
+        content = <EditOr empty={empty} categories={categories} user={user} update={update} sessionId={sessionId}  sessionStart={sessionStart}/>
     }else if (editType == "before"){
-        content = <EditBefore  empty={empty} categories={categories} user={user} update={update}/>
+        content = <EditBefore  empty={empty} categories={categories} user={user} update={update} sessionId={sessionId}  sessionStart={sessionStart}/>
     }
 
  

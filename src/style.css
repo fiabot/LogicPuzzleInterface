@@ -283,8 +283,10 @@ li {
 
 
 .puzzleLeft{
-    width: 40%;
+    width: 50%;
 }
+
+
 .nextButton {
     float: right;
     margin-right: 30%;
@@ -436,6 +438,47 @@ li {
 
 .hints ol li, .hintsBlack ol li{
     margin: 5px;
-    font-size: 2.5vmin;
+    font-size: 1.7vmin;
     width: 90%;
 }
+
+/* Add a black background color to the top navigation */
+.topnav {
+    
+    background-color:  #776274; 
+
+    border-radius: 4px;
+    box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.055);
+    color: white; 
+    display: block;
+    margin: 8px 22px 8px 22px;
+    overflow: hidden;
+    width: 100vw; 
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Style the links inside the navigation bar */
+  .topnav button {
+    float: left;
+    color: white; 
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+    background-color: #776274;
+    border: 0
+
+  }
+  
+  /* Change the color of links on hover */
+  .topnav button:hover {
+    background-color: #ddd;
+    color: black;
+  }
+  
+  /* Add a color to the active/current link */
+  .topnav button.active {
+    background-color:  #522504; 
+    color: white;
+  }

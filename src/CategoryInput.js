@@ -1,23 +1,27 @@
 import { useEffect, useState} from "react"
-import { postEvolution, add_cat } from "./API/SendToApi"
-import { getSampleCategories } from "./API/GetFromApi"
+import { postEvolution, add_cat, add_scen } from "./API/SendToApi"
+import { getSampleCategories, getScenarios } from "./API/GetFromApi"
 import "./AuthoringStyle.css"
 import EditTemplate from "./EditTemplate"
 import EditBrainstorm from "./EditBrainstorm"
+import Collapseable from "./Collapseable"
+import { add_click } from "./API/SendToApi"
 
 
-let CategoryMaker = ({categories, setCategories, index, numEntities, can_save = false, user=null}) => {
+let CategoryMaker = ({categories, setCategories, index, numEntities, sessionId, sessionStart, can_save = false, user=null}) => {
 
     let [list, setList] = useState([])
     let [name, setName] = useState(categories[index].name)
     let [is_numeric, setNumeric] = useState(categories[index].is_numeric)
+    let [inc, setInc] = useState(categories[index].inc)
 
     const newCategories = categories.map((element, i) =>{
         if(i == index){
             return {
                 name:name, 
                 entities:list, 
-                is_numeric:is_numeric 
+                is_numeric:is_numeric, 
+                inc: inc
             
             }
         }else{
@@ -27,7 +31,7 @@ let CategoryMaker = ({categories, setCategories, index, numEntities, can_save = 
 
     useEffect(() =>{
         setCategories(newCategories)
-    }, [name, list, is_numeric])
+    }, [name, list,is_numeric, inc])
 
 
     let save_categories = () => {
@@ -61,7 +65,7 @@ let CategoryMaker = ({categories, setCategories, index, numEntities, can_save = 
     }
     
 
-    let listInput = list.map((element, idx) => <li key={idx}><input value ={element} onChange={e => {
+    let listInput = list.map((element, idx) => <li key={idx}><input value ={element} onClick = {() => add_click(sessionId, "edit entity", sessionStart)}onChange={e => {
         const nextList= list.map((element, i) => {
             if (i === idx) {
               return e.target.value;
@@ -78,7 +82,8 @@ let CategoryMaker = ({categories, setCategories, index, numEntities, can_save = 
             {listInput}
         </ol>
         <label> Category is numeric:</label><input checked={is_numeric} type="checkbox" onChange={() => setNumeric(!is_numeric)}/> 
-        {can_save ? <button onClick={save_categories}>save</button>: ""}
+        {is_numeric?  <div><label> Increment Value:</label><input type="number" onChange={(e) => setInc(e.target.value)} value={inc}></input></div> : ""}
+        
     </div>)
     
 }
@@ -87,15 +92,23 @@ let CategoryMaker = ({categories, setCategories, index, numEntities, can_save = 
 
 
 
-export default PuzzleMaker = ({startEvolve, user, mode}) =>{
+export default PuzzleMaker = ({startEvolve, user, mode, scenario, setScenario, name, setName, sessionId, sessionStart}) =>{
     let [categories, setCategories] = useState([]); 
     let [numEntites, setNumEntities] = useState(4); 
     let [templates, setTemplates] = useState(<div>Loading</div>)
     let [tempCats, setTempCats] = useState([])
     let [numEmpty, setNumEmpy] = useState([0])
 
+    let [scens, setScens] = useState([])
+    let [suggest, setSuggest] = useState([])
+    let [other, setOther] = useState([])
+
+    let [updatedScen, setUpdatedScen] = useState(false)
+
+
+
     let categoryCreators = categories.map((cat, idx) => {
-        return <CategoryMaker key={idx} categories={categories} setCategories={setCategories} index ={idx} numEntities={numEntites} starterName="name" can_save user={user}/> 
+        return <CategoryMaker key={idx} categories={categories} setCategories={setCategories} index ={idx} numEntities={numEntites} starterName="name" can_save user={user} sessionId={sessionId} sessionStart={sessionStart}/> 
     })
 
     let evolvePuzzle=() => {
@@ -106,10 +119,10 @@ export default PuzzleMaker = ({startEvolve, user, mode}) =>{
         })
     }
 
-    let getCats =() => {
+    let getScens =() => {
         return new Promise(async (resolve, reject) =>{
             
-            cats = await getSampleCategories(user)
+            cats = await getScenarios(user, mode == "causal" || mode == "mixed")
             resolve(cats)
         })
     }
@@ -117,32 +130,102 @@ export default PuzzleMaker = ({startEvolve, user, mode}) =>{
     
     useEffect (() => 
             {async function fetch() { 
-                getCats().then(
+                getScens().then(
                     
-                    (cats) =>{
-                 
-                    setTempCats(cats)
+                    (scens) =>{
+                        console.log(scens)
+                    scens.map((s) => {
+                        let c = s.categories.map((cat) => {
+                            let cat2 = cat
+                            cat2["origin"] = s.origin 
+                            return cat 
+
+                        })
+
+                        s.categories = c 
+                        return s 
+                    })
+                    setScens(scens)
                 })}
             fetch()
     
             }, []  )
     
-   
-      
+            
+        let updateScenario = (s) => {
 
+           
+          
+            setScenario(s.scenario)
+            setName(s.name)
+            
+            setSuggest(s.categories) 
+
+            let others = scens.filter((s2) => s2 != s).map((s2) => s2.categories) 
+            others = others.flat()
+            setOther(others)
+            setUpdatedScen(true)
+
+
+        }
+      
+    console.log(other)
     tempbutton =  tempCats.map((cat, idx) => {
         return <button className="smallButton" key={idx}  onClick={()=>setCategories([...categories, cat])} >{cat.name}</button>
         })
+
+
+    scenarioButton = scens.map((s, idx) => {
+        return <button className={s.origin == "sample"? "smallButton": "userButton"} key={idx}  onClick={() => {updateScenario(s); add_click(sessionId, "select scenario", sessionStart)}} >{s.name}</button>
+
+    })
+
+
+    scenarioButton.push(<button button className="userButton" key={scens.length}  onClick={() => {updateScenario({"name": "custom scenario", "scenario": "Enter scenario text", "categories": []}); add_click(sessionId, "new scenario", sessionStart)}}>Create New Scenario</button>)
+
+    suggestedButton =  suggest.map((cat, idx) => {
+        return <button className={cat.origin == "sample"? "smallButton": "userButton"} key={idx}  onClick={()=>{setCategories([...categories, cat]); cat.origin == "sample"? add_click(sessionId, "add example category", sessionStart): ""}} >{cat.name}</button>
+        })
+
+    otherButton =  other.map((cat, idx) => {
+            return <button className={cat.origin == "sample"? "smallButton": "userButton"} key={idx}   onClick={()=>{setCategories([...categories, cat]); cat.origin == "sample"? add_click(sessionId, "add example category", sessionStart): ""}} >{cat.name}</button>
+            })
+
+    let sampleCategories = <div>
+
+            <h1>Pick a Scenario</h1>
+                <div className="categoryTemplate">
+                    {scenarioButton}
+                </div>
+
+            <h1>Suggested Categories</h1>
+                <div className="categoryTemplate">
+                    {suggestedButton}
+                </div>
+            
+                <h1>Other Categories</h1>
+                <div className="categoryTemplate">
+                    {otherButton}
+                </div>
+        </div>
+
+    let editGrammar = <div>
+
+            <EditTemplate categories={categories} user={user} sessionId={sessionId} sessionStart={sessionStart}/>
+            <EditBrainstorm categories={categories} user={user}  sessionId={sessionId} sessionStart={sessionStart}/>  
+    </div>
 
     return <div className="puzzleView">
 
     <div className="puzzleViewLeft">
 
     
-        <div className="authoringView">
-
+        {updatedScen? <div className="authoringView">
+            <h1>Name</h1>
+            <input className="categoryInput" value={name} onChange={e => setName(e.target.value)}/>
        
-
+        <h1> Scenario</h1>
+        <textarea className={"scenarioInput"} value={scenario} onChange={(e)=> setScenario(e.target.value)} onClick={() => add_click(sessionId, "edit narrative", sessionStart)}/>
         
 
             <div>
@@ -159,43 +242,45 @@ export default PuzzleMaker = ({startEvolve, user, mode}) =>{
             
             </div>
 
-            {mode == "casual" || mode == "mixed" ?<div><h1>Example Categories</h1>
-            <div className="categoryTemplate">
-                {tempbutton}
-            </div> </div>: ""}
 
-  
-
-
-
-            {mode == "serious" || mode == "mixed"? <div><button className="mediumButton" onClick={()=>setCategories([...categories, {name:"Name", entities:[], is_numeric:false}])}>Add category</button>
+            <div>
+            <button className="mediumButton" onClick={()=>add_scen(user, name, scenario, categories)}>Save Scenario</button>
+            <button className="mediumButton" onClick={()=>{setCategories([...categories, {name:"Name", entities:[], is_numeric:false, inc:1}]);add_click(sessionId, "new category", sessionStart)}}>Add Custom category</button>
             <button className="mediumButton" onClick={()=>setCategories(
                         categories.slice(0, categories.length -1)
-                    )}>Remove Category</button>
+                    )}>Remove Last Category</button>
                  
 
               
 
                 
 
-                </div> : ""} 
+                </div>
+  
+           
 
-                <button className="largeButton" onClick={() => startEvolve(categories)}>Start Evolution</button>
+
+
+
+               <div> <button className="largeButton" onClick={() => startEvolve(categories)}>Start Generation</button></div>
      
 
 
-        </div> 
+        </div> : <div>Select Scenario</div>}
 
     </div>
 
-    {mode == "serious" || mode == "mixed" ? <div className="puzzleViewRight">
+    <div className="puzzleViewRight">
+        <div className="authoringView">
 
-                <div className="authoringView">
-                <EditTemplate categories={categories} user={user}/>
-                <EditBrainstorm categories={categories} user={user} />  
+                <Collapseable content={sampleCategories} title="Scenarios" showByDefault={true}/> 
+                <Collapseable content={editGrammar} title="Edit Grammar and Ideas" showByDefault={mode == "serious"}/> 
+
+                
+
             </div>
 
-    </div> :""} 
+    </div> 
 
     </div>
     

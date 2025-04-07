@@ -16,6 +16,7 @@
 .authoringView{
     text-align: left;
     font-family: "Times New Roman", Times, serif;
+    height: inherit;
 }
 
 .authoringView h1{
@@ -29,21 +30,22 @@
 
 .categories{
     background-color: #E9D0C4;
-    width: 300px;
-    height: 500px;
+    width: 80%;
+    height: 50%;
     border-radius: 10px;
     padding-left: 5px;
     overflow: auto;
     font-family: "Times New Roman", Times, serif;
 
     scrollbar-color: #776274 #A07178;
+
     
 }
 
 .categoryTemplate{
     background-color: #E9D0C4;
-    width: 300px;
-    height: 100px;
+    width: 80%; 
+    height: 150px;
     border-radius: 10px;
     padding-left: 5px;
     overflow: auto;
@@ -60,6 +62,19 @@
     height: 30px;
     border-radius: 15px;
     border:  #776274; 
+    margin: 5px;
+   
+    
+}
+
+.userButton{
+    background-color:  #a1404f; 
+    
+    color:white; 
+    font-size: medium;
+    height: 30px;
+    border-radius: 15px;
+    border:  #8b2109; 
     margin: 5px;
    
     
@@ -139,6 +154,11 @@
 
 .smallButton:hover{
     background-color: #4d3f4b;
+      
+}
+
+.userButton:hover{
+    background-color: #4d1f25; 
       
 }
 
@@ -238,6 +258,45 @@
     visibility: visible;
   }
 
+  .collapseButton {
+    width: 100%;
+    text-align: left;
+    background-color: #A07178;
+    /* color of the tooltip text */
+    color: white;
+    font-size: x-large; 
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
+
+  .personaArea{
+    width: 100%;
+    height: inherit;
+    display: grid; 
+    grid-template-columns: 1fr 1fr 1fr; 
+    grid-gap: 20px; 
+
+  }
+
+  .persona{
+    width: 100%;
+  
+  }
+
+  .persona .puzzleListElement{
+    height: 400px;
+  }
+
+
+  .filterView{
+    width: 95%;
+    height: inherit;
+    display: grid; 
+    grid-template-columns: 4fr 3fr; 
+    grid-gap: 20px; 
+
+  }
 
 
 

@@ -1,5 +1,4 @@
-import { api, GET_BRAINSTORMS, GET_LIKED_PUZZLES, GET_AVAILABLE_MOVES, GET_TEMPLATE, GET_UNUSED_GRAMMARS, SAMPLE_CAT_URL } from './config'
-
+import {api, API_URL, SAMPLE_CAT_URL, GET_LIKED_PUZZLES, GET_AVAILABLE_MOVES, GET_UNUSED_GRAMMARS, GET_TEMPLATE, GET_BRAINSTORMS, GET_SCEN, ADD_CLICK, NEW_SESSION} from './config'
 
 let getLikedPuzzles = async(user) => {
     if (user == null){
@@ -43,6 +42,19 @@ let  getSampleCategories = async(user = null) => {
 
     return response.data 
 }
+
+
+let  getScenarios = async(user = null, getSample = true) => {
+
+    if (user == null){
+        response = await api.get(GET_SCEN, {params:{getSample: getSample}})
+    }else{
+        response = await api.get(GET_SCEN, {params:{user:user, getSample: getSample}})
+    }
+
+    return response.data 
+}
+
 
 let get_is_template = async(cat1, cat2, user)  => {
     request = {"user": user, "cat1": cat1, "cat2": cat2, type:"is"}
@@ -96,4 +108,5 @@ let get_before_brainstorm = async(cat1, cat2, num_cat, user)  => {
 
 
 
-export { get_before_brainstorm, get_before_template, get_is_brainstorm, get_is_template, get_not_brainstorm, get_not_template, get_or_brainstorm, get_or_template, get_unused_grammar, getLikedPuzzles, getSampleCategories, getAvailableMoves }
+
+export { get_before_brainstorm, get_before_template, get_is_brainstorm, get_is_template, get_not_brainstorm, get_not_template, get_or_brainstorm, get_or_template, get_unused_grammar, getLikedPuzzles, getSampleCategories, getAvailableMoves, getScenarios }

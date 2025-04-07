@@ -1,6 +1,7 @@
 import { startIterEvolve, continueIterEvolve } from "./API/SendToApi"
 import { useState, useEffect } from "react"
 import ViewPuzzles from "./ViewPuzzles";
+import "./ViewPuzzlesStyle.css"; 
 
 
 let archivePuzzles =(oldPuzzles, newPuzzles) => {
@@ -30,7 +31,7 @@ let archivePuzzles =(oldPuzzles, newPuzzles) => {
 
 }
 
-export default EvolveManager = ({categories, user, mode = "mixed"}) => {
+export default EvolveManager = ({categories, user, scenario, name, sessionId, sessionStart, mode = "mixed"}) => {
 
     let [puzzles, setPuzzles] = useState([]); 
     let [archive, setArchive] = useState([]); 
@@ -55,7 +56,7 @@ export default EvolveManager = ({categories, user, mode = "mixed"}) => {
             }
         }
         if (id == -1) {
-            data = await  startIterEvolve(categories, user);
+            data = await  startIterEvolve(categories, user,name, scenario);
             setPuzzles(puzzles.concat(data["puzzles"]))
             setId(data["id"])
         }else{
@@ -75,11 +76,19 @@ export default EvolveManager = ({categories, user, mode = "mixed"}) => {
     }
 
 
-    return <div>
-        <h1>Generating New Puzzles</h1>
+    return <div className="puzzlesView">
+        <div className="header">
+
+    
         <h2> Generation: {iters * 40}, total puzzles: {showArchive? puzzles.length + archive.length: puzzles.length}</h2>
         <button onClick={()=> setShowArchive(!showArchive)}>{showArchive? "Show Best": "Show All"}</button>
-        <ViewPuzzles puzzles={showArchive? puzzles.concat(archive): puzzles} user={user} setPuzzles={setPuzzles} mode={mode}/> 
+        </div>
+
+
+
+       
+        <ViewPuzzles puzzles={showArchive? puzzles.concat(archive): puzzles} user={user} setPuzzles={setPuzzles} mode={mode} sessionId={sessionId} sessionStart={sessionStart}/> 
+ 
     </div>
 
 

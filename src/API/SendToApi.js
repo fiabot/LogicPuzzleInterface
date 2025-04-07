@@ -1,5 +1,12 @@
-import {api, EVOLVE_URL, ADD_ACCOUNT_URL, LIKE_PUZZLE, ITER_EVOLVE, ADD_GRAMMAR_RULE, ADD_CATEGORY, GET_PUBLIC_KEY, ADD_BRAINSTORM, REMOVE_PUZZLE, UPDATE_PUZZLE} from './config' 
+import {api, EVOLVE_URL, ADD_ACCOUNT_URL, LIKE_PUZZLE, ITER_EVOLVE, ADD_GRAMMAR_RULE, ADD_CATEGORY, GET_PUBLIC_KEY, ADD_BRAINSTORM, REMOVE_PUZZLE, UPDATE_PUZZLE, ADD_SCEN, NEW_SESSION, ADD_CLICK} from './config' 
 
+
+let CLICK_TYPES = {"select scenario": "casual", "add example category" : "casual", "select recommendation": "casual", "view similar": "casual", "select similar": "casual", "get brainstorm": "casual",  "copy narrative": "casual",
+"new scenario": "serious", "new category": "serious", "edit entity": "serious", "add grammar": "serious", "add brainstorm": "serious", "edit hint":"serious", "edit narrative": "serious", "filter by hint": "serious", "filter by solution": "serious", "edit puzzle": "serious", 
+
+"filter by hint size": "neutral", "filter by difficulty": "neutral", "post puzzle": "neutral", "add comment": "neutral", "save as pdf": "neutral", "open link": "neutral" 
+
+} 
 
 let postEvolution = async(categories, gens = 100, popsize = 50) => {
     request = {"puzzle": {"categories": categories}, "gens":gens, "pop_size": popsize}
@@ -10,8 +17,16 @@ let postEvolution = async(categories, gens = 100, popsize = 50) => {
 }
 
 
-let startIterEvolve = async(categories, user,  gens = 10, popsize = 100) => {
+let startIterEvolve = async(categories, user, name =null, scenario =null,  gens = 10, popsize = 100) => {
     request = {"puzzle": {"categories": categories}, "gens":gens, "pop_size": popsize, "user": user}
+
+    if (name) {
+        request["name"] = name
+    }
+
+    if (scenario){
+        request["scenario"] = scenario
+    }
 
     response = await api.post(ITER_EVOLVE, request)
 
@@ -61,6 +76,29 @@ let add_account = async(username, privateKey, publicKey, mode) => {
 
 }
 
+let new_session = async(privateKey, time) => {
+    request=  {"privateKey": privateKey, "startTime": time}
+
+    response = await api.post(NEW_SESSION, request)
+
+    return response.data 
+}
+
+let add_click = async(sessionId, n, startTime, data = null) =>{
+    time = new Date() - startTime 
+    request = {"sessionID": sessionId, "name": n, type: CLICK_TYPES[n], "time":time}
+
+    if (data != null){
+        request["data"] = data 
+    }
+
+    response = await api.post(ADD_CLICK, request)
+
+    return response 
+
+   
+}
+
 let like_puzzle = async(puzzle, user) => {
     if (user == null){
         return "LOGIN"
@@ -97,6 +135,20 @@ let update_puzzle = async(key, puzzle, user) => {
     return response 
 }
 
+let add_cat = async (cat, user) => {
+    request = {"user": user, "category": cat}
+    response = await api.post(ADD_CATEGORY, request)
+    return response 
+}
+
+
+let add_scen = async (user, name, scen, cats) => {
+    request = {"user": user, "name": name, "scenario":scen, categories: cats}
+    response = await api.post(ADD_SCEN, request)
+    return response 
+
+}
+
 let add_is = async (cat1, cat2, template, user) => {
     request = {"user": user, "cat1": cat1, "cat2": cat2, "template": template, type:"is"}
     response = await api.post(ADD_GRAMMAR_RULE, request)
@@ -125,11 +177,6 @@ let add_or  = async (cat1, cat2, is_cat,  template, user) => {
 
 }
 
-let add_cat = async (cat, user) => {
-    request = {"user": user, "category": cat}
-    response = await api.post(ADD_CATEGORY, request)
-    return response 
-}
 
 let add_is_brain = async (cat1, cat2, template, user) => {
     request = {"user": user, "cat1": cat1, "cat2": cat2, "template": template, type:"is"}
@@ -161,4 +208,4 @@ let add_or_brain  = async (cat1, cat2, is_cat,  template, user) => {
 
 
 
-export {postEvolution, add_account, like_puzzle, startIterEvolve, continueIterEvolve, add_is, add_not, add_before, add_or, add_cat, login,add_before_brain, add_is_brain, add_or_brain, add_not_brain, remove_puzzle, update_puzzle}
+export {postEvolution, add_account, like_puzzle, startIterEvolve, continueIterEvolve, add_is, add_not, add_before, add_or, add_cat, login,add_before_brain, add_is_brain, add_or_brain, add_not_brain, remove_puzzle, update_puzzle, add_scen, new_session, add_click}
