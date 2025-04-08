@@ -13,11 +13,13 @@ export default selectedPuzzle = ({puzzle, setPuzzle, user, r, appMode, sessionId
 
     let [mode, setMode] = useState("view")
     let [puzzleToEdit, setPuzzleToEdit] = useState(null)
+
+    console.log(puzzle)
    
 
     let model = createPuzzle(puzzle)
 
-    let [playable, setPlayable] = useState(<Puzzle className="playable" p={model}/>)
+    let [playable, setPlayable] = useState(<Puzzle className="playable" p={model} />)
     let [content, setContent] = useState(playable)
 
     useEffect(()=>{

@@ -224,7 +224,12 @@ const showNextMove = async (puzzleDesc, stateGrid) => {
     let chosen_move = null
     let available_moves_info = await getAvailableMoves(puzzleDesc, stateGridToArray(puzzleDesc, stateGrid));
 
-    console.log(available_moves_info)
+    if (available_moves_info == null){
+        alert("No more moves available")
+        return  
+    }
+
+  
 
     if (available_moves_info["available_moves"] && available_moves_info["available_moves"].length > 0) {
         chosen_move = available_moves_info["available_moves"][0]

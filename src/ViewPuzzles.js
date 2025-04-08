@@ -240,7 +240,7 @@ export default ViewPuzzles = ({puzzles, user, setPuzzles, mode, sessionId, sessi
         setHintRange(newValue);
     };
 
-    console.log(hasHints(hintFilters, puzzles))
+   console.log(puzzles)
 
 
     let puzzleList = filterBySolution(filter, hasHints(hintFilters, puzzles)).filter((puzzle) => (puzzle.diff >= diffRange[0] && puzzle.diff <= diffRange[1]) && (puzzle.hints.length >= hintRange[0] && puzzle.hints.length <= hintRange[1]))
