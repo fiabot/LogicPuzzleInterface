@@ -26,6 +26,13 @@ const GET_PUBLIC_KEY = API_URL  + "/get_public_key"
 const NEW_SESSION = API_URL + "/new_session"
 const ADD_CLICK = API_URL + "/add_click"
 
+const GET_POSTED_PUZZLES = API_URL + "/get_posted_puzzles"
+const POST_PUZZLE = API_URL + "/post_puzzle"
+const ADD_COMMENT = API_URL + "/add_comment"
+const LIKE_POSTED_PUZZLE = API_URL + "/like_posted_puzzle"
+const UNLIKED_POSTED_PUZZLE = API_URL + "/unlike_posted_puzzle"
+const VIEW_PUZZLE = API_URL + "/view_puzzle"
+
 
 const handleRes = (res) => {
     return res;
@@ -40,5 +47,5 @@ const api = _axios.create( {credentials: false});
 api.interceptors.request.use(handleRes, handleErr);
 api.interceptors.response.use(handleRes, handleErr);
 
-export { API_URL, EVOLVE_URL, REMOVE_PUZZLE, UPDATE_PUZZLE, SAMPLE_CAT_URL, ADD_ACCOUNT_URL, LIKE_PUZZLE, GET_LIKED_PUZZLES, ITER_EVOLVE, GET_UNUSED_GRAMMARS, ADD_GRAMMAR_RULE, ADD_CATEGORY, GET_TEMPLATE, GET_PUBLIC_KEY, api, GET_BRAINSTORMS, ADD_BRAINSTORM, GET_SCEN, ADD_SCEN, NEW_SESSION, ADD_CLICK };
+export { API_URL, EVOLVE_URL, REMOVE_PUZZLE, UPDATE_PUZZLE, SAMPLE_CAT_URL, ADD_ACCOUNT_URL, LIKE_PUZZLE, GET_LIKED_PUZZLES, ITER_EVOLVE, GET_UNUSED_GRAMMARS, ADD_GRAMMAR_RULE, ADD_CATEGORY, GET_TEMPLATE, GET_PUBLIC_KEY, api, GET_BRAINSTORMS, ADD_BRAINSTORM, GET_SCEN, ADD_SCEN, NEW_SESSION, ADD_CLICK, GET_POSTED_PUZZLES, POST_PUZZLE, ADD_COMMENT, LIKE_POSTED_PUZZLE, UNLIKED_POSTED_PUZZLE, VIEW_PUZZLE};
 

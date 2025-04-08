@@ -282,6 +282,14 @@ let printDocument=(ref) =>{
 
   }
 
-  export {printDocument, getClueLogic, getBrainStormIdeas, hasHints, findMutants}
+
+  let formatTime = (jsonStr) => {
+    let time = new Date(jsonStr)
+    time = time.toLocaleDateString(undefined, {"month": "short", "day":"numeric"}) + "," + time.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+
+    return time 
+  }
+
+  export {printDocument, getClueLogic, getBrainStormIdeas, hasHints, findMutants, formatTime}
 
 

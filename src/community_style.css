@@ -1,0 +1,80 @@
+.community {
+    overflow: auto;
+    align-items: center;
+    
+}
+
+.postContainer{
+    display: grid;
+    overflow: auto;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+.selectPuzzleContainer{
+    display: grid;
+    overflow: auto;
+    grid-template-columns: 1fr 1fr 1fr;
+
+    height:300px
+}
+
+.puzzleSelectElement {
+    border: 1px solid black; 
+    padding: 5px; 
+}
+
+.comment{
+    border: 1px solid black;
+}
+
+.post{
+
+    background-color: #E6CCBE;
+    border: 5px solid #522504;
+    text-align: left;
+    padding: 5px;
+    margin: 5px;
+
+}
+
+.post h1{
+    background-color: transparent !important;
+    border: 0 !important;
+    color: black !important;
+    text-align: center;
+}
+
+.post button{
+    text-align: center;
+}
+
+.metadata {
+    color: #522504; 
+    font-style: italic;
+    padding: 0px; 
+    margin: 1px;
+}
+
+.selectedPost{
+    overflow: scroll;
+}
+
+.headTitle {
+    background-color: #A07178; 
+    color:#E9D0C4; 
+    font-size: 4vmin;
+    border: 5px solid #624146; 
+    text-align: center;
+    margin-top: 0;
+}
+
+.community button{
+    background-color: #776274;
+    color: white;
+    border: black;
+    border-radius: 10px;
+    width: 200px;
+    height: 40px;
+    font-size: medium;
+    margin: 10px;
+    
+}

@@ -9,7 +9,7 @@ import Puzzle from "./puzzle";
 import { add_click } from "./API/SendToApi";
 
 
-export default selectedPuzzle = ({puzzle, setPuzzle, user, r, appMode, sessionId, sessionStart, otherPuzzles = [], reload=null}) => {
+export default selectedPuzzle = ({puzzle, setPuzzle, user, r, appMode, sessionId, sessionStart, otherPuzzles = [], reload=null, can_like = true}) => {
 
     let [mode, setMode] = useState("view")
     let [puzzleToEdit, setPuzzleToEdit] = useState(null)
@@ -146,7 +146,7 @@ export default selectedPuzzle = ({puzzle, setPuzzle, user, r, appMode, sessionId
         <button onClick={()=> setContent(playable)}>Play Puzzle</button>
         <button onClick={()=> playPuzzle(puzzle)}>Open Link</button>
         {(appMode == "serious" || appMode == "mixed")? <button onClick={()=> editPuzzle(puzzle)}>Edit Puzzle</button> : ""}
-        {("key" in puzzle && puzzle["key"] != null)?<button onClick={() => unlikeButton(puzzle,idx)}>Unlike Puzzle</button>:   <button onClick={() => likeButton(puzzle,idx)}>Like Puzzle</button> }
+        {can_like? ("key" in puzzle && puzzle["key"] != null)?<button onClick={() => unlikeButton(puzzle,idx)}>Unlike Puzzle</button>:   <button onClick={() => likeButton(puzzle,idx)}>Like Puzzle</button> : "" }
         {otherPuzzles.length != 0? <button onClick={() => seeMutants()}>See Similar</button>: ""}
 
         {content}

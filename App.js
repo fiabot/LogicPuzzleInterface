@@ -19,6 +19,7 @@ import { setRef } from '@mui/material';
 import './src/style.css';
 import Login from './src/Login';
 import ViewLikedPuzzles from './src/ViewLikedPuzzles';
+import {CommunityPage} from './src/CommunityPage';
 let MODE = "mixed"
 
 
@@ -172,6 +173,8 @@ let PlayPuzzle = () => {
     content =  <EvolveManager categories={categories} user={user} mode={userMode} name={name} scenario={scenario} sessionStart={sessionStart} sessionId={sessionId}/>
    }else if (mode == "liked"){
     content = <ViewLikedPuzzles  user={user} mode={userMode}  sessionStart={sessionStart} sessionId={sessionId}/> 
+   }else if (mode == "community"){
+    content = <CommunityPage user={user} appMode={userMode}  sessionStart={sessionStart} sessionId={sessionId}/> 
    }
  
 
