@@ -81,7 +81,6 @@
 }
 
 .editor{
-    background-color: #E9D0C4;
     overflow: auto;
     scrollbar-color: #776274 #A07178;
     height: 70%; 
@@ -293,10 +292,106 @@
     width: 95%;
     height: inherit;
     display: grid; 
-    grid-template-columns: 4fr 3fr; 
+    grid-template-columns: 1fr 1fr; 
     grid-gap: 20px; 
 
   }
+
+
+  .topButtons {
+    width: inherit;
+    height: 45px;
+    background-color:white; 
+
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 0;
+
+  }
+
+
+  .bottomButtons {
+    width: inherit;
+    background-color:#E9D0C4; 
+    border: 5px solid #624146; 
+
+    padding: 0px 20px;
+    height: 45px; ;
+
+
+
+  }
+
+
+
+  .returnButton{
+    float: left;
+
+    width:  40px !important; 
+    height: 40px !important; 
+    background-color: transparent !important;
+    padding: 0px;
+
+
+  }
+
+  .returnButton:hover{
+
+    background-color: #A0717890 !important;
+
+
+
+  }
+
+  .likeButton{
+    float: right;
+
+    width:  40px !important; 
+    height: 40px !important; 
+    background-color: transparent !important;
+    padding: 0px;
+
+
+  }
+
+  .likeButton:hover{
+
+    background-color: #A0717890 !important;
+
+
+
+  }
+
+
+
+    /* Style the links inside the navigation bar */
+    .bottomButtons button {
+
+        color: #624146 !important; 
+        text-align: center;
+        background-color: #E9D0C4!important; 
+        text-align: center;
+        padding: 5px 7px;
+        height: 40px !important; 
+        margin: 0px !important; 
+        text-decoration: none;
+
+        border: 0
+    
+      }
+      
+      /* Change the color of links on hover */
+      .bottomButtons button:hover {
+        background-color: #ddd !important;
+        color: black;
+      }
+      
+      /* Add a color to the active/current link */
+      .bottomButtons button.active {
+        background-color:  #522504 !important; 
+        color: white !important;
+      }
+  
 
 
 

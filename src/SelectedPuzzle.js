@@ -11,8 +11,10 @@ import { add_click } from "./API/SendToApi";
 
 export default selectedPuzzle = ({puzzle, setPuzzle, user, r, appMode, sessionId, sessionStart, otherPuzzles = [], reload=null, can_like = true}) => {
 
-    let [mode, setMode] = useState("view")
+    let [mode, setMode] = useState("play")
     let [puzzleToEdit, setPuzzleToEdit] = useState(null)
+
+    let [liked, setLiked] = useState("key" in puzzle && puzzle["key"] != null)
    
 
     let model = createPuzzle(puzzle)
@@ -38,13 +40,10 @@ export default selectedPuzzle = ({puzzle, setPuzzle, user, r, appMode, sessionId
 
     let likeButton = async (puzzle)  => {
         result = await like_puzzle(puzzle, user)
-        console.log(result)
+     
         if (result.status < 300){
-            if (idx >= 0){
-                puzzles["key"] = result.data["key"]
-            }
-         
-            setPuzzle(puzzle)
+        
+            setLiked(!liked)
         }else{
             alert("Failed to like puzzle")
         }
@@ -56,11 +55,8 @@ export default selectedPuzzle = ({puzzle, setPuzzle, user, r, appMode, sessionId
         result = await remove_puzzle(puzzle["key"], user)
         console.log(result)
         if (result.status < 300){
-            if (idx >= 0){
-                puzzles["key"] = null
-            }
-     
-            setPuzzle(puzzle)
+    
+            setLiked(!liked)
         
         }else{
             alert("Failed to remove puzzle")
@@ -75,7 +71,7 @@ export default selectedPuzzle = ({puzzle, setPuzzle, user, r, appMode, sessionId
     }
 
     let PuzzleElement = (({puzzle}) =>{
-        return <div>
+        return <div >
                <h2>{"name" in puzzle? puzzle["name"] : "Untitled Puzzle" }</h2>
         <h3>Difficulty: {puzzle.diff}</h3>
         <h3>Hints</h3>
@@ -127,11 +123,13 @@ export default selectedPuzzle = ({puzzle, setPuzzle, user, r, appMode, sessionId
 
     let editPuzzle = () => {
         add_click(sessionId, "edit puzzle", sessionStart)
+        setMode("edit")
         setContent( <EditPuzzle puzzleData={puzzle} setPlayable={setPuzzle} user={user} r={null} sessionId={sessionId} sessionStart={sessionStart}/>)
        
     }
 
     let seeMutants = () => {
+        setMode("mutant")
         add_click(sessionId, "view similar", sessionStart)
         setContent(<ShowMutants puzzle={puzzle} puzzleList={otherPuzzles}/> )
       
@@ -141,15 +139,28 @@ export default selectedPuzzle = ({puzzle, setPuzzle, user, r, appMode, sessionId
 
 
         return <div className='puzzleElement' >
-        <button onClick={r}>Return</button>
+            <div className="topButtons">
+            <button className="returnButton" onClick={r}><img src="./icons/back.png" width="40" height="40"/></button>
+            {can_like? (liked)?<button className="likeButton" onClick={() => unlikeButton(puzzle)}><img src="./icons/liked.png" width="40" height="40"/></button>:   <button  className="likeButton" onClick={() => likeButton(puzzle)}><img src="./icons/unliked.png" width="40" height="40"/></button> : "" }
+            </div>
 
-        <button onClick={()=> setContent(playable)}>Play Puzzle</button>
-        <button onClick={()=> playPuzzle(puzzle)}>Open Link</button>
-        {(appMode == "serious" || appMode == "mixed")? <button onClick={()=> editPuzzle(puzzle)}>Edit Puzzle</button> : ""}
-        {can_like? ("key" in puzzle && puzzle["key"] != null)?<button onClick={() => unlikeButton(puzzle,idx)}>Unlike Puzzle</button>:   <button onClick={() => likeButton(puzzle,idx)}>Like Puzzle</button> : "" }
-        {otherPuzzles.length != 0? <button onClick={() => seeMutants()}>See Similar</button>: ""}
+
+        <div className="bottomButtons">
+
+<button className={mode == "play"? "active": ""} onClick={()=> {setMode("play");setContent(playable)}}>Play Puzzle</button>
+
+{(appMode == "serious" || appMode == "mixed")? <button className={mode == "edit"? "active": ""} onClick={()=> editPuzzle(puzzle)}>Edit Puzzle</button> : ""}
+
+{otherPuzzles.length != 0? <button className={mode == "mutant"? "active": ""} onClick={() => seeMutants()}>See Similar</button>: ""}
+
+<button className="likeButton" onClick={()=> playPuzzle(puzzle)}><img src="./icons/openlink.png" width="40" height="40"/></button>
+</div>
+       
+
+   
 
         {content}
+
         </div>
 
 

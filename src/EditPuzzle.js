@@ -157,7 +157,12 @@ export default EditPuzzle = ({puzzleData, setPlayable, r, user, sessionId, sessi
 
     return <div className="editor">
     {r!= null? <button onClick={r}>Return</button>: ""}
-    <button onClick={() => setEditNarrative(true)}>Edit Narrative</button>
+
+    <input  onClick={()=> setEditNarrative(!editNarrative)} checked={editNarrative} type="checkbox" className="toggleCheckbox" id="narToggle"/>
+      <label for="narToggle" className="toggleButton">
+      <div>Logic Hints</div> 
+        <div>Narrative</div> 
+      </label>
 
     <h1> Editing Puzzle</h1>
 

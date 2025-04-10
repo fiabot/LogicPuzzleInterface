@@ -286,14 +286,33 @@ export default Puzzle =({p, time, concede, finish})=>{
       });
 
 
-    return (<div className="printArea" ><div>
+    return (<div className="printArea" >
+        
+        <div className="playToggles">
 
-      {("narratives" in p && p["narratives"].length > 0)? <button onClick={()=>setNarrative(!narrative)}>{narrative? "Show Logic": "Show Narrative"}</button>:""}
-    <button onClick={()=> setPrintable(!printable)}>{printable? "Show Interactive": "Show printable"}</button>
+      {("narratives" in p && p["narratives"].length > 0)?  <div><input   onClick={()=>setNarrative(!narrative)}  checked={narrative} type="checkbox" className="toggleCheckbox" id="narToggle"/>
+      <label for="narToggle" className="toggleButton">
+      <div>Logic Clues</div> 
+        <div>Narrative Clues</div> 
+      </label></div> :""}
+
 
     
-    {printable?   <button onClick={()=> setBlack(!black)}>{black? "Make Full Color": "Make Black and White"}</button>: ""}
-    {printable? <button onClick={() =>reactToPrintFn(reactToPrintContent)}>Save as PdF</button>: ""}
+      <input  onClick={()=> setPrintable(!printable)} checked={printable} type="checkbox" className="toggleCheckbox" id="printToggle"/>
+      <label for="printToggle" className="toggleButton">
+      <div>Interactive</div> 
+        <div>Printable</div> 
+      </label>
+    
+
+    {printable?   <div><input   onClick={()=> setBlack(!black)}  checked={black} type="checkbox" className="toggleCheckbox" id="colorToggle"/>
+      <label for="colorToggle" className="toggleButton">
+      <div>Full Color</div> 
+        <div>B&W</div> 
+      </label></div> : ""}
+    {printable?   <button className="likeButton" onClick={() =>reactToPrintFn(reactToPrintContent)}><img src="./icons/download.png" width="40" height="40"/></button>: ""}
+
+  
     
     </div> 
     <div className={printable? "printable":"puzzleArea"} id={"divToPrint"} ref={ref}>

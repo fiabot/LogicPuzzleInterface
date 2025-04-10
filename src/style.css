@@ -446,9 +446,6 @@ li {
 .topnav {
     
     background-color:  #776274; 
-
-    border-radius: 4px;
-    box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.055);
     color: white; 
     display: block;
     margin: 8px 22px 8px 22px;
@@ -481,4 +478,93 @@ li {
   .topnav button.active {
     background-color:  #522504; 
     color: white;
+   
+  }
+
+  .toggleCheckbox {
+    display: none;
+  }
+
+  .toggleButton {
+    position: relative;
+   display: grid;
+   grid-template-columns: repeat(2, 1fr);
+   width: fit-content;
+   border: 3px solid #776274;
+   border-radius: 20px;
+   background: #776274; 
+   font-weight: bold;
+   color: #776274;
+   cursor: pointer;
+   margin: 10px;
+
+  }
+
+  .toggleButton::before {
+    content: '';
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    left: 0%;
+    border-radius:20px;
+    background: #E9D0C4;
+    transition: all 0.3s;
+    
+ }
+
+ .toggleButton div {
+    padding: 3px;
+    text-align: center;
+    z-index: 1;
+
+ }
+
+ .toggleCheckbox:checked + .toggleButton::before {
+    left: 50%;
+ }
+
+ .toggleCheckbox:checked + .toggleButton div:first-child{
+    color: #E9D0C4;
+    transition: color 0.3s;
+ }
+ .toggleCheckbox:checked + .toggleButton div:last-child{
+    color: #343434;
+
+    transition: color 0.3s;
+ }
+ .toggleCheckbox + .toggleButton div:first-child{
+    color: #343434;
+
+    transition: color 0.3s;
+ }
+ .toggleCheckbox + .toggleButton div:last-child{
+    color: #E9D0C4;
+    transition: color 0.3s;
+ }
+
+
+  .activeToggleText{
+    background-color: #522504 !important;
+    background-size: 90%; 
+    color: white  !important;
+    display: inline-block; 
+    height: 100% !important; 
+    margin: 0px !important;
+    background-position: top;
+    
+  }
+
+  .inactiveToggleText{
+    background-color: transparent  !important;
+    color: black !important;
+    margin: 0px !important;
+    height: 100%!important;
+    padding: 6px;
+    background-size: 100%;
+    display: inline-block; 
+  }
+
+  .playToggles{
+    display:flex;
+
   }
