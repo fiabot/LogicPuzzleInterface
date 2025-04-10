@@ -1,6 +1,6 @@
 
 import { add_account, login, new_session } from "./API/SendToApi"
-import { getLikedPuzzles, get_posted_puzzles } from "./API/GetFromApi"
+import { getLikedPuzzles, getLikedPostedPuzzles } from "./API/GetFromApi"
 
 import Collapseable from "./Collapseable";
 
@@ -21,7 +21,7 @@ export default ViewLikedPuzzles = ({ user, mode, sessionId,  sessionStart}) => {
         return new Promise(async (resolve, reject) =>{
             
             puzzles = await getLikedPuzzles(user)
-            posted = await get_posted_puzzles(user)
+            posted = await getLikedPostedPuzzles(user)
             resolve([puzzles, posted])
         })
     }

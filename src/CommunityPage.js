@@ -1,5 +1,5 @@
 import { post_puzzle, add_comment, like_posted_puzzle, unlike_posted_puzzle, view_puzzle} from "./API/SendToApi";
-import { get_posted_puzzles, getLikedPuzzles } from "./API/GetFromApi";
+import { get_posted_puzzles,getLikedPuzzles,  getLikedPostedPuzzles } from "./API/GetFromApi";
 import { useEffect, useState } from "react";
 import SelectedPuzzle from "./SelectedPuzzle";
 import PlayablePuzzleList from "./PlayablePuzzleList";
@@ -35,9 +35,9 @@ let PuzzlePost = ({post, selectPost}) => {
 }
 
 
-let SelectedPost = ({user, post, r, appMode, sessionStart, sessionId}) => {
+let SelectedPost = ({user, post, r, appMode, sessionStart, sessionId, start_liked = true}) => {
     let [commentText, setCommentText] = useState("")
-    let [liked, setLiked] = useState(false); //TODO: make this actually checked if we have already liked puzzle 
+    let [liked, setLiked] = useState(start_liked); //TODO: make this actually checked if we have already liked puzzle 
     comments = post.comments.map((c, i) => <div className="comment" key={i}><p>{c.comment}</p><p className="metadata">{formatTime(c.time)}</p> <p className="metadata">{c.username}</p></div>)
 
     let time = formatTime(post.time)
@@ -68,12 +68,13 @@ let SelectedPost = ({user, post, r, appMode, sessionStart, sessionId}) => {
 
 
     return <div>
+         {(liked)?<button className="likeButton" onClick={toggleLike}><img src="./icons/liked.png" width="40" height="40"/></button>:   <button  className="likeButton" onClick={toggleLike}><img src="./icons/unliked.png" width="40" height="40"/></button>} 
         <SelectedPuzzle puzzle={post.puzzle} user={user} appMode={appMode}  r={r} sessionStart={sessionStart} sessionId={sessionId} can_like={false}/> 
         <div className="post">
         <h1>{post.title}</h1>
         <p className="metadata">{post.username}</p>
         <p className="metadata">{time}</p>
-        <button onClick={toggleLike}>{liked? "Unlike": "Like"}</button>
+        
         <p>{post.body}</p>
         <h2>Difficulty: {post.puzzle.difficulty}</h2>
         <p className="metadata">{views} views</p>
@@ -98,6 +99,7 @@ let SelectedPost = ({user, post, r, appMode, sessionStart, sessionId}) => {
 
 let MakeNewPost = ({user, r, sessionStart, sessionId}) => {
     let [likedPuzzles, setLikedPuzzles] = useState([])
+
     let [selectPuzzleIdx, setSelectedPuzzleIdx] = useState(-1)
     let [title, setTitle] = useState("")
     let [body, setBody] = useState("")
@@ -165,11 +167,17 @@ let MakeNewPost = ({user, r, sessionStart, sessionId}) => {
 let CommunityPage = ({user, appMode,  sessionStart, sessionId}) => {
     let [postedPuzzles, setPostedPuzzles] = useState([])
     let [selectedPuzzle, setSelectedPuzzle] = useState(null)
+    let [likedPostedPuzzles, setLikedPostedPuzzles] = useState([])
     let [mode, setMode] = useState("view")
     let fetch = async() => {
         let puzzles = await get_posted_puzzles(user)
 
+        console.log(puzzles)
+
         setPostedPuzzles(puzzles)
+
+        let likedP = await getLikedPostedPuzzles(user)
+        setLikedPostedPuzzles(likedP)
     } 
 
     useEffect(() => {
@@ -193,11 +201,20 @@ let CommunityPage = ({user, appMode,  sessionStart, sessionId}) => {
     }
 
 
+    let is_liked = (post) => {
+        id = post._id 
+
+        let ids = likedPostedPuzzles.map((p) => p._id)
+
+        return ids.includes(id)
+    }
+
+
     let mainContent = <div>Loading</div>
     if (mode == "view"){
         mainContent= <div className="postContainer">{postedPuzzles.map((p,i) => <PuzzlePost key={i} post={p} selectPost={selectPost}/>)}</div>
     }else if (mode == "selected"){
-        mainContent = <SelectedPost user={user} post={selectedPuzzle} r={r} appMode={appMode} sessionStart={sessionStart} sessionId={sessionId}/> 
+        mainContent = <SelectedPost user={user} post={selectedPuzzle} r={r} appMode={appMode} sessionStart={sessionStart} sessionId={sessionId} start_liked={is_liked(selectedPuzzle)}/> 
     }else if (mode == "new"){
         mainContent = <MakeNewPost  user={user} r={r}  sessionStart={sessionStart} sessionId={sessionId}/> 
     }

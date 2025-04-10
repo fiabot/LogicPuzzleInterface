@@ -147,11 +147,11 @@ export default selectedPuzzle = ({puzzle, setPuzzle, user, r, appMode, sessionId
 
         <div className="bottomButtons">
 
-<button className={mode == "play"? "active": ""} onClick={()=> {setMode("play");setContent(playable)}}>Play Puzzle</button>
+{can_like? <button className={mode == "play"? "active": ""} onClick={()=> {setMode("play");setContent(playable)}}>Play Puzzle</button>: ""}
 
-{(appMode == "serious" || appMode == "mixed")? <button className={mode == "edit"? "active": ""} onClick={()=> editPuzzle(puzzle)}>Edit Puzzle</button> : ""}
+{(can_like && (appMode == "serious" || appMode == "mixed"))? <button className={mode == "edit"? "active": ""} onClick={()=> editPuzzle(puzzle)}>Edit Puzzle</button> : ""}
 
-{otherPuzzles.length != 0? <button className={mode == "mutant"? "active": ""} onClick={() => seeMutants()}>See Similar</button>: ""}
+{can_like && otherPuzzles.length != 0? <button className={mode == "mutant"? "active": ""} onClick={() => seeMutants()}>See Similar</button>: ""}
 
 <button className="likeButton" onClick={()=> playPuzzle(puzzle)}><img src="./icons/openlink.png" width="40" height="40"/></button>
 </div>
