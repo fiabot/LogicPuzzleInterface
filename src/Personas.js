@@ -85,7 +85,7 @@ export default PersonaArea = ({puzzles, user, appMode, sessionId, sessionStart})
        return numberOfHintKinds(b) - numberOfHintKinds(a)
     }
 
-    let explorerPersona = <Persona puzzles={puzzles}  filter={explorerFilter} selectFunction={selectFun} title="Exploreer" description="This puzzle has the most different kind of hints." /> 
+    let explorerPersona = <Persona puzzles={puzzles}  filter={explorerFilter} selectFunction={selectFun} title="Explorer" description="This puzzle has the most different kind of hints." /> 
 
 
     if (mode == "personas") {
