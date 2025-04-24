@@ -71,13 +71,14 @@ onChange={(e) => {
 }
 
 let postResponse = (indexResponses, openResponses,  user) => {
-    let nullResponses = Object.keys(responses).filter((key) => { return responses[key] == -1 });
+    let nullResponses = Object.keys(indexResponses).filter((key) => { return indexResponses[key] == -1 });
 
     if (nullResponses.length > 0) {
-        Promise.resolve().then(alert("Please answer all questions."));
+        Promise.resolve().then(alert("Please answer all multiple-choice questions."));
     } else {
         data = {"time": new Date().toJSON, "CSI": indexResponses, "openResponses": openResponses}
         add_survey(user, data)
+        alert("Survey Submitted")
     }
 
 }
