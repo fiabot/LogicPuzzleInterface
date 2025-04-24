@@ -7,10 +7,15 @@ import PlayablePuzzleList from "./PlayablePuzzleList";
 
 let adminPublicKeys = ["Admin 1"]
 
+let openSurvey= (password) => {
+    url_str =  pathname = window.location.href +"survey?user=" + password
+    window.open(url_str, "_blank", "noreferrer");
 
-export default HomePage = ({username}) => {
+}
 
-    let [publicKey, setPublicKey] = useState("")
+
+export default HomePage = ({user, publicKey  }) => {
+
     let [userMode, setUserMode] = useState("mixed")
 
     let [newPrivateKey, setNewPrivateKey] = useState("")
@@ -20,7 +25,7 @@ export default HomePage = ({username}) => {
         // admin view 
 
         let add_user = async () => {
-            result =  await add_account(username, newPrivateKey, newPublicKey, userMode) 
+            result =  await add_account(user, newPrivateKey, newPublicKey, userMode) 
             if (result == "failure"){
                  alert("Failed to add user")
             }else{
@@ -29,7 +34,7 @@ export default HomePage = ({username}) => {
          }
 
         return <div className='puzzlesView'>
-        <h1>Welcome {username}</h1>
+        <h1>Welcome {publicKey}</h1>
         <h2>Add users</h2>
             <p>Enter Public Key</p>
             <input value={newPublicKey} onChange={(e) => setNewPublicKey(e.target.value)}></input>
@@ -48,10 +53,11 @@ export default HomePage = ({username}) => {
     }else{
 
         return <div className='puzzlesView'>
-            <h1>Welcome {username}</h1>
+            <h1>Welcome {publicKey}</h1>
             <p>Here we will give an overview of the system</p>
             <p>Here we will have a FAQ page</p>
-            <p> Here</p>
+            <p> Fill out a survey!</p>
+            <button onClick={() => openSurvey(user)}>Fill out a survey!</button>
            
         </div>
     }

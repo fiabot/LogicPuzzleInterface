@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { RenderPage, RenderPageProps, Viewer } from '@react-pdf-viewer/core';
 
-import '@react-pdf-viewer/core/lib/styles/index.css';
+//import '@react-pdf-viewer/core/lib/styles/index.css';
 
 
-import DocViewer, { DocViewerRenderers } from "@cyntler/react-doc-viewer";
+/*import DocViewer, { DocViewerRenderers } from "react-doc-viewer";
 import FailedConsent from './FailedConsent';
 
 const ConsentViewer =({ consent }) => {
@@ -30,4 +30,4 @@ const ConsentViewer =({ consent }) => {
    
 };
 
-export default ConsentViewer;
+export default ConsentViewer;*/

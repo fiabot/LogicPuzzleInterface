@@ -1,19 +1,22 @@
 import { useEffect,useState } from "react";
+import { add_survey } from "./API/SendToApi";
 import "./survey.css";
 
 
 // questions from the video game demand scale  (cognitive) and the GUESS scale (enjoyment)
 // "game" is changed to puzzle for clearity 
-let questions = ["The puzzle was cognitively demanding.", "I had to think very hard when playing the puzzle.",
-    "The puzzle required a lot of mental gymnastics.", "The puzzle stimulated my brain.", "This puzzle doesn’t require a lot of mental effort.", 
-    "The puzzle made me draw on all of my mental resources.", "The mental challenges in this puzzle had an impact on how I played.",
+let creativeSupportIndex = ["The system or tool allowed other people to work with me easily.",
+    " It was really easy to share ideas and designs with other people inside this system or tool.", " I would be happy to use this system or tool on a regular basis.", "I enjoyed using the system or tool.", 
+    "It was easy for me to explore many different ideas, options, designs, or outcomes, using this system or tool.", "The system or tool was helpful in allowing me to track different ideas, outcomes, or possibilities.",
+    "I was able to be very creative while doing the activity inside this system or tool.",
+    "The system or tool allowed me to be very expressive.", "My attention was fully tuned to the activity, and I forgot about the system or tool that I was using.", 
+    "I became so absorbed in the activity that I forgot about the system or tool that I was using.", " I was satisfied with what I got out of the system or tool.", "What I was able to produce was worth the effort I had to exert to produce it."
+];
 
-    "I think the puzzle is fun.", "I enjoy playing the puzzle.",
-    "I feel bored while playing the puzzle.", "I am likely to recommend this puzzle to others.",
-    "If given the chance, I want to play this puzzle again."];
 
+let openResponseQs = ["What was your goal when using the interface?", "Did you accomplish/make progress towards this goal?", "What features did you use most and why?", "What features did you use the least and why?", "Is there a feature you wish was included?", "If you created a puzzle encounter you enjoyed, please place the link here."]
 
-let answers = ["1 (Disagree)", "2", "3", "4", "5", "6", "7 (Agree)"];
+let answers = ["1 (strongly disagree)", "2", "3", "4", "5", "6", "7", "8", "9", "10 (strongly agree)"];
 
 function shuffleArray(array) {
     for (var i = array.length - 1; i > 0; i--) {
@@ -40,7 +43,7 @@ let LikertScale = ({ question, answers, responses, setResponses }) => {
 
     return (
         <div>
-            <label className="statement">{question}</label>
+            <p className="statement">{question}</p>
             <ul className='likert'>
                 {answerButtons}
             </ul>
@@ -48,33 +51,63 @@ let LikertScale = ({ question, answers, responses, setResponses }) => {
     );
 }
 
-let postResponse = (responses, puzzle, submit) => {
+let OpenResponse = ({question, responses, setResponses}) => {
+    console.log(question)
+
+    return <div> 
+    <p className="statement">{question}</p>
+<textarea
+rows={7} 
+cols={80}
+placeholder={"Type answer here"}
+onChange={(e) => {
+    updateResponse(question, e.target.value, responses, setResponses)
+}} /> 
+
+</div>
+
+
+
+}
+
+let postResponse = (indexResponses, openResponses,  user) => {
     let nullResponses = Object.keys(responses).filter((key) => { return responses[key] == -1 });
 
     if (nullResponses.length > 0) {
         Promise.resolve().then(alert("Please answer all questions."));
     } else {
-        //console.log("Puzzle:" + puzzle)
-        //console.log(responses);
-        submit(responses);
+        data = {"time": new Date().toJSON, "CSI": indexResponses, "openResponses": openResponses}
+        add_survey(user, data)
     }
 
 }
 
-export default Survey = ({ puzzleId, submit, questions }) => {
+export default Survey = ({ user}) => {
 
 
     let r = {}
-    questions.map((question) => r[question] = -1);
-    let [responses, setResponses] = useState(r);
-    let qs = questions.map((question) => { return <LikertScale key={question} question={question} answers={answers} responses={responses} setResponses={setResponses} /> });
+    creativeSupportIndex.map((question) => r[question] = -1);
+    let r2 = {}
+    openResponseQs.map((question) => r2[question] = "");
+
+    let [indexResponses, setIndexResponses] = useState(r);
+    let [openResponses, setOpenResponses] = useState(r2)
+    let qs = creativeSupportIndex.map((question) => { return <LikertScale key={question} question={question} answers={answers} responses={indexResponses} setResponses={setIndexResponses} /> });
+
+    let qs2 = openResponseQs.map((question) => { return <OpenResponse key={question} question={question} responses={openResponses} setResponses={setOpenResponses} /> });
     return (<div className="wrap">
 
-        <h1 className="likert-header"> Answer these questions about the puzzle you just solved</h1>
+        <h1 className="likert-header"> Please answer the questions below about your experience using the interface</h1>
 
         <form action="">
             {qs}
 
-            <button className="submit" onClick={() => postResponse(responses, puzzleId, submit)} type="button">Submit</button>
+        <h1 className="likert-header"> Optionally answer any or all of the questions below </h1>
+         {qs2}
+    
+
+
+
+            <button className="submit" onClick={() => postResponse(indexResponses, openResponses, user)} type="button">Submit</button>
         </form></div>);
 }

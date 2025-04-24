@@ -15,11 +15,11 @@ import {PuzzleModel,createPuzzle} from './src/puzzleModel';
 import lzString from  "lz-string"
 import EvolveManager from './src/EvolveManager';
 import EditPuzzle from './src/EditPuzzle';
-import { setRef } from '@mui/material';
 import './src/style.css';
 import Login from './src/Login';
 import ViewLikedPuzzles from './src/ViewLikedPuzzles';
 import {CommunityPage} from './src/CommunityPage';
+import SurveyPage from './src/surveyPage';
 let MODE = "mixed"
 
 
@@ -164,7 +164,7 @@ let PlayPuzzle = () => {
 
    let content = <div>None</div>
    if (mode == "home"){
-    content = <HomePage username={username}/> 
+    content = <HomePage user={user} publicKey={username}/> 
     
    }else if (mode == "createPuzzle"){
     content = <CategoryInput startEvolve={startEvolve} user={user} mode={userMode} scenario={scenario} setScenario={setScenario} name={name} setName={setName}  sessionStart={sessionStart} sessionId={sessionId}/> 
@@ -180,6 +180,8 @@ let PlayPuzzle = () => {
 
   if (pathname == "/play"){
     return <PlayPuzzle/> 
+  }else if (pathname == "/survey") {
+    return <SurveyPage /> 
   }else if (user == null){
     return <Login  user={user} setUser={setUser} mode={userMode} setMode={setUserMode} sessionId={sessionId} setSessionId={setSessionID} sessionStart={sessionStart} setSessionStart={setSessionStart} username={username} setUsername={setUsername}/>
   } else{
@@ -197,5 +199,3 @@ let PlayPuzzle = () => {
 }
 
 
-
-setRef
