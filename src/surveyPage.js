@@ -4,7 +4,7 @@ import { add_account, login, new_session } from "./API/SendToApi"
 import Survey from "./survey";
 import { useEffect, useState } from "react"
 
-let Login = ( {setPassword, username, setUsername}) => {
+let Login = ( { setPassword, username, setUsername}) => {
 
 
     let [newUser, setUser] = useState("")
@@ -43,7 +43,7 @@ export default SurveyPage = ({}) => {
     let [mode, setMode] = useState(null)
 
     if (password == null){
-        return <Login username={username} setUsername={setUsername}/> 
+        return <Login  setPassword={setPassword} username={username} setUsername={setUsername}/> 
     }else if (username == null){
         login(password, setPassword,  setUsername, setMode); 
         return <div>Logging you in....</div>
