@@ -5,7 +5,7 @@ import InformedConsent from './src/InformedConsent';
 import InitialSurvey from './src/InitialSurvey';
 import PuzzleManager from './src/PuzzleManager';
 import Tutorial from './src/Tutorial';
-import Debug from './debug';
+// import Debug from './debug';
 import CategoryInput from './src/CategoryInput';
 import ViewPuzzles from './src/ViewPuzzles';
 import HomePage from './src/home';
