@@ -146,7 +146,33 @@ export default PuzzleMaker = ({ startEvolve, user, mode, scenario, setScenario, 
         )
     }
 
+    let updateName = (newName, scens) => {
+        setName(newName)
+        shouldOverwrite = false
+        // Go through existing scenarios
+        for (let scen of scens) {
+            // Find any scenario with the same name
+            if (scen.name == newName) {
+                // Check if the scenario should be overwritten by the user (because the user created it or the user is an admin)
+                if (scen.origin == "user" || mode == "admin") {
+                    shouldOverwrite = true
+                }
+            }
+        }
+
+        // Set the value of overwriting appropriately, 
+        // if it is not currently at the correct value.
+        // We check the current value to avoid triggering React updates in a loop.
+        if (!overwriting && shouldOverwrite) {
+            setOverwriting(true)
+        } else if (overwriting && !shouldOverwrite) {
+            setOverwriting(false)
+        }
+    }
+
     let updateScens = (scens) => {
+        nameFound = false
+        toUpdate = null
         scens.map((s) => {
             let c = s.categories.map((cat) => {
                 let cat2 = cat
@@ -158,18 +184,33 @@ export default PuzzleMaker = ({ startEvolve, user, mode, scenario, setScenario, 
             s.categories = c
 
             if (name == s.name) {
-                if (overwriting && (s.origin == "user" || mode == "admin")) {
-                    updateScenario(s)
+                if (s.origin == "user" || mode == "admin" || !nameFound) {
+                    toUpdate = s
+                    nameFound = true
                 } 
-                else if (!overwriting && s.origin == "sample") {
-                    updateScenario(s)
-                }
             }
             return s
         })
         setScens(scens)
         let cats = scens.map((s2) => s2.categories).flat()
+        let nodupes = []
+        let samplecatnames = []
+        let usercatnames = []
+        for (let cat of cats) {
+            if (cat["origin"] == "user" && !usercatnames.includes(cat["name"])) {
+                usercatnames.push(cat["name"])
+                nodupes.push(cat)
+            }
+            else if (cat["origin"] == "sample" && !samplecatnames.includes(cat["name"])) {
+                samplecatnames.push(cat["name"])
+                nodupes.push(cat)
+            }
+        }
+        cats = nodupes
         setCats(cats)
+        if (nameFound) {
+            updateScenario(toUpdate, scens)
+        }
     }
 
     useEffect(() => {
@@ -182,18 +223,12 @@ export default PuzzleMaker = ({ startEvolve, user, mode, scenario, setScenario, 
     }, [])
 
 
-    let updateScenario = (s) => {
+    let updateScenario = (s, scens) => {
         setScenario(s.scenario)
-        setName(s.name)
         setScenUpdated(true)
         setSuggest(s.categories)
         setOrigin(s.origin)
-        if (s.origin == "user" || (s.origin != "new" && mode == "admin")) {
-            setOverwriting(true)
-        }
-        else {
-            setOverwriting(false)
-        }
+        updateName(s.name, scens)
     }
 
     tempbutton = tempCats.map((cat, idx) => {
@@ -213,10 +248,10 @@ export default PuzzleMaker = ({ startEvolve, user, mode, scenario, setScenario, 
                 className += " selectedScenario"
             }
         } 
-        return <button className={className} key={idx} onClick={() => { updateScenario(s); add_click(sessionId, "select scenario", sessionStart) }} >{s.name}</button>
+        return <button className={className} key={idx} onClick={() => { updateScenario(s, scens); add_click(sessionId, "select scenario", sessionStart) }} >{s.name}</button>
     })
 
-    scenarioButton.push(<button button className="userButton" key={scens.length} onClick={() => { updateScenario({ "name": "custom scenario", "scenario": "Enter scenario text", "categories": [], "origin": "new"}); add_click(sessionId, "new scenario", sessionStart) }}>Create New Scenario</button>)
+    scenarioButton.push(<button button className="userButton" key={scens.length} onClick={() => { updateScenario({ "name": "custom scenario", "scenario": "Enter scenario text", "categories": [], "origin": "new"}, scens); add_click(sessionId, "new scenario", sessionStart) }}>Create New Scenario</button>)
 
     categoryButton = cats.map((cat, idx) => {
         return <button className={cat.origin == "sample" ? "smallButton" : "userButton"} key={idx} onClick={() => { setCategories([...categories, cat]); cat.origin == "sample" ? add_click(sessionId, "add example category", sessionStart) : "" }} >{cat.name}</button>
@@ -249,7 +284,7 @@ export default PuzzleMaker = ({ startEvolve, user, mode, scenario, setScenario, 
     </div>
 
     if (!scenUpdated) {
-        updateScenario({ "name": "custom scenario", "scenario": "Enter scenario text", "categories": [], "origin": "new"})
+        updateScenario({ "name": "custom scenario", "scenario": "Enter scenario text", "categories": [], "origin": "new"}, scens)
     }
 
     return <div className="puzzleView">
@@ -258,7 +293,7 @@ export default PuzzleMaker = ({ startEvolve, user, mode, scenario, setScenario, 
 
             <div className="authoringView">
                 <h1>Scenario Title</h1>
-                <input className="categoryInput" value={name} onChange={e => setName(e.target.value)} />
+                <input className="categoryInput" value={name} onChange={e => updateName(e.target.value, scens)} />
 
                 <h1>Narrative</h1>
                 <textarea className={"scenarioInput"} value={scenario} onChange={(e) => setScenario(e.target.value)} onClick={() => add_click(sessionId, "edit narrative", sessionStart)} />
@@ -288,8 +323,6 @@ export default PuzzleMaker = ({ startEvolve, user, mode, scenario, setScenario, 
                     Number of entities: <button onClick={() => { if (numEntites > 3) { setNumEntities(numEntites - 1) } }}>-</button> {numEntites}     <button onClick={() => setNumEntities(numEntites + 1)}>+</button>
                 </div>
                 <div> <button className="largeButton" onClick={() => startEvolve(categories)}>Start Generation</button></div>
-
-
 
             </div>
 

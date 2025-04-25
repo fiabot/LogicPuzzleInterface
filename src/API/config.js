@@ -1,7 +1,7 @@
 import _axios from "axios";
 import { useState } from "react";
-//const API_URL = 'http://127.0.0.1:3000' 
-const API_URL = 'https://christie.khoury.northeastern.edu' 
+const API_URL = 'http://127.0.0.1:3000' 
+// const API_URL = 'https://christie.khoury.northeastern.edu' 
 
 const EVOLVE_URL = API_URL + "/map_evolve"
 const SAMPLE_CAT_URL = API_URL + '/sample_categories'
