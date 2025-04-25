@@ -1,4 +1,4 @@
-import {api, EVOLVE_URL, ADD_ACCOUNT_URL, LIKE_PUZZLE, ITER_EVOLVE, ADD_GRAMMAR_RULE, ADD_CATEGORY, GET_PUBLIC_KEY, ADD_BRAINSTORM, REMOVE_PUZZLE, UPDATE_PUZZLE, ADD_SCEN, NEW_SESSION, ADD_CLICK, POST_PUZZLE, ADD_COMMENT, LIKE_POSTED_PUZZLE, UNLIKED_POSTED_PUZZLE, VIEW_PUZZLE, ADD_SURVEY} from './config' 
+import {api, EVOLVE_URL, ADD_ACCOUNT_URL, LIKE_PUZZLE, ITER_EVOLVE, ADD_GRAMMAR_RULE, ADD_CATEGORY, GET_PUBLIC_KEY, ADD_BRAINSTORM, REMOVE_PUZZLE, UPDATE_PUZZLE, ADD_SCEN, UPDATE_SCEN, DELETE_SCEN, NEW_SESSION, ADD_CLICK, POST_PUZZLE, ADD_COMMENT, LIKE_POSTED_PUZZLE, UNLIKED_POSTED_PUZZLE, VIEW_PUZZLE, ADD_SURVEY} from './config' 
 
 
 let CLICK_TYPES = {"select scenario": "casual", "add example category" : "casual", "select recommendation": "casual", "view similar": "casual", "select similar": "casual", "get brainstorm": "casual",  "copy narrative": "casual",
@@ -49,7 +49,6 @@ let login = async(username, setUserId, setPublicKey, setMode) => {
     if (response.status < 300){
         setUserId(username)
         setPublicKey(response.data.publicKey)
-
         setMode(response.data.mode)
         
         return "success"
@@ -225,6 +224,18 @@ let add_scen = async (user, name, scen, cats) => {
 
 }
 
+let update_scen = async (user, name, scen, cats) => {
+    request = {"user": user, "name": name, "scenario":scen, categories: cats}
+    response = await api.post(UPDATE_SCEN, request)
+    return response 
+}
+
+let delete_scen = async (user, name) => {
+    request = {"user": user, "scen_id": name}
+    response = await api.post(DELETE_SCEN, request)
+    return response 
+}
+
 let add_is = async (cat1, cat2, template, user) => {
     request = {"user": user, "cat1": cat1, "cat2": cat2, "template": template, type:"is"}
     response = await api.post(ADD_GRAMMAR_RULE, request)
@@ -283,6 +294,4 @@ let add_or_brain  = async (cat1, cat2, is_cat,  template, user) => {
 
 }
 
-
-
-export {postEvolution, add_account, like_puzzle, startIterEvolve, continueIterEvolve, add_is, add_not, add_before, add_or, add_cat, login,add_before_brain, add_is_brain, add_or_brain, add_not_brain, remove_puzzle, update_puzzle, add_scen, new_session, add_click, post_puzzle, add_comment, like_posted_puzzle, unlike_posted_puzzle, view_puzzle, add_survey}
+export {postEvolution, add_account, like_puzzle, startIterEvolve, continueIterEvolve, add_is, add_not, add_before, add_or, add_cat, login,add_before_brain, add_is_brain, add_or_brain, add_not_brain, remove_puzzle, update_puzzle, add_scen, update_scen, delete_scen, new_session, add_click, post_puzzle, add_comment, like_posted_puzzle, unlike_posted_puzzle, view_puzzle, add_survey}

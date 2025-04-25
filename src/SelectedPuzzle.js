@@ -149,7 +149,7 @@ export default selectedPuzzle = ({puzzle, setPuzzle, user, r, appMode, sessionId
 
 {can_like? <button className={mode == "play"? "active": ""} onClick={()=> {setMode("play");setContent(playable)}}>Play Puzzle</button>: ""}
 
-{(can_like && (appMode == "serious" || appMode == "mixed"))? <button className={mode == "edit"? "active": ""} onClick={()=> editPuzzle(puzzle)}>Edit Puzzle</button> : ""}
+{(can_like && (appMode == "serious" || appMode == "mixed" || appMode == "admin"))? <button className={mode == "edit"? "active": ""} onClick={()=> editPuzzle(puzzle)}>Edit Puzzle</button> : ""}
 
 {can_like && otherPuzzles.length != 0? <button className={mode == "mutant"? "active": ""} onClick={() => seeMutants()}>See Similar</button>: ""}
 
