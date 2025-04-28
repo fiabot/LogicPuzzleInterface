@@ -2,7 +2,7 @@
 import { add_account, login, new_session } from "./API/SendToApi"
 import { getLikedPuzzles } from "./API/GetFromApi"
 import { useEffect, useState } from "react"
-
+import { sanitize } from "./utils";
 import PlayablePuzzleList from "./PlayablePuzzleList";
 
 let adminPublicKeys = ["Admin 1"]
@@ -24,7 +24,7 @@ export default HomePage = ({ user, setUser, mode, setMode, sessionId, setSession
     }
 
     let log_user_in = async () => {
-       result =  await login(newUser, setUser, setUsername, setMode); 
+       result =  await login(sanitize(newUser), setUser, setUsername, setMode); 
        
        if (result == null){
             alert("Key Not Regonized, try again")
