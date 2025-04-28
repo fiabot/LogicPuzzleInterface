@@ -62,10 +62,20 @@
   font-size: medium;
   height: 30px;
   border-radius: 15px;
-  border: #776274;
+  border: 1px black;
   margin: 5px;
 
 
+}
+
+.sampleButton {
+  background-color: #4a0912;
+  color: white;
+  font-size: medium;
+  height: 30px;
+  border-radius: 15px;
+  border: 1px black;
+  margin: 5px;
 }
 
 .userButton {
@@ -78,6 +88,67 @@
   border: #8b2109;
   margin: 5px;
 }
+
+.sampleButton:hover,
+.sampleButton.selectedScenario .userButton:hover,
+.userButton.selectedScenario {
+  background-color: #776274;
+}
+
+
+.editor {
+  overflow: auto;
+  scrollbar-color: #776274 #A07178;
+  height: 70%;
+  width: 100%;
+}
+
+.hintEditor {
+  width: 70%;
+
+
+
+  margin: 10px;
+
+  padding: 20px;
+}
+
+.hintEditor li {
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+.scenarioInput {
+  margin-bottom: 5px;
+  height: 100px;
+  width: 70%;
+
+  margin: 10px;
+
+  padding: 20px;
+
+  background-color: #faf2f9;
+  border-radius: 5px;
+  border-color: #A07178;
+  border-style: solid;
+  padding: 12px 20px;
+
+}
+
+.smallButton {
+  background-color: #776274;
+  color: white;
+  font-size: medium;
+  height: 30px;
+  border-radius: 15px;
+  border: #776274;
+  margin: 5px;
+}
+
+.smallButton:hover {
+  background-color: #4d3f4b;
+}
+
 
 .editor {
   overflow: auto;
@@ -150,15 +221,7 @@
 }
 
 
-.smallButton:hover,
-.smallButton.selectedScenario {
-  background-color: #4d3f4b;
-}
 
-.userButton:hover,
-.userButton.selectedScenario {
-  background-color: #4d1f25;
-}
 
 .mediumButton {
   background-color: #776274;
@@ -244,21 +307,8 @@
   color: rgb(119, 162, 241);
 }
 
-.tooltip .tooltiptext {
-  visibility: hidden;
-  width: 600px;
-  background-color: black;
-  /* color of the tooltip text */
-  color: #fff;
-  text-align: center;
-  border-radius: 6px;
-  padding: 5px 0;
-  position: absolute;
-  z-index: 1;
-}
-
-.tooltip:hover .tooltiptext {
-  visibility: visible;
+.tooltip .tooltiptext ol {
+  width: 80%;
 }
 
 .collapseButton {

@@ -144,7 +144,7 @@ let printDocument=(ref) =>{
         let cat2 = attributes[2] 
         let ent2 = attributes[3]
 
-        return `${ent1} in the category ${cat1} is not ${ent2} in the category ${cat2}`
+        return `${ent1} in the category ${cat1} is ${ent2} in the category ${cat2}`
   }
     else if (kind == "before"){
             let cat1 = attributes[0]
@@ -188,21 +188,23 @@ let printDocument=(ref) =>{
 
   }
 
-  let grammar_equal= (g1, g2) => {
+  let grammar_equal= (g1, g2, loose=true) => {
     let kind = Object.keys(g1)[0]
     let attributes = g1[kind]
 
     let test_kind = Object.keys(g2)[0]
     let test_attributes = g2[kind]
 
-    
+    if (loose && (kind == "" || test_kind == "")){
+        return true
+    }
 
-    if (attributes && test_attributes && attributes.length != test_attributes.length){
+    else if (attributes && test_attributes && attributes.length != test_attributes.length){
       return false 
     }
 
     else if (kind != "compound_or" && test_kind == kind){
-      let matches = test_attributes.filter((a, i) => a == attributes[i])
+      let matches = test_attributes.filter((a, i) => ((a == attributes[i]) || (loose && (a == "" || attributes[i] ==""))))
       return matches.length == test_attributes.length 
     }else if (kind == "compound_or" && test_kind == kind){
         let test1 = grammar_equal(attributes[0], test_attributes[0])
@@ -290,6 +292,54 @@ let printDocument=(ref) =>{
     return time 
   }
 
-  export {printDocument, getClueLogic, getBrainStormIdeas, hasHints, findMutants, formatTime}
+  let categoryFilter =(kind, cat, att, allAttrs) => {
+    if (kind == "is" || kind == "not"){
+        if (att == "cat1"){
+            return allAttrs[2] == "" || allAttrs[2] != cat.name
+        }else if (att == "cat2"){
+            return allAttrs[0] == "" || allAttrs[0] != cat.name
+        }
+    }else if (kind == "simple_or"){
+        if (att == "cat1" || att == "cat2"){
+            return true
+        }else{
+            let cat1 = allAttrs[0] == "" || allAttrs[0] != cat.name
+            let cat2 = allAttrs[2] == "" || allAttrs[2] != cat.name
+
+            return cat1 && cat2 
+        }
+    }else if (kind == "before"){
+        if (att == "cat1" || att == "cat2"){
+            return true
+        }else{
+            let cat1 = allAttrs[0] == "" || allAttrs[0] != cat.name
+            let cat2 = allAttrs[2] == "" || allAttrs[2] != cat.name
+            
+            return cat1 && cat2 && cat.is_numerical
+
+        }
+    }else{
+        return true 
+    }
+}
+
+let entityFilter =(kind, ent, att, allAttrs) => {
+    if (kind == "is" || kind == "not"){
+        return true 
+    }else if (kind == "simple_or" || kind == "before"){
+        if (att == "is_ent"){
+            return true
+        }else if (att == "ent1"){
+          return allAttrs[3] == "" || allAttrs[3] != ent
+        }else{
+            return allAttrs[1] == "" || allAttrs[1] != ent
+          }
+    }else{
+        return true 
+    }
+}
+
+
+  export {printDocument, getClueLogic, getBrainStormIdeas, hasHints, findMutants, formatTime, categoryFilter, entityFilter}
 
 

@@ -13,8 +13,7 @@ let creativeSupportIndex = ["The system or tool allowed other people to work wit
     "I became so absorbed in the activity that I forgot about the system or tool that I was using.", " I was satisfied with what I got out of the system or tool.", "What I was able to produce was worth the effort I had to exert to produce it."
 ];
 
-
-let openResponseQs = ["What was your goal when using the interface?", "Did you accomplish/make progress towards this goal?", "What features did you use most and why?", "What features did you use the least and why?", "Is there a feature you wish was included?", "If you created a puzzle encounter you enjoyed, please place the link here."]
+let openResponseQs = ["What was your goal when using the interface?", "Did you accomplish/make progress towards this goal?", "What features did you use most and why?", "What features did you try but didn't like or didn't find useful? Why?", "Is there a feature you wish was included?", "If you created a puzzle you particularly liked, please example why and include the link to the puzzle."]
 
 let answers = ["1 (strongly disagree)", "2", "3", "4", "5", "6", "7", "8", "9", "10 (strongly agree)"];
 

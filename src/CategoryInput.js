@@ -238,7 +238,7 @@ export default PuzzleMaker = ({ startEvolve, user, mode, scenario, setScenario, 
     scenarioButton = scens.map((s, idx) => {
         className = "userButton"
         if (s.origin == "sample") {
-            className = "smallButton"
+            className = "sampleButton"
         }
         if (name == s.name) {
             if (overwriting && (s.origin == "user" || mode == "admin")) {
@@ -254,11 +254,11 @@ export default PuzzleMaker = ({ startEvolve, user, mode, scenario, setScenario, 
     scenarioButton.push(<button button className="userButton" key={scens.length} onClick={() => { updateScenario({ "name": "custom scenario", "scenario": "Enter scenario text", "categories": [], "origin": "new"}, scens); add_click(sessionId, "new scenario", sessionStart) }}>Create New Scenario</button>)
 
     categoryButton = cats.map((cat, idx) => {
-        return <button className={cat.origin == "sample" ? "smallButton" : "userButton"} key={idx} onClick={() => { setCategories([...categories, cat]); cat.origin == "sample" ? add_click(sessionId, "add example category", sessionStart) : "" }} >{cat.name}</button>
+        return <button className={cat.origin == "sample" ? "sampleButton" : "userButton"} key={idx} onClick={() => { setCategories([...categories, cat]); cat.origin == "sample" ? add_click(sessionId, "add example category", sessionStart) : "" }} >{cat.name}</button>
     })
 
     suggestedButton = suggest.map((cat, idx) => {
-        return <button className={cat.origin == "sample" ? "smallButton" : "userButton"} key={idx} onClick={() => { setCategories([...categories, cat]); cat.origin == "sample" ? add_click(sessionId, "add example category", sessionStart) : "" }} >{cat.name}</button>
+        return <button className={cat.origin == "sample" ? "sampleButton" : "userButton"} key={idx} onClick={() => { setCategories([...categories, cat]); cat.origin == "sample" ? add_click(sessionId, "add example category", sessionStart) : "" }} >{cat.name}</button>
     })
 
     let sampleCategories = <div>
