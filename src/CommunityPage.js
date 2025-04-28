@@ -5,12 +5,11 @@ import SelectedPuzzle from "./SelectedPuzzle";
 import PlayablePuzzleList from "./PlayablePuzzleList";
 import "./community_style.css"
 import { formatTime } from "./utils";
+import { sanitize } from "./utils";
 
 
 let PuzzlePost = ({post, selectPost}) => {
     let time = formatTime(post.time)
-
-    console.log(post.puzzle.categories)
 
     let cats = post.puzzle.categories.length
     let entities = post.puzzle.categories[0].entities.length
@@ -45,7 +44,7 @@ let SelectedPost = ({user, post, r, appMode, sessionStart, sessionId, start_like
     let likes = "likes" in post ? post.likes : 0
 
     let add_comment_button = async () => {
-        let result = await add_comment(post["_id"], commentText, new Date().toJSON(), user)
+        let result = await add_comment(post["_id"], sanitize(commentText), new Date().toJSON(), user)
 
         if (result.status < 300){
             alert("Successfully Posted")
@@ -118,7 +117,7 @@ let MakeNewPost = ({user, r, sessionStart, sessionId}) => {
         if(selectPuzzleIdx == -1){
             alert("Please select a puzzle before posting")
         }else{
-            p = await post_puzzle(likedPuzzles[selectPuzzleIdx], title, body, new Date().toJSON(), user)
+            p = await post_puzzle(likedPuzzles[selectPuzzleIdx], sanitize(title), sanitize(body), new Date().toJSON(), user)
 
             if (p.status < 300){
                 alert("Posted Puzzle")

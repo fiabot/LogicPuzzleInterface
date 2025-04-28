@@ -6,6 +6,7 @@ import { update_puzzle, like_puzzle } from "./API/SendToApi"
 import "./narrative.css";
 import { getBrainStormIdeas, getClueLogic } from "./utils"
 import { add_click } from "./API/SendToApi"
+import { sanitize } from "./utils"
 
 
 let GetClues = ({brainstorms, setNarrative, sessionStart, sessionId}) => {
@@ -84,10 +85,10 @@ export default EditPuzzle = ({puzzleData, setPlayable, r, user, sessionId, sessi
     let getNewPuzzle = () =>{
 
         let newPuzzle = puzzleData
-        newPuzzle.hints = hints 
-        newPuzzle.scenario = scenario 
-        newPuzzle.name = title 
-        newPuzzle.narratives = narratives
+        newPuzzle.hints = hints.map(sanitize) 
+        newPuzzle.scenario = sanitize(scenario)  
+        newPuzzle.name = sanitize(title) 
+        newPuzzle.narratives = narratives.map(sanitize)
 
         return newPuzzle
 
