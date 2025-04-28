@@ -132,3 +132,44 @@
 .cropped {
     height: 900px;
 }
+
+.hintFilter ol{
+    width: 100%;
+}
+
+Slider{
+    background-color: #E9D0C4;
+    color:#776274;
+}
+
+select{
+    background-color: #D8D2D7;
+    color: black;
+    font-size: medium;
+    text-align: center;
+    height: 30px;
+
+    border-top: none; 
+    border-left: none; 
+    border-right: none; 
+ 
+    border-bottom:  1px solid black; 
+    margin: 5px;
+}
+
+option:checked {
+    font-weight: bold;
+  }
+
+option{
+    background-color: #D8D2D7;
+    color: black;
+}
+
+option:hover,
+option:focus {
+  background: #776274;
+  color: white; 
+}
+
+  
