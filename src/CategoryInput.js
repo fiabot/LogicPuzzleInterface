@@ -149,6 +149,8 @@ export default PuzzleMaker = ({ startEvolve, user, mode, scenario, setScenario, 
     let updateName = (newName, scens) => {
         setName(newName)
         shouldOverwrite = false
+        overwriteScen = null
+        adminScen = null
         // Go through existing scenarios
         for (let scen of scens) {
             // Find any scenario with the same name
@@ -156,6 +158,10 @@ export default PuzzleMaker = ({ startEvolve, user, mode, scenario, setScenario, 
                 // Check if the scenario should be overwritten by the user (because the user created it or the user is an admin)
                 if (scen.origin == "user" || mode == "admin") {
                     shouldOverwrite = true
+                    overwriteScen = scen
+                }
+                else {
+                    adminScen = scen
                 }
             }
         }
@@ -167,6 +173,47 @@ export default PuzzleMaker = ({ startEvolve, user, mode, scenario, setScenario, 
             setOverwriting(true)
         } else if (overwriting && !shouldOverwrite) {
             setOverwriting(false)
+        }
+
+        shouldSuggest = []
+        if (overwriteScen != null) {
+            shouldSuggest = overwriteScen.categories
+        } else if (adminScen != null) {
+            shouldSuggest = adminScen.categories
+        } 
+
+        // Check if suggested categories should be updated.
+        equal = true
+        for (cat1 of shouldSuggest) {
+            found = false
+            for (cat2 of suggest) {
+                if (cat1.name == cat2.name) {
+                    found = true
+                    continue
+                }
+            }
+            if (!found) {
+                equal = false
+                break
+            }
+        }
+        if (equal) {
+            for (cat1 of suggest) {
+                found = false
+                for (cat2 of shouldSuggest) {
+                    if (cat1.name == cat2.name) {
+                        found = true
+                        continue
+                    }
+                }
+                if (!found) {
+                    equal = false
+                    break
+                }
+            }
+        }
+        if (!equal) {
+            setSuggest(shouldSuggest)
         }
     }
 

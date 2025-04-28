@@ -90,7 +90,8 @@
 }
 
 .sampleButton:hover,
-.sampleButton.selectedScenario .userButton:hover,
+.sampleButton.selectedScenario,
+.userButton:hover,
 .userButton.selectedScenario {
   background-color: #776274;
 }
