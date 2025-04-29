@@ -44,16 +44,12 @@ export default EvolveManager = ({categories, user, scenario, name, sessionId, se
 
     useEffect(() => {
         evolveNext()
-    }, [iters])
+    }, [iters, maxIters])
 
     let evolveNext = async () => {
        
         if (iters >= maxIters){
-            if (confirm(puzzles.length + " puzzle have been created, would you like to continue evolving?")){
-                setMaxIters(maxIters + 5); 
-            }else{
-                return 
-            }
+            return 
         }
         if (id == -1) {
             data = await  startIterEvolve(categories, user,name, scenario);
@@ -80,8 +76,17 @@ export default EvolveManager = ({categories, user, scenario, name, sessionId, se
         <div className="header">
 
     
-        <h2> Generation: {iters * 40}, total puzzles: {showArchive? puzzles.length + archive.length: puzzles.length}</h2>
-        <button className='smallButton' onClick={()=> setShowArchive(!showArchive)}>{showArchive? "Show Best": "Show All"}</button>
+        <h2> Generation Cycle: {iters} of {maxIters}. Total puzzles: {showArchive? puzzles.length + archive.length: puzzles.length} <button className='smallButton' onClick={()=> setMaxIters(maxIters + 5)}>+ cycles</button>        </h2>
+
+        <input    onClick={()=> setShowArchive(!showArchive)}  checked={showArchive} type="checkbox" className="toggleCheckbox" id="colorToggle"/>
+      <label for="colorToggle" className="toggleButton">
+      <div>Show Best</div> 
+        <div>Show All</div> 
+      </label>
+        
+        
+        
+
         </div>
 
 
