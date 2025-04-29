@@ -412,4 +412,40 @@
   
 
 
+      .faq{
+        background-color: #E6CCBE; 
+        width: 98%; 
+        margin: 10px;
+        padding: 10px;
+        padding-bottom: 10px;
+        padding-top: 0px;
+        padding-left: 0px;
+        padding-right: 0px;
+        border-bottom: 10px solid #624146;
+        border-left: 3px solid #624146;
+        border-right: 3px solid #624146;
+    
+    }
 
+    .faq p{
+      font-size: 1.7vmin;
+      text-align: justify;
+      padding: 0.5vmin;
+      margin: 0.5vmin;
+      
+  }
+
+
+.faq h1{
+  background-color: #A07178; 
+  color:#E9D0C4; 
+  font-size: 6vmin;
+  border: 5px solid #624146; 
+}
+
+.faq h2{
+  background-color: #A07178; 
+  color:#E9D0C4; 
+  font-size: 4vmin;
+  border: 5px solid #624146; 
+}

@@ -48,7 +48,7 @@ export default SurveyPage = ({}) => {
         login(password, setPassword,  setUsername, setMode); 
         return <div>Logging you in....</div>
     }else {
-        return <Survey user={username}/> 
+        return <Survey user={password} username={username}/> 
     }
 
 
