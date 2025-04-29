@@ -2,7 +2,7 @@ import { useState } from "react"
 import SelectedPuzzle from "./SelectedPuzzle"
 import { add_click } from "./API/SendToApi"
 
-let Persona = ({puzzles, filter, selectFunction, title, description, sessionId, sessionStart}) => {
+let Persona = ({puzzles, filter, selectFunction, title, description,image, sessionId, sessionStart}) => {
     if (puzzles.length > 0){
         let sorted = puzzles.slice()
 
@@ -24,11 +24,18 @@ let Persona = ({puzzles, filter, selectFunction, title, description, sessionId, 
         
         </div>
 
-        <div>
+        <div className="personaCard">
+            <div className="personaIcon">
+            <img src={image} width="100" height="100"/>
+            </div>
+            <div className="personaText">
             <h1>{title}</h1>
             <p>{description}</p>
-        <button onClick={()=> selectFunction(puzzle)}>Select</button>
+            </div>
+       
+        
         </div>
+        <button className="selectButton" onClick={()=> selectFunction(puzzle)}>Select</button>
 
         </div>
     }else{
@@ -69,7 +76,7 @@ export default PersonaArea = ({puzzles, user, appMode, sessionId, sessionStart})
  
     let challengeFilter = (a,b ) => {return b.diff - a.diff}
 
-    let challengePersona = <Persona puzzles={puzzles}  filter={challengeFilter} selectFunction={selectFun} title="Logistician" description="This is the hardest puzzle I could find." /> 
+    let challengePersona = <Persona image="./icons/people/logitican.png" puzzles={puzzles}  filter={challengeFilter} selectFunction={selectFun} title="Logistician" description="This is the hardest puzzle I could find." /> 
 
     let minimalFilter = (a, b) => {
         if (a.diff == b.diff) {
@@ -79,13 +86,13 @@ export default PersonaArea = ({puzzles, user, appMode, sessionId, sessionStart})
         }
     }
 
-    let minPersona = <Persona puzzles={puzzles}  filter={minimalFilter} selectFunction={selectFun} title="Minimalist" description="This is the simplest puzzle I could find." /> 
+    let minPersona = <Persona image="./icons/people/simplist.png" puzzles={puzzles}  filter={minimalFilter} selectFunction={selectFun} title="Minimalist" description="This is the simplest puzzle I could find." /> 
 
     let explorerFilter = (a, b) => {
        return numberOfHintKinds(b) - numberOfHintKinds(a)
     }
 
-    let explorerPersona = <Persona puzzles={puzzles}  filter={explorerFilter} selectFunction={selectFun} title="Explorer" description="This puzzle has the most different kind of hints." /> 
+    let explorerPersona = <Persona image="./icons/people/explorer.png" puzzles={puzzles}  filter={explorerFilter} selectFunction={selectFun} title="Explorer" description="This puzzle has the most different kind of hints." /> 
 
 
     if (mode == "personas") {
