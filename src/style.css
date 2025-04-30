@@ -454,11 +454,19 @@ li {
     margin: 0;
     padding: 0;
   }
+
+  .topnav img {
+    float: right;
+    padding-right: 16px;
+    padding-top: 5px; 
+    padding-bottom: 10px;
+  }
   
   /* Style the links inside the navigation bar */
   .topnav button {
     float: left;
     color: white; 
+    height: 75px;
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
