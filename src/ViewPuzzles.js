@@ -425,7 +425,7 @@ export default ViewPuzzles = ({puzzles, user, setPuzzles, mode, sessionId, sessi
 
         <div className='cropped'>
             <h1>Puzzles</h1>
-            <PlayablePuzzleList puzzles={puzzleList} user={user} setPuzzles={setPuzzles} showMutants={mode == "casual" || mode == "mixed"} appMode={mode} sessionId={sessionId} sessionStart={sessionStart}/> 
+            <PlayablePuzzleList puzzles={puzzleList} user={user} setPuzzles={setPuzzles} showMutants={mode == "casual" || mode == "mixed" || mode == "admin"} appMode={mode} sessionId={sessionId} sessionStart={sessionStart}/> 
 
         </div>
     </div>

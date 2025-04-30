@@ -101,6 +101,7 @@ export default HomePage = ({user, publicKey  }) => {
                 <option value="mixed">mixed</option>
                 <option value="serious">serious</option>
                 <option value="casual">casual</option>
+                <option value="admin">admin</option>
             </select>
             <button onClick={() => {add_user()}}>Add User</button>
 

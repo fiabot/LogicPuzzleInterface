@@ -1,416 +1,452 @@
-.categoryInput{
-    color: #624146; 
-    border: none;
-    border-bottom: 1px solid #624146;
-    font-size: 20px;
-    font-family: "Times New Roman", Times, serif;
-    background-color: transparent;
-    padding-top: 10px;
+.categoryInput {
+  color: #624146;
+  border: none;
+  border-bottom: 1px solid #624146;
+  font-size: 20px;
+  font-family: "Times New Roman", Times, serif;
+  background-color: transparent;
+  padding-top: 10px;
 }
 
 
-.categoryDiv{
-    text-align: left;
+.categoryDiv {
+  text-align: left;
 }
 
-.authoringView{
-    text-align: left;
-    font-family: "Times New Roman", Times, serif;
-    height: inherit;
+.authoringView {
+  text-align: left;
+  font-family: "Times New Roman", Times, serif;
+  height: inherit;
 }
 
-.authoringView h1{
+.authoringView h1 {
 
-    font-size: 30px; 
-    padding-bottom: 3px;
-    margin: 0;
-    font-weight: normal;
+  font-size: 30px;
+  padding-bottom: 3px;
+  margin: 0;
+  font-weight: normal;
 
 }
 
-.categories{
-    background-color: #E9D0C4;
-    width: 80%;
-    height: 50%;
-    border-radius: 10px;
-    padding-left: 5px;
-    overflow: auto;
-    font-family: "Times New Roman", Times, serif;
+.categories {
+  background-color: #E9D0C4;
+  width: 80%;
+  height: 50%;
+  border-radius: 10px;
+  padding-left: 5px;
+  overflow: auto;
+  font-family: "Times New Roman", Times, serif;
 
-    scrollbar-color: #776274 #A07178;
+  scrollbar-color: #776274 #A07178;
 
-    
+
 }
 
-.categoryTemplate{
-    background-color: #E9D0C4;
-    width: 80%; 
-    height: 150px;
-    border-radius: 10px;
-    padding-left: 5px;
-    overflow: auto;
-    font-family: "Times New Roman", Times, serif;
+.categoryTemplate {
+  background-color: #E9D0C4;
+  width: 90%;
+  min-height: 150px;
+  max-height: 300px;
+  border-radius: 10px;
+  padding-left: 5px;
+  overflow: auto;
+  font-family: "Times New Roman", Times, serif;
 
-    scrollbar-color: #776274 #A07178;
-    
+  scrollbar-color: #776274 #A07178;
+
 }
 
-.smallButton{
-    background-color: #776274;
-    color:white; 
-    font-size: medium;
-    height: 30px;
-    border-radius: 15px;
-    border:  1px black; 
-    margin: 5px;
-   
-    
-}
-
-.sampleButton{
-  background-color: #4a0912; 
-  color:white; 
+.smallButton {
+  background-color: #776274;
+  color: white;
   font-size: medium;
   height: 30px;
   border-radius: 15px;
-  border:  1px black; 
+  border: 1px black;
   margin: 5px;
- 
-  
+
+
 }
 
-.sampleButton:hover, .userButton:hover{
-  background-color: #776274;  
-
- 
-  
+.sampleButton {
+  background-color: #4a0912;
+  color: white;
+  font-size: medium;
+  height: 30px;
+  border-radius: 15px;
+  border: 1px black;
+  margin: 5px;
 }
 
-.userButton{
-    background-color:  #a1404f; 
-    
-    color:white; 
-    font-size: medium;
-    height: 30px;
-    border-radius: 15px;
-    border:  #8b2109; 
-    margin: 5px;
-   
+.userButton {
+  background-color: #a1404f;
+
+  color: white;
+  font-size: medium;
+  height: 30px;
+  border-radius: 15px;
+  border: #8b2109;
+  margin: 5px;
 }
 
-.editor{
-    overflow: auto;
-    scrollbar-color: #776274 #A07178;
-    height: 70%; 
-    width: 100%;
-}
-
-.hintEditor{
-    width: 70%;
-
-
- 
-    margin: 10px;
-
-    padding: 20px;
-}
-
-.hintEditor li{
-    width: 100%;
-    margin-bottom: 5px;
-}
-
-.scenarioInput{
-    margin-bottom: 5px;
-    height: 100px;
-    width: 70%;
-
-    margin: 10px;
-
-    padding: 20px;
-
-    background-color:#faf2f9;
-    border-radius: 5px;
-    border-color:  #A07178;
-    border-style: solid;
-    padding: 12px 20px;
-
-}
-    
-.nameInput{
-        margin-bottom: 5px;
-        height: 10px;
-        width: 70%;
-    
-        margin: 10px;
-    
-        padding: 20px;
-    
-        background-color:#faf2f9;
-        border-radius: 5px;
-        border-color:  #A07178;
-        border-style: solid;
-        padding: 12px 20px;
-    
-    }
-
-.hintEditor li input{
-    width: 100%;
-    height: fit-content;
-    background-color:#faf2f9;
-    border-radius: 5px;
-    border-color:  #A07178;
-    border-style: solid;
-    padding: 12px 20px;
-}
-
-.puzzleArea{
-   background-color: white; 
+.sampleButton:hover,
+.sampleButton.selectedScenario,
+.userButton:hover,
+.userButton.selectedScenario {
+  background-color: #776274;
 }
 
 
-.smallButton:hover{
-    background-color: #4d3f4b;
-      
+.editor {
+  overflow: auto;
+  scrollbar-color: #776274 #A07178;
+  height: 70%;
+  width: 100%;
+}
+
+.hintEditor {
+  width: 70%;
+
+
+
+  margin: 10px;
+
+  padding: 20px;
+}
+
+.hintEditor li {
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+.scenarioInput {
+  margin-bottom: 5px;
+  height: 100px;
+  width: 70%;
+
+  margin: 10px;
+
+  padding: 20px;
+
+  background-color: #faf2f9;
+  border-radius: 5px;
+  border-color: #A07178;
+  border-style: solid;
+  padding: 12px 20px;
+
+}
+
+.smallButton {
+  background-color: #776274;
+  color: white;
+  font-size: medium;
+  height: 30px;
+  border-radius: 15px;
+  border: #776274;
+  margin: 5px;
+}
+
+.smallButton:hover {
+  background-color: #4d3f4b;
 }
 
 
-.mediumButton{
-    background-color: #776274;
-    color:white; 
-    font-size: medium;
-    width: 100px;
-    height: 40px;
-    border-radius: 10px;
-    border:  #776274; 
-    margin: 8px;
-   
-    
-}.mediumButton[highlighted=true]{
-    background-color: #8b2109;
+.editor {
+  overflow: auto;
+  scrollbar-color: #776274 #A07178;
+  height: 70%;
+  width: 100%;
+}
+
+.hintEditor {
+  width: 70%;
+
+
+
+  margin: 10px;
+
+  padding: 20px;
+}
+
+.hintEditor li {
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+.scenarioInput {
+  margin-bottom: 5px;
+  height: 100px;
+  width: 70%;
+
+  margin: 10px;
+
+  padding: 20px;
+
+  background-color: #faf2f9;
+  border-radius: 5px;
+  border-color: #A07178;
+  border-style: solid;
+  padding: 12px 20px;
+
+}
+
+.nameInput {
+  margin-bottom: 5px;
+  height: 10px;
+  width: 70%;
+
+  margin: 10px;
+
+  padding: 20px;
+
+  background-color: #faf2f9;
+  border-radius: 5px;
+  border-color: #A07178;
+  border-style: solid;
+  padding: 12px 20px;
+
+}
+
+.hintEditor li input {
+  width: 100%;
+  height: fit-content;
+  background-color: #faf2f9;
+  border-radius: 5px;
+  border-color: #A07178;
+  border-style: solid;
+  padding: 12px 20px;
+}
+
+.puzzleArea {
+  background-color: white;
+}
+
+
+
+
+.mediumButton {
+  background-color: #776274;
+  color: white;
+  font-size: medium;
+  width: 100px;
+  min-height: 40px;
+  border-radius: 10px;
+  border: #776274;
+  margin: 8px;
+}
+
+.mediumButton[highlighted=true] {
+  background-color: #8b2109;
+}
+
+.mediumButton:hover:not(:disabled) {
+  background-color: #4d3f4b;
+}
+
+
+.mediumButton:disabled {
+  background-color: grey;
 }
 
 
 
 
 
-.center{
-    width: 100%;
-    display: flex;
-    justify-content: center;
+.center {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 
-.mediumButton:hover{
-    background-color: #4d3f4b;
-      
-}
 
-.largeButton{
-    background-color: #522504;
-    color:white; 
-    font-size: large;
-    width: 250px;
-    height: 40px;
-    border-radius: 10px;
-    border:  #522504; 
-    margin: 8px;
-   
-    
+.largeButton {
+  background-color: #522504;
+  color: white;
+  font-size: large;
+  width: 250px;
+  height: 40px;
+  border-radius: 10px;
+  border: #522504;
+  margin: 8px;
+
+
 }
 
 
-.largeButton:hover{
-    background-color: #2e1502;
-      
+.largeButton:hover {
+  background-color: #2e1502;
+
 }
 
-.entityList{
-    list-style-type: none;
-    padding-left: 0;
-  
+.entityList {
+  list-style-type: none;
+  padding-left: 0;
+
 }
 
-.entityList li{
-    padding-top: 5px;
- 
+.entityList li {
+  padding-top: 5px;
+
 }
 
-.entityList li input{
-    border-radius: 5px;
-    font-family: "Times New Roman", Times, serif;
- 
+.entityList li input {
+  border-radius: 5px;
+  font-family: "Times New Roman", Times, serif;
+
 }
 
-.categoryDiv label{
-    font-size: 16px; 
+.categoryDiv label {
+  font-size: 16px;
 }
 
 .tooltip {
-    position: relative;
-    display: inline-block;
-    border-bottom: 1px dotted black;
-    /* color of the span text */
-    color: rgb(119, 162, 241);
-  }
-  
-  .tooltip .tooltiptext {
-    visibility: hidden;
-    width: 600px;
-    background-color: black;
-    /* color of the tooltip text */
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px 0;
-    position: absolute;
-    z-index: 1;
-  }
-  
-  .tooltip:hover .tooltiptext {
-    visibility: visible;
-  }
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+  /* color of the span text */
+  color: rgb(119, 162, 241);
+}
 
-  .tooltip .tooltiptext ol{
-    width: 80%;
-  }
+.tooltip .tooltiptext ol {
+  width: 80%;
+}
 
-  .collapseButton {
-    width: 100%;
-    text-align: left;
-    background-color: #A07178;
-    /* color of the tooltip text */
-    color: white;
-    font-size: x-large; 
-    padding: 10px;
-    margin-bottom: 10px;
-  }
+.collapseButton {
+  width: 100%;
+  text-align: left;
+  background-color: #A07178;
+  /* color of the tooltip text */
+  color: white;
+  font-size: x-large;
+  padding: 10px;
+  margin-bottom: 10px;
+}
 
 
-  .personaArea{
-    width: 100%;
-    height: inherit;
-    display: grid; 
-    grid-template-columns: 1fr 1fr 1fr; 
-    grid-gap: 20px; 
+.personaArea {
+  width: 100%;
+  height: inherit;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 20px;
 
-  }
+}
 
-  .persona{
-    width: 100%;
-  
-  }
+.persona {
+  width: 100%;
 
-  .persona .puzzleListElement{
-    height: 400px;
-  }
+}
 
-
-  .filterView{
-    width: 95%;
-    height: inherit;
-    display: grid; 
-    grid-template-columns: 1fr 1fr; 
-    grid-gap: 20px; 
-
-  }
+.persona .puzzleListElement {
+  height: 400px;
+}
 
 
-  .topButtons {
-    width: inherit;
-    height: 45px;
-    background-color:white; 
+.filterView {
+  width: 95%;
+  height: inherit;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 20px;
 
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-top: 0;
-
-  }
+}
 
 
-  .bottomButtons {
-    width: inherit;
-    background-color:#E9D0C4; 
-    border: 5px solid #624146; 
+.topButtons {
+  width: inherit;
+  height: 45px;
+  background-color: white;
 
-    padding: 0px 20px;
-    height: 45px; ;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 0;
+
+}
+
+
+.bottomButtons {
+  width: inherit;
+  background-color: #E9D0C4;
+  border: 5px solid #624146;
+
+  padding: 0px 20px;
+  height: 45px;
+  ;
 
 
 
-  }
+}
 
 
 
-  .returnButton{
-    float: left;
+.returnButton {
+  float: left;
 
-    width:  40px !important; 
-    height: 40px !important; 
-    background-color: transparent !important;
-    padding: 0px;
-
-
-  }
-
-  .returnButton:hover{
-
-    background-color: #A0717890 !important;
+  width: 40px !important;
+  height: 40px !important;
+  background-color: transparent !important;
+  padding: 0px;
 
 
+}
 
-  }
+.returnButton:hover {
 
-  .likeButton{
-    float: right;
-
-    width:  40px !important; 
-    height: 40px !important; 
-    background-color: transparent !important;
-    padding: 0px;
-
-
-  }
-
-  .likeButton:hover{
-
-    background-color: #A0717890 !important;
+  background-color: #A0717890 !important;
 
 
 
-  }
+}
+
+.likeButton {
+  float: right;
+
+  width: 40px !important;
+  height: 40px !important;
+  background-color: transparent !important;
+  padding: 0px;
+
+
+}
+
+.likeButton:hover {
+
+  background-color: #A0717890 !important;
 
 
 
-    /* Style the links inside the navigation bar */
-    .bottomButtons button {
+}
 
-        color: #624146 !important; 
-        text-align: center;
-        background-color: #E9D0C4!important; 
-        text-align: center;
-        padding: 5px 7px;
-        height: 40px !important; 
-        margin: 0px !important; 
-        text-decoration: none;
 
-        border: 0
-    
-      }
-      
-      /* Change the color of links on hover */
-      .bottomButtons button:hover {
-        background-color: #ddd !important;
-        color: black;
-      }
-      
-      /* Add a color to the active/current link */
-      .bottomButtons button.active {
-        background-color:  #522504 !important; 
-        color: white !important;
-      }
-  
 
+/* Style the links inside the navigation bar */
+.bottomButtons button {
+
+  color: #624146 !important;
+  text-align: center;
+  background-color: #E9D0C4 !important;
+  text-align: center;
+  padding: 5px 7px;
+  height: 40px !important;
+  margin: 0px !important;
+  text-decoration: none;
+
+  border: 0
+}
+
+
+/* Change the color of links on hover */
+.bottomButtons button:hover {
+  background-color: #ddd !important;
+  color: black;
+}
+
+/* Add a color to the active/current link */
+.bottomButtons button.active {
+  background-color: #522504 !important;
+  color: white !important;
+}
 
       .faq{
         background-color: #E6CCBE; 
@@ -448,4 +484,5 @@
   color:#E9D0C4; 
   font-size: 4vmin;
   border: 5px solid #624146; 
+
 }
