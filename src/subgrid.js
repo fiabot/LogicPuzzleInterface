@@ -32,7 +32,7 @@ export default SubGrid = ({ numRows, numCols, cells, topCat = null, leftCat = nu
         let displayColIdx = 1;
         maxRow = leftCat.entities.length + displayRowIdx;
         headerRow = `${displayRowIdx} / ${maxRow}`
-        displayGrid.push(<div className="leftCategoryText" style={{ gridRow: headerRow, gridColumn: displayColIdx }} key="0,-2">{leftCat.name}</div>)
+        displayGrid.push(<div className="leftCategoryText" style={{ gridRow: headerRow, gridColumn: displayColIdx, height:3.5*numRows + "vmin"  }} key="0,-2">{leftCat.name}</div>)
     }
 
     for (let i = 0; i < numRows; i++) {
@@ -45,7 +45,7 @@ export default SubGrid = ({ numRows, numCols, cells, topCat = null, leftCat = nu
 
         for (let j = 0; j < numCols; j++) {
             displayGrid.push(
-                <div style={{ gridRow: displayRowIdx, gridColumn: displayColIdx }} key={i + "," + j}>
+                <div style={{ gridRow: displayRowIdx, gridColumn: displayColIdx}} key={i + "," + j}>
                     <Cell mousedown={mousedown} select={select} state={cells[i][j].state} setState={cells[i][j].setState} />
                 </div>
             );

@@ -262,7 +262,8 @@ export default Puzzle =({p, time, concede, finish, sessionId = null, sessionStar
             if (col == 0) {
                 leftCat = p.topBottom[row]
             }
-            displayGrid.push(<div style={{ gridRow: displayRowIdx, gridColumn: displayColIdx }} key={row + "," + col}><SubGrid numCols={p.numEnt} numRows={p.numEnt} cells={subgrid} select={select} topCat={topCat} leftCat={leftCat} /></div>);
+            displayGrid.push(<div  style={{ gridRow: displayRowIdx, gridColumn: displayColIdx}} key={row + "," + col}><SubGrid numCols={p.numEnt} numRows={p.numEnt} cells={subgrid} select={select} topCat={topCat} leftCat={leftCat} /></div>);
+          
             displayColIdx++;
         }
         rowLength--;

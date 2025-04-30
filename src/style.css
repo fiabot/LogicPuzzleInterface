@@ -22,6 +22,12 @@ body {
     text-align: left;
 }
 
+.cellContainer2 {
+    width: 3.5vmin;
+    height: 3.5vmin;
+}
+
+
 .innerCellContainer {
     display: inline-block;
     text-align: left;
