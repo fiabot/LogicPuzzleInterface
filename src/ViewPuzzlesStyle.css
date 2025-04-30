@@ -20,7 +20,7 @@
     min-width:100%;
 }
 .body {
-    height: 95%;
+    height: 90%;
     overflow: auto;
     text-align: left;
 }
@@ -57,7 +57,7 @@
     position: absolute;
     right: 0px;
     width: 60%;
-    height: 95%;
+    height: 90%;
     overflow: auto;
     scrollbar-color: #776274 #A07178;
     margin-bottom: 20px;

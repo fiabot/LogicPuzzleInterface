@@ -85,7 +85,7 @@ let SelectedPost = ({user, post, r, appMode, sessionStart, sessionId, start_like
         <h3>Add New Comment</h3>
         <textarea className={"scenarioInput"} value={commentText} onChange={(e)=> setCommentText(e.target.value)} />
         <br/>
-        <button onClick={add_comment_button}>Post Comment</button>
+        <button  onClick={add_comment_button}>Post Comment</button>
     </div> 
 
 
@@ -128,19 +128,20 @@ let MakeNewPost = ({user, r, sessionStart, sessionId}) => {
         }
     }
 
-    let puzzleOptions = likedPuzzles.map((puzzle, idx) => {return <div className="puzzleSelectElement">
+    let puzzleOptions = likedPuzzles.map((puzzle, idx) => {return <div key={idx} className={selectPuzzleIdx == idx ? "puzzleSelectedElement": "puzzleSelectElement"}  selected={selectPuzzleIdx == idx}> 
+       <button onClick={() => setSelectedPuzzleIdx(idx)}>Select</button> 
         <h2>{"name" in puzzle? puzzle["name"] : "Untitled Puzzle" }</h2>
         <h3>Difficulty: {puzzle.diff}</h3>
         <h3>Hints</h3>
         <ol className='hintList'>
         {puzzle.hints.map((hint, id) => <li key={id}>{hint}</li>)}
         </ol>
-            <button onClick={() => setSelectedPuzzleIdx(idx)}>Select</button>
+            
         </div>
     })
 
 
-    return <div>
+    return <div className="newPost">
         <button onClick={r}>Return</button>
         <h1>Post Title</h1>
             <input className="categoryInput" value={title} onChange={e => setTitle(e.target.value)}/>
@@ -153,7 +154,7 @@ let MakeNewPost = ({user, r, sessionStart, sessionId}) => {
             {puzzleOptions}
         </div>
 
-        <button onClick={post}>Post</button>
+        <button className="postButton" onClick={post}>Post</button>
         
 
     </div>

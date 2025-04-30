@@ -4,11 +4,32 @@
     
 }
 
+.newPost h1{
+    font-size:larger;
+}
+
 .postContainer{
     display: grid;
     overflow: auto;
+    
     grid-template-columns: 1fr 1fr 1fr;
 }
+
+
+
+.puzzleSelectedElement h2, .puzzleSelectElement h2{ 
+    font-size: large;
+}
+
+.puzzleSelectedElement button, .puzzleSelectElement button{ 
+    width: 90% !important;
+    margin-left: 5% !important;
+}
+
+.puzzleSelectedElement h3, .puzzleSelectElement h3{ 
+    font-size:medium;
+}
+
 .selectPuzzleContainer{
     display: grid;
     overflow: auto;
@@ -17,9 +38,22 @@
     height:300px
 }
 
+.puzzleSelectedElement{
+    border: 5px solid #522504; 
+    padding: 5px; 
+    background-color: #E6CCBE !important;
+    overflow: auto;
+    height: 250px;
+  
+}
+
+
 .puzzleSelectElement {
     border: 1px solid black; 
-    padding: 5px; 
+    padding: 5px;
+    overflow: auto; 
+    height: 250px;
+
 }
 
 .comment{
@@ -76,5 +110,30 @@
     height: 40px;
     font-size: medium;
     margin: 10px;
+    
+}
+
+.community button:hover{
+    background-color: #A07178;
+
+    
+}
+
+.postButton{
+    background-color:#522504 !important;
+    color: white;
+    border: black;
+    border-radius: 10px;
+    height: 80px;
+    font-size: large !important;
+    margin-left: 5% !important; 
+    width: 90% !important;
+
+    
+}
+
+.postButton:hover{
+    background-color: #A07178 !important;
+
     
 }
