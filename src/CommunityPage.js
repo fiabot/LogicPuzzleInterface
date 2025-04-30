@@ -6,7 +6,7 @@ import PlayablePuzzleList from "./PlayablePuzzleList";
 import "./community_style.css"
 import { formatTime } from "./utils";
 import { sanitize } from "./utils";
-
+import { add_click } from "./API/SendToApi";
 
 let PuzzlePost = ({post, selectPost}) => {
     let time = formatTime(post.time)
@@ -44,6 +44,7 @@ let SelectedPost = ({user, post, r, appMode, sessionStart, sessionId, start_like
     let likes = "likes" in post ? post.likes : 0
 
     let add_comment_button = async () => {
+        add_click(sessionId, "add comment", sessionStart)
         let result = await add_comment(post["_id"], sanitize(commentText), new Date().toJSON(), user)
 
         if (result.status < 300){
@@ -114,6 +115,7 @@ let MakeNewPost = ({user, r, sessionStart, sessionId}) => {
 
 
     let post = async () => {
+        add_click(sessionId, "post puzzle", sessionStart)
         if(selectPuzzleIdx == -1){
             alert("Please select a puzzle before posting")
         }else{

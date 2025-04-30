@@ -136,6 +136,9 @@ export default PuzzleMaker = ({ startEvolve, user, mode, scenario, setScenario, 
     let getScens = () => {
         return new Promise(async (resolve, reject) => {
             cats = await getScenarios(user, mode == "casual" || mode == "mixed" || mode == "admin")
+            if (mode == "serious"){
+                cats = cats.filter((cat) => cat.origin == "user")
+            }
             resolve(cats)
         })
     }

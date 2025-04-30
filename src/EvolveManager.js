@@ -78,8 +78,8 @@ export default EvolveManager = ({categories, user, scenario, name, sessionId, se
     
         <h2> Generation Cycle: {iters} of {maxIters}. Total puzzles: {showArchive? puzzles.length + archive.length: puzzles.length} <button className='smallButton' onClick={()=> setMaxIters(maxIters + 5)}>+ cycles</button>        </h2>
 
-        <input    onClick={()=> setShowArchive(!showArchive)}  checked={showArchive} type="checkbox" className="toggleCheckbox" id="colorToggle"/>
-      <label for="colorToggle" className="toggleButton">
+        <input    onClick={()=> setShowArchive(!showArchive)}  checked={showArchive} type="checkbox" className="toggleCheckbox" id="bestToggle"/>
+      <label for="bestToggle" className="toggleButton">
       <div>Show Best</div> 
         <div>Show All</div> 
       </label>

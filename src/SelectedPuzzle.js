@@ -19,12 +19,12 @@ export default selectedPuzzle = ({puzzle, setPuzzle, user, r, appMode, sessionId
 
     let model = createPuzzle(puzzle)
 
-    let [playable, setPlayable] = useState(<Puzzle className="playable" p={model}/>)
+    let [playable, setPlayable] = useState(<Puzzle className="playable" p={model} sessionId={sessionId} sessionStart={sessionStart}/>)
     let [content, setContent] = useState(playable)
 
     useEffect(()=>{
         let model = createPuzzle(puzzle)
-        setPlayable(<Puzzle className="playable" p={model}/>)
+        setPlayable(<Puzzle className="playable" p={model} sessionId={sessionId} sessionStart={sessionStart}/>)
     }, [puzzle])
 
     const openInNewTab = (url) => {
@@ -32,6 +32,7 @@ export default selectedPuzzle = ({puzzle, setPuzzle, user, r, appMode, sessionId
       };
 
     let playPuzzle = (puzzle) => {
+        add_click(sessionId, "open link", sessionStart)
         str = JSON.stringify(puzzle)
         compStr = lzString.compressToEncodedURIComponent(str)
         url_str =  pathname = window.location.href +"play?puzzle=" + compStr
@@ -39,6 +40,7 @@ export default selectedPuzzle = ({puzzle, setPuzzle, user, r, appMode, sessionId
     }
 
     let likeButton = async (puzzle)  => {
+        add_click(sessionId, "like puzzle", sessionStart)
         result = await like_puzzle(puzzle, user)
      
         if (result.status < 300){
@@ -70,7 +72,7 @@ export default selectedPuzzle = ({puzzle, setPuzzle, user, r, appMode, sessionId
         setMode("view")
     }
 
-    let PuzzleElement = (({puzzle}) =>{
+    let PuzzleElement = (({puzzle, is_mutant = false}) =>{
         return <div >
                <h2>{"name" in puzzle? puzzle["name"] : "Untitled Puzzle" }</h2>
         <h3>Difficulty: {puzzle.diff}</h3>
@@ -78,7 +80,7 @@ export default selectedPuzzle = ({puzzle, setPuzzle, user, r, appMode, sessionId
         <ol className='hintList'>
         {puzzle.hints.map((hint, id) => <li key={id}>{hint}</li>)}
         </ol>
-        <button onClick={()=> {setPuzzle(puzzle); setContent(playable)}}>Select</button>
+        <button onClick={()=> {setPuzzle(puzzle); setContent(playable); is_mutant? add_click(sessionId, "select similar", sessionStart): ""}}>Select</button>
         </div>
 
     })
@@ -100,9 +102,9 @@ export default selectedPuzzle = ({puzzle, setPuzzle, user, r, appMode, sessionId
         if (mutants.length == 0){
             return <div>Loading</div>
         }else{
-            let sameDiffMuts = mutants[0].length > 0?  mutants[0].map((puzzle, idx) => <PuzzleElement key={idx} puzzle={puzzle}/>) : <div>No Puzzles Found</div>
-            let hardDiffMuts = mutants[1].length > 0?  mutants[1].map((puzzle, idx) => <PuzzleElement  key={idx} puzzle={puzzle} />) : <div>No Puzzles Found</div>
-            let easyDiffMuts = mutants[2].length > 0?  mutants[2].map((puzzle, idx) => <PuzzleElement   key={idx} puzzle={puzzle}/>) : <div>No Puzzles Found</div>
+            let sameDiffMuts = mutants[0].length > 0?  mutants[0].map((puzzle, idx) => <PuzzleElement key={idx} puzzle={puzzle} is_mutant={true}/>) : <div>No Puzzles Found</div>
+            let hardDiffMuts = mutants[1].length > 0?  mutants[1].map((puzzle, idx) => <PuzzleElement  key={idx} puzzle={puzzle} is_mutant={true}/>) : <div>No Puzzles Found</div>
+            let easyDiffMuts = mutants[2].length > 0?  mutants[2].map((puzzle, idx) => <PuzzleElement   key={idx} puzzle={puzzle} is_mutant={true}/>) : <div>No Puzzles Found</div>
             return <div className="similar">
         
 
@@ -134,7 +136,6 @@ export default selectedPuzzle = ({puzzle, setPuzzle, user, r, appMode, sessionId
         setContent(<ShowMutants puzzle={puzzle} puzzleList={otherPuzzles}/> )
       
     }
-
 
 
 

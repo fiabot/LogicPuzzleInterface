@@ -4,7 +4,7 @@ import {api, EVOLVE_URL, ADD_ACCOUNT_URL, LIKE_PUZZLE, ITER_EVOLVE, ADD_GRAMMAR_
 let CLICK_TYPES = {"select scenario": "casual", "add example category" : "casual", "select recommendation": "casual", "view similar": "casual", "select similar": "casual", "get brainstorm": "casual",  "copy narrative": "casual",
 "new scenario": "serious", "new category": "serious", "edit entity": "serious", "add grammar": "serious", "add brainstorm": "serious", "edit hint":"serious", "edit narrative": "serious", "filter by hint": "serious", "filter by solution": "serious", "edit puzzle": "serious", 
 
-"filter by hint size": "neutral", "filter by difficulty": "neutral", "post puzzle": "neutral", "add comment": "neutral", "save as pdf": "neutral", "open link": "neutral" 
+"filter by hint size": "neutral", "filter by difficulty": "neutral", "post puzzle": "neutral", "add comment": "neutral", "download": "neutral", "open link": "neutral", "like puzzle": "neutral" 
 
 } 
 
