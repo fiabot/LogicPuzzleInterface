@@ -82,7 +82,7 @@ let postResponse = (indexResponses, openResponses,  user) => {
 
 }
 
-export default Survey = ({ user}) => {
+export default Survey = ({ user, username}) => {
 
 
     let r = {}

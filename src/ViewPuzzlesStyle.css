@@ -16,12 +16,13 @@
 }
 
 .header {
-    height: 20%;
+    height: 15%;
     min-width:100%;
 }
 .body {
     height: 95%;
     overflow: auto;
+    text-align: left;
 }
 
 .similar {
@@ -171,5 +172,65 @@ option:focus {
   background: #776274;
   color: white; 
 }
+
+
+.personaCard {
+    padding: 20px;
+    margin: 10px;
+    border-radius: 3px;
+    background-color: white;  
+    border: 2px solid black; 
+    overflow: hidden;
+    width: auto; 
+    display: flex; 
+}
+
+.personaIcon{
+
+  flex-direction: row;  
+  z-index:2;
+  position: relative;
+  width: 100px;
+
+}
+
+.researchIcon{
+
+    flex-direction: row;  
+    z-index:2;
+    position: relative;
+    width: 500px;
+  
+  }
+
+
+.personaText    h1{ font-size: 1.8em;}
+
+ .personaText   p{
+      padding: 10px 0px;
+      color: #5A5A5A;
+      line-height: 1.2;
+      font-style: initial;
+      
+  }
+
+  .selectButton{
+
+    background-color: #776274;
+    color: white;
+    border: black;
+    border-radius: 5px;
+    height: 40px;
+    font-size: medium;
+    margin: 5px;
+    width: 98%;
+  
+
+  }
+
+  .selectButton:hover{
+    background-color: #A07178;
+  }
+
 
   

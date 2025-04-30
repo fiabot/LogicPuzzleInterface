@@ -149,17 +149,27 @@ let PlayPuzzle = () => {
     if (checkIfSaved()) {
       setMode("community")
     }
+
+ 
     
    }
+
+   let openSurvey= (password) => {
+    url_str =  pathname = window.location.href +"survey?user=" + password
+    window.open(url_str, "_blank", "noreferrer");
+
+}
 
   pathname = window.location.pathname
 
   let header = 
  <div className="topnav">
+         <img src="./icons/logo.png" width="100" height="60"/>
   <button className={mode == "home"? "active": ""} onClick={goHome}>Home</button>
   <button className={mode == "createPuzzle" || mode == "evolve"? "active": ""} onClick={startGeneration} >Generate Puzzles</button>
   <button className={mode == "liked"? "active": ""} onClick={showLikedPuzzles}>View Liked Puzzles</button>
   <button className={mode == "community"? "active": ""} onClick={showCommunity} >Community Puzzles</button>
+  <button onClick={() => openSurvey(user)} >Fill out a survey</button>
 </div>
 
    let content = <div>None</div>
