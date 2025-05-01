@@ -328,9 +328,7 @@ export default PuzzleMaker = ({ startEvolve, user, mode, scenario, setScenario, 
     </div>
 
     let editGrammar = <div>
-
         <EditTemplate categories={categories} user={user} sessionId={sessionId} sessionStart={sessionStart} />
-        <EditBrainstorm categories={categories} user={user} sessionId={sessionId} sessionStart={sessionStart} />
     </div>
 
     if (!scenUpdated) {
@@ -382,10 +380,7 @@ export default PuzzleMaker = ({ startEvolve, user, mode, scenario, setScenario, 
             <div className="authoringView">
 
                 <Collapseable content={sampleCategories} title="Scenarios" showByDefault={true} />
-                <Collapseable content={editGrammar} title="Edit Grammar and Ideas" showByDefault={mode == "serious"} />
-
-
-
+                <Collapseable content={editGrammar} title="Edit Default Grammar and Narrative Suggestions for Current Categories" showByDefault={mode == "serious"} />
             </div>
 
         </div>

@@ -315,7 +315,7 @@ let printDocument=(ref) =>{
             let cat1 = allAttrs[0] == "" || allAttrs[0] != cat.name
             let cat2 = allAttrs[2] == "" || allAttrs[2] != cat.name
             
-            return cat1 && cat2 && cat.is_numerical
+            return cat1 && cat2 && cat.is_numeric
 
         }
     }else{
