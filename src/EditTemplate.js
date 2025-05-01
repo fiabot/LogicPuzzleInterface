@@ -586,7 +586,7 @@ let EditBefore = ({ empty, categories, user, update, sessionId, sessionStart }) 
         edit = <div>
             <h2>Editing "before" clue where: cat1 = {cat1} and cat2 = {cat2} and num_cat = {numCat}</h2>
             <p>Logic: { "The entity {ent1} in the category {cat1} is before/smaller than the {ent2} in the category {cat2}. The amount by which {ent1} is smaller may be specified (e.g. \"two steps less\") or unspecified"}</p>
-            <p></p>
+            <p>Enter step: <input type="number" value={step} onChange={(e) => setStep(e.target.value)} /></p>
             {editGrammar}
             {editIdeas}
         </div>
