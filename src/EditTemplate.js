@@ -403,6 +403,7 @@ let EditBefore = ({ empty, categories, user, update, sessionId, sessionStart }) 
         tempCat1 = cat1
         tempCat2 = cat2
         tempNumCat = numCat
+        tempStep = step
         if (num == 1) {
             setCat1(values[0])
             tempCat1 = values[0]
@@ -411,11 +412,24 @@ let EditBefore = ({ empty, categories, user, update, sessionId, sessionStart }) 
             tempCat2 = values[0]
         } else if (num == 3) {
             tempNumCat = values[0]
+            tempStep = null
+            for (cat of categories){
+                if (cat["name"] == tempNumCat && cat["inc"] != undefined) {
+                    tempStep = cat["inc"]
+                    setStep(cat["inc"])
+                }
+            }
             setNumCat(values[0])
         } else {
             tempCat1 = values[0]
             tempCat2 = values[1]
             tempNumCat = values[2]
+            for (cat of categories){
+                if (cat["name"] == tempNumCat && cat["inc"] != undefined) {
+                    tempStep = cat["inc"]
+                    setStep(cat["inc"])
+                }
+            }
             setCat1(values[0])
             setCat2(values[1])
             setNumCat(values[2])
@@ -425,7 +439,10 @@ let EditBefore = ({ empty, categories, user, update, sessionId, sessionStart }) 
             grammar = await get_before_template(tempCat1, tempCat2, tempNumCat, user)
             setCurrentSpecifiedGrammar(grammar.timed)
             setCurrentUnspecifiedGrammar(grammar.untimed)
-            setCurrentStep(grammar.step)
+
+            if (tempStep == null) {
+                setStep(grammar.step)
+            }
 
             brainstorms = await get_before_brainstorm(tempCat1, tempCat2, tempNumCat, user)
             setCurrentSpecifiedBrainstorms(brainstorms.timed)
@@ -497,7 +514,7 @@ let EditBefore = ({ empty, categories, user, update, sessionId, sessionStart }) 
         t = t.replace("{ent1}", ent1)
         t = t.replace("{ent2}", ent2)
         t = t.replace("{num_cat}", numCat)
-        // t = t.replace("{step}", s)
+        t = t.replace("{step}", s)
         amount = Math.floor(Math.random() * cat1Ents.length) + 1
 
         t = t.replace("{amount}", amount)
