@@ -515,7 +515,7 @@ let EditBefore = ({ empty, categories, user, update, sessionId, sessionStart }) 
         t = t.replace("{ent2}", ent2)
         t = t.replace("{num_cat}", numCat)
         t = t.replace("{step}", s)
-        amount = Math.floor(Math.random() * cat1Ents.length) + 1
+        amount = (Math.floor(Math.random() * cat1Ents.length) + 1)*step
 
         t = t.replace("{amount}", amount)
 
