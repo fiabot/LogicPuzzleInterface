@@ -6,7 +6,7 @@ import PlayablePuzzleList from "./PlayablePuzzleList";
 import "./community_style.css"
 import { formatTime } from "./utils";
 import { sanitize } from "./utils";
-
+import { add_click } from "./API/SendToApi";
 
 let PuzzlePost = ({post, selectPost}) => {
     let time = formatTime(post.time)
@@ -44,6 +44,7 @@ let SelectedPost = ({user, post, r, appMode, sessionStart, sessionId, start_like
     let likes = "likes" in post ? post.likes : 0
 
     let add_comment_button = async () => {
+        add_click(sessionId, "add comment", sessionStart)
         let result = await add_comment(post["_id"], sanitize(commentText), new Date().toJSON(), user)
 
         if (result.status < 300){
@@ -85,7 +86,7 @@ let SelectedPost = ({user, post, r, appMode, sessionStart, sessionId, start_like
         <h3>Add New Comment</h3>
         <textarea className={"scenarioInput"} value={commentText} onChange={(e)=> setCommentText(e.target.value)} />
         <br/>
-        <button onClick={add_comment_button}>Post Comment</button>
+        <button  onClick={add_comment_button}>Post Comment</button>
     </div> 
 
 
@@ -114,6 +115,7 @@ let MakeNewPost = ({user, r, sessionStart, sessionId}) => {
 
 
     let post = async () => {
+        add_click(sessionId, "post puzzle", sessionStart)
         if(selectPuzzleIdx == -1){
             alert("Please select a puzzle before posting")
         }else{
@@ -128,19 +130,20 @@ let MakeNewPost = ({user, r, sessionStart, sessionId}) => {
         }
     }
 
-    let puzzleOptions = likedPuzzles.map((puzzle, idx) => {return <div className="puzzleSelectElement">
+    let puzzleOptions = likedPuzzles.map((puzzle, idx) => {return <div key={idx} className={selectPuzzleIdx == idx ? "puzzleSelectedElement": "puzzleSelectElement"}  selected={selectPuzzleIdx == idx}> 
+       <button onClick={() => setSelectedPuzzleIdx(idx)}>Select</button> 
         <h2>{"name" in puzzle? puzzle["name"] : "Untitled Puzzle" }</h2>
         <h3>Difficulty: {puzzle.diff}</h3>
         <h3>Hints</h3>
         <ol className='hintList'>
         {puzzle.hints.map((hint, id) => <li key={id}>{hint}</li>)}
         </ol>
-            <button onClick={() => setSelectedPuzzleIdx(idx)}>Select</button>
+            
         </div>
     })
 
 
-    return <div>
+    return <div className="newPost">
         <button onClick={r}>Return</button>
         <h1>Post Title</h1>
             <input className="categoryInput" value={title} onChange={e => setTitle(e.target.value)}/>
@@ -153,7 +156,7 @@ let MakeNewPost = ({user, r, sessionStart, sessionId}) => {
             {puzzleOptions}
         </div>
 
-        <button onClick={post}>Post</button>
+        <button className="postButton" onClick={post}>Post</button>
         
 
     </div>

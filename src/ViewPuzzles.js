@@ -433,7 +433,9 @@ export default ViewPuzzles = ({puzzles, user, setPuzzles, mode, sessionId, sessi
     let personas = <Personas puzzles={puzzleList} user={user} appMode={mode} sessionId={sessionId} sessionStart={sessionStart}/>
 
     if (mode == "serious"){
-        return viewAll
+        return <div className='body'>
+            {viewAll}
+        </div>
     }else if (mode == "casual"){
         return personas
     }else{

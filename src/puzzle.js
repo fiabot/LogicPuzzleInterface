@@ -7,6 +7,7 @@ import SubGrid from "./subgrid";
 import { createGamePlayInstance, addCellChange, addButtonPress } from "./Firestore/sendData";
 import { printDocument } from "./utils";
 import { useReactToPrint } from "react-to-print";
+import { add_click } from "./API/SendToApi";
 import "./narrative.css";
 
 ClueViewer = ({ clues, n, printable, black }) => {
@@ -206,7 +207,7 @@ let clearPuzzle = (puzzle, strikes, setStrikes, instanceId, time) => {
     
 }
 
-export default Puzzle =({p, time, concede, finish})=>{
+export default Puzzle =({p, time, concede, finish, sessionId = null, sessionStart =null})=>{
     let puzzle = [[]];
     let displayGrid = [];
     let [select, setSelect] = useState("O");
@@ -310,7 +311,7 @@ export default Puzzle =({p, time, concede, finish})=>{
       <div>Full Color</div> 
         <div>B&W</div> 
       </label></div> : ""}
-    {printable?   <button className="likeButton" onClick={() =>reactToPrintFn(reactToPrintContent)}><img src="./icons/download.png" width="40" height="40"/></button>: ""}
+    {printable?   <button className="likeButton" onClick={() =>{sessionId? add_click(sessionId, "download", sessionStart): ""; reactToPrintFn(reactToPrintContent)}}><img src="./icons/download.png" width="40" height="40"/></button>: ""}
 
   
     
