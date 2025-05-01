@@ -99,8 +99,15 @@ let EditIs = ({ empty, categories, user, update, sessionId, sessionStart, type =
     </div>
 
     let create_example = (t) => {
-        cat1Ents = categories.filter((value) => value.name == cat1)[0].entities
-        cat2Ents = categories.filter((value) => value.name == cat2)[0].entities
+        cat1Ents = categories.filter((value) => value.name == cat1)[0]
+        cat2Ents = categories.filter((value) => value.name == cat2)[0]
+
+        if (!cat1Ents || !cat2Ents){
+            return "Select categories"
+        }
+
+        cat1Ents = cat1Ents.entities
+        cat2Ents = cat2Ents.entities
 
         ent1 = cat1Ents[Math.floor(Math.random() * cat1Ents.length)];
         ent2 = cat2Ents[Math.floor(Math.random() * cat2Ents.length)];
