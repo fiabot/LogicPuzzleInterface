@@ -5,7 +5,7 @@ import { useEffect, useState } from "react"
 
 import PlayablePuzzleList from "./PlayablePuzzleList";
 
-let adminPublicKeys = ["Admin 1"]
+let adminPublicKeys = ["Admin 1", "Admin 2"]
 
 let openSurvey= (password) => {
     url_str =  pathname = window.location.href +"survey?user=" + password
