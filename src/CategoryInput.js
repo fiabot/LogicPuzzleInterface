@@ -3,7 +3,6 @@ import { getScenarios } from "./API/GetFromApi"
 import { add_cat, add_click, add_scen, postEvolution } from "./API/SendToApi"
 import "./AuthoringStyle.css"
 import Collapseable from "./Collapseable"
-import EditBrainstorm from "./EditBrainstorm"
 import EditTemplate from "./EditTemplate"
 
 
@@ -30,7 +29,6 @@ let CategoryMaker = ({ categories, setCategories, index, numEntities, sessionId,
                 entities: list,
                 is_numeric: is_numeric,
                 inc: inc
-
             }
         } else {
             return element
