@@ -45,15 +45,13 @@
     position: absolute;
     left: 0px;
     width: 40%;
-    height:  95%;
+    height:  90%;
     overflow: auto;
     scrollbar-color: #776274 #A07178;
     margin-bottom: 20px;
-
 }
 
 .puzzleViewRight{
-
     position: absolute;
     right: 0px;
     width: 60%;

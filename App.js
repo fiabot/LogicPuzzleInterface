@@ -195,7 +195,7 @@ let PlayPuzzle = () => {
   }else if (user == null){
     return <Login  user={user} setUser={setUser} mode={userMode} setMode={setUserMode} sessionId={sessionId} setSessionId={setSessionID} sessionStart={sessionStart} setSessionStart={setSessionStart} username={username} setUsername={setUsername}/>
   } else{
-    return <div className='puzzleView'>
+    return <div>
       {header}
       {content}
     </div>
