@@ -377,10 +377,7 @@ export default PuzzleMaker = ({ startEvolve, user, mode, scenario, setScenario, 
             <div className="authoringView">
 
                 <Collapseable content={sampleCategories} title="Scenarios" showByDefault={true} />
-                <Collapseable content={editGrammar} title="Edit Default Grammar and Narrative Suggestions" showByDefault={mode == "serious"} />
-
-
-
+                <Collapseable content={editGrammar} title="Edit Default Grammar and Narrative Suggestions for Current Categories" showByDefault={mode == "serious"} />
             </div>
 
         </div>
