@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { get_is_brainstorm, get_is_template, get_not_brainstorm, get_not_template, get_or_template, get_or_brainstorm, get_before_template, get_before_brainstorm, get_unused_grammar } from "./API/GetFromApi"
-import { add_before, add_click, add_is, add_not, add_or } from "./API/SendToApi"
+import { add_before, add_before_brain, add_click, add_is, add_is_brain, add_not, add_not_brain, add_or, add_or_brain} from "./API/SendToApi"
 
 let get_idea = (brainstorms, setRandomBrainstorm, create_example) => {
     ex = ""
@@ -525,6 +525,7 @@ let EditBefore = ({ empty, categories, user, update, sessionId, sessionStart }) 
             add_before_brain(cat1, cat2, numCat, newSpecifiedBrainstorm, true, user)
                 .then(() => get_before_brainstorm(cat1, cat2, numCat, user))
                 .then(result => {
+                    console.log(result)
                     setCurrentSpecifiedBrainstorms(result.timed)
                     setCurrentUnspecifiedBrainstorms(result.untimed)
                 })
