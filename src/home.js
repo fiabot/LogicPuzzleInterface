@@ -121,7 +121,7 @@ export default HomePage = ({user, publicKey  }) => {
             <h1>Research Zone</h1>
             <p> This is primarily a research project, so we greatly appreciate you contributing to our research by periodically filling out our survey.</p>
             <p>You have filled out <b>{numSurveys} surveys</b>, which makes you a {score}. {desc[score]} Fill out <b>{nextLevel} more surveys</b> to progress your research score. </p>
-            <p><b>You have not filled out a survey yet</b>, we highly encourage you to fill out one now!</p>
+            <p><b>After generating some puzzle</b>, please come back here to fill out a survey!</p>
             </div>
        
         
@@ -132,8 +132,18 @@ export default HomePage = ({user, publicKey  }) => {
                 <h1>Frequently Asked Questions</h1>
                 <p>We will update this page as we get questions. Please contact shyne.f@northeatern.edu with any questions.</p>
 
-                <h2>Question 1</h2>
-                <p>Answer 1</p>
+                <h2>How are puzzles generated?</h2>
+                <p>Puzzles are generated using a type of algorithm called a Genetic Algorithm. 
+                    This program <b>does not</b> use generative AI (such as Chat-GPt), and does not use any training data. 
+                    Instead puzzles are first randomly generated, by creating lists of clues. These puzzles are then optimized until they become solvable. This generator creates many puzzles but only keeps the puzzle with the smallest hint size for puzzles with the same difficulty and solution.  </p>
+                
+                <h2>Why do I need to add a grammar for new categories?</h2>
+                <p>Our generator only knows logic, not the English language. Because of this, clues end up looking awkward if you don't tell the generator how to phrase different clues.</p>
+            
+
+            <h2>How does this project help research?</h2>
+            <p>We are looking how to best make interfaces where humans work with a computational system. By trying our system and providing feedback, you are helping other designers better create tools like this in the future.</p>
+    
             </div>
            
 

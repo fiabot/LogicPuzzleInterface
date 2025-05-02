@@ -299,7 +299,7 @@ export default PuzzleMaker = ({ startEvolve, user, mode, scenario, setScenario, 
         return <button className={className} key={idx} onClick={() => { updateScenario(s, scens); add_click(sessionId, "select scenario", sessionStart) }} >{s.name}</button>
     })
 
-    scenarioButton.push(<button button className="userButton" key={scens.length} onClick={() => { updateScenario({ "name": "custom scenario", "scenario": "Enter scenario text", "categories": [], "origin": "new"}, scens); add_click(sessionId, "new scenario", sessionStart) }}>Create New Scenario</button>)
+    scenarioButton.push(<button button className="userButton" key={scens.length} onClick={() => { updateScenario({ "name": "custom scenario", "scenario": "Enter scenario text", "categories": [], "origin": "new"}, scens); add_click(sessionId, "new scenario", sessionStart) }}><b>+ New Scenario</b></button>)
 
     categoryButton = cats.map((cat, idx) => {
         return <button className={cat.origin == "sample" ? "sampleButton" : "userButton"} key={idx} onClick={() => { setCategories([...categories, cat]); cat.origin == "sample" ? add_click(sessionId, "add example category", sessionStart) : "" }} >{cat.name}</button>

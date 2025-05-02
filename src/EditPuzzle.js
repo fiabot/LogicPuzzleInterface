@@ -24,7 +24,7 @@ let GetClues = ({brainstorms, setNarrative, sessionStart, sessionId}) => {
             <h2>Get Ideas: {brainstorms.length} available</h2>
             <p>{brainstorms.length == 0? "No Ideas available": idea}</p>
             <button disabled={brainstorms.length == 0} onClick={newIdea}>New Idea</button>
-            <button disabled={brainstorms.length == 0 && idea != ""} onClick={setAsNar}>Set as narrative</button>
+            <button disabled={brainstorms.length == 0 || idea == ""} onClick={setAsNar}>Set as narrative</button>
 
         </div>
 }
@@ -32,35 +32,46 @@ let GetClues = ({brainstorms, setNarrative, sessionStart, sessionId}) => {
 let EditNarratives = ({narratives, setNarratives, grammar, user, sessionId, sessionStart}) => {
 
     let [content, setContent] = useState(<div>Loading</div>)
+    let [brainstorms, setbrainstorms] = useState(new Array(narratives.length).fill([]))
     let setNarrative = (newNarrative, idx) => {
         nar = [...narratives]
         nar[idx] = newNarrative
         setNarratives(nar)
     }
 
-    let narrativeEdits = narratives.map(async (nar, idx) => {
-        let brainstorms = await getBrainStormIdeas(grammar[idx], user)
+    useEffect(() => {
+        all_brains = narratives.map(async (nar, idx) => {
+            return await getBrainStormIdeas(grammar[idx], user)
+        }); 
+
+        Promise.all(all_brains).then((values) => setbrainstorms(values))
+    }, [])
+
+    //let brainstorms = 
+
+    let narrativeEdits = narratives.map((nar, idx) => {
+        
         let clueLogic = getClueLogic(grammar[idx])
 
         return <div key={idx}>
             <h1>Clue: {idx + 1}</h1>
             <h2>Editing Clue with base logic:</h2>
             <p>{clueLogic}</p>
-            <GetClues brainstorms={brainstorms} sessionId={sessionId} sessionStart={sessionStart}/>
+            <GetClues brainstorms={brainstorms[idx]} setNarrative={(v) => setNarrative(v, idx)} sessionId={sessionId} sessionStart={sessionStart}/>
             <h2>Write Narrative</h2> 
-            <textarea className={"scenarioInput"} value={narratives[idx]} onChange={(e)=> setNarrative(e.target.value, idx)} onClick={() => add_click(sessionId, "edit narrative", sessionStart)} />
+            <textarea className={"scenarioInput"}  value={nar}  onChange={(e)=> setNarrative(e.target.value, idx)} onClick={() => add_click(sessionId, "edit narrative", sessionStart)} />
 
         </div>
 
     
     })
 
-    Promise.all(narrativeEdits).then((values) => setContent(values))
+    //Promise.all(narrativeEdits).then((values) => setContent(values))
 
 
     return <div className="clueList">
         <h1>Editing Narratives</h1>
-        {content} 
+        {narrativeEdits} 
         
     </div>
 

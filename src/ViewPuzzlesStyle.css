@@ -124,6 +124,12 @@
     margin: 5px;
 }
 
+
+.puzzleElement button:disabled{
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
 .hintList {
     width: inherit; 
 }
