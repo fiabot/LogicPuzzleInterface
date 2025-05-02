@@ -4,6 +4,7 @@ import { add_cat, add_click, add_scen, postEvolution } from "./API/SendToApi"
 import "./AuthoringStyle.css"
 import Collapseable from "./Collapseable"
 import EditTemplate from "./EditTemplate"
+import { sanitize } from "./utils"
 
 
 let CategoryMaker = ({ categories, setCategories, index, numEntities, sessionId, sessionStart, can_save = false, user = null }) => {
@@ -80,7 +81,7 @@ let CategoryMaker = ({ categories, setCategories, index, numEntities, sessionId,
     let listInput = list.map((element, idx) => <li key={idx}><input value={element} onClick={() => add_click(sessionId, "edit entity", sessionStart)} onChange={e => {
         const nextList = list.map((element, i) => {
             if (i === idx) {
-                return e.target.value;
+                return sanitize(e.target.value);
             } else {
                 return element;
             }
@@ -89,7 +90,7 @@ let CategoryMaker = ({ categories, setCategories, index, numEntities, sessionId,
     }} /></li>)
 
     return (<div className="categoryDiv">
-        <input className="categoryInput" value={name} onChange={e => setName(e.target.value)} />
+        <input className="categoryInput" value={name} onChange={e => setName(sanitize(e.target.value))} />
         <ol className="entityList">
             {listInput}
         </ol>
@@ -339,10 +340,10 @@ export default PuzzleMaker = ({ startEvolve, user, mode, scenario, setScenario, 
 
             <div className="authoringView">
                 <h1>Scenario Title</h1>
-                <input className="categoryInput" value={name} onChange={e => updateName(e.target.value, scens)} />
+                <input className="categoryInput" value={name} onChange={e => updateName(sanitize(e.target.value), scens)} />
 
                 <h1>Narrative</h1>
-                <textarea className={"scenarioInput"} value={scenario} onChange={(e) => setScenario(e.target.value)} onClick={() => add_click(sessionId, "edit narrative", sessionStart)} />
+                <textarea className={"scenarioInput"} value={scenario} onChange={(e) => setScenario(sanitize(e.target.value))} onClick={() => add_click(sessionId, "edit narrative", sessionStart)} />
 
 
 
