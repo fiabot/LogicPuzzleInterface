@@ -120,40 +120,75 @@ let IsFilter = ({attrs, setAttrs, idx, categories}) => {
 
 
 
-let CreateHintFilter = ({filter, setFilter, categories}) => {
+let CreateHintFilter = ({index, filters, setFilters, categories}) => {
 
+    let [filter, setFilter] = useState(filters[index])
+    
     let hintKinds = ["is", "not", "simple_or", "before", "compound_or"]
 
     let kindAttributes = {"is": ["cat1", "ent1", "cat2", "ent2"], "not": ["cat1", "ent1", "cat2", "ent2"], "before": ["cat1", "ent1", "cat2", "ent2", "num_cat", "amount" ],  "simple_or":  ["cat1", "ent1", "cat2", "ent2", "is_cat", "is_ent"], "compound_or": ["is1", "is2"]}
+    
     let k= Object.keys(filter)[0]
     let [kind, setKind] = useState(k)
     let [attrs, setAttrs] = useState(filter[k])
+    let [deleteMe, setDeleteMe] = useState(false)
 
-    useEffect(()=>{
-       
-        if (kind == ""){
+    useEffect(() => {
+        const newFilters = filters.map((element, i) => {
+            if (i == index) {
+                if (deleteMe) {
+                    console.log("set index ") 
+                    console.log(i) 
+                    console.log(" to ")
+                    console.log(element)
+                    console.log(" instead of ")
+                    console.log(filter)
+                    setFilter(element)
+                    let k= Object.keys(element)[0]
+                    updateKind(k, element[k])
+                    setDeleteMe(false)
+                    return element
+                }
+                console.log("set index ") 
+                console.log(i) 
+                console.log("to ")
+                console.log(filter)
+                return filter
+            } else {
+                return element
+            }
+        })
+
+        setFilters(newFilters)
+    }, [filter, deleteMe])
+
+    let updateKind = (k, as=[]) => {
+        setKind(k)
+        if (k == ""){
             setAttrs([])
             setFilter("")
-        }else{
+        } else{
             let obj = {}
-            obj[kind] = []
+            obj[kind] = as
 
-            if (kind == "before"){
-                setAttrs(Array(5).join(".").split(".")) 
-            }else if (kind ==  "compound_or") {
-                setAttrs([{"is": ["","","",""]}, {"is": ["","","",""]}])
-            }else{
-                setAttrs(Array( kindAttributes[kind].length).join(".").split(".")) 
+            if (as != []) {
+                setAttrs(as)
+            } else{
+                if (kind == "before"){
+                    setAttrs(Array(5).join(".").split(".")) 
+                }else if (kind ==  "compound_or") {
+                    setAttrs([{"is": ["","","",""]}, {"is": ["","","",""]}])
+                }else{
+                    setAttrs(Array( kindAttributes[kind].length).join(".").split(".")) 
+                }
             }
             setFilter(obj)
         }
-      
-    }, [kind])
+    }
 
     useEffect(()=>{
         let obj = {}
         obj[kind] = attrs
-
     
         setFilter(obj)
     }, [attrs])
@@ -266,13 +301,21 @@ let CreateHintFilter = ({filter, setFilter, categories}) => {
         attrSelects = <ol>{selects}</ol>
     }
 
+    let deleteFilter = (index) => {
+        console.log("delete ")
+        console.log(index)
+        console.log("new filters ")
+        console.log(filters)
+        setFilters(
+            filters.toSpliced(index, 1)
+        )
+        setDeleteMe(true)
+    }
 
     return <div className='hintFilter'>
         Select hint type:     
-
-      
         
-        <select value={kind} onChange={(e) =>setKind(e.target.value)}>
+        <select value={kind} onChange={(e) =>updateKind(e.target.value)}>
             {kindOptions}
         </select> 
 
@@ -286,30 +329,32 @@ let CreateHintFilter = ({filter, setFilter, categories}) => {
                     <li><b>compound_or</b>: either the first or the second <i>is</i> statement is true, but not both</li>
                 </ol> 
             </span>
-          </div>
+        </div>
 
         <p>Select attributes:</p> {attrSelects}
+        <button className='smallButton' onClick={deleteFilter}>Remove Hint Filter</button>
     </div>
-
 }
 
 
 let HintFilters = ({filters, setFilters, categories, sessionId, sessionStart}) => {
 
 
-    let manageFilter = (idx) => {
-        let setFilter = (f) => {
-            fs = [...filters]
-            fs[idx] = f
+    // let manageFilter = (idx) => {
+    //     let setFilter = (f) => {
+    //         fs = [...filters]
+    //         fs[idx] = f
 
-            setFilters(fs)
+    //         setFilters(fs)
 
-        }
+    //     }
 
-        return <CreateHintFilter filter={filters[idx]} setFilter={setFilter} categories={categories}/> 
-    }
+    //     return <CreateHintFilter filter={filters[idx]} setFilter={setFilter} categories={categories}/> 
+    // }
 
-    let filterManagers = filters.map((f, i) => manageFilter(i)) 
+    let filterManagers = filters.map((f, idx) => {
+        return <CreateHintFilter index={idx} filters={filters} setFilters={setFilters} categories={categories}/>
+    }) 
 
     let add_filter = () => {
         add_click(sessionId, "filter by hint", sessionStart)
@@ -318,18 +363,11 @@ let HintFilters = ({filters, setFilters, categories, sessionId, sessionStart}) =
         setFilters(f)
     }
 
-    let remove_filter = () => {
-        f = [...filters]
-        f.pop()
-        setFilters(f)
-    }
-
     return <div>
 
     
         <div>
             <button className='smallButton' onClick={add_filter}>Add Hint Filter</button>
-            <button className='smallButton' onClick={remove_filter}>Remove Hint Filter</button>
         </div>
        
         {filterManagers}
