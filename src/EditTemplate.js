@@ -342,7 +342,7 @@ let EditOr = ({ empty, categories, user, update, sessionId, sessionStart }) => {
             <h3>Edit Brainstorms</h3>
             <p><i>Suggestions for editing clues to enhance their narrative.</i></p>
             {currentBrainstormDisplay}
-            <p>Enter new brainstorm: <itextarea  rows="2" cols="50"  value={newBrainstorm} onChange={(e) => setNewBrainstorm(e.target.value)} /></p>
+            <p>Enter new brainstorm: <textarea  rows="2" cols="50"  value={newBrainstorm} onChange={(e) => setNewBrainstorm(e.target.value)} /></p>
             <p>Example: {new_brainstorm_ex}</p>
             <button onClick={saveIdea}>Save Brainstorm</button>
         </div>
