@@ -134,7 +134,7 @@ export default HomePage = ({user, publicKey  }) => {
 
                 <h2>How are puzzles generated?</h2>
                 <p>Puzzles are generated using a type of algorithm called a Genetic Algorithm. 
-                    This program <b>does not</b> use generative AI (such as Chat-GPt), and does not use any training data. 
+                    This program <b>does not</b> use generative AI (such as Chat-GPT), and does not use any training data. 
                     Instead puzzles are first randomly generated, by creating lists of clues. These puzzles are then optimized until they become solvable. This generator creates many puzzles but only keeps the puzzle with the smallest hint size for puzzles with the same difficulty and solution.  </p>
                 
                 <h2>Why do I need to add a grammar for new categories?</h2>
