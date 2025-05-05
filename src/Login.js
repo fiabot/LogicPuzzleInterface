@@ -5,8 +5,6 @@ import { useEffect, useState } from "react"
 import { sanitize } from "./utils";
 import PlayablePuzzleList from "./PlayablePuzzleList";
 
-let adminPublicKeys = ["Admin 1"]
-
 
 export default HomePage = ({ user, setUser, mode, setMode, sessionId, setSessionId, sessionStart, setSessionStart, username, setUsername}) => {
     let [puzzles, setPuzzles] = useState([])

@@ -350,7 +350,8 @@ function sanitize(string) {
   return string.replace(reg, (match)=>(map[match]));
 }
 
+let adminPublicKeys = ["Admin 1", "Admin 2"]
 
-  export {printDocument, getClueLogic, getBrainStormIdeas, hasHints, findMutants, formatTime, categoryFilter, entityFilter, sanitize}
+  export {printDocument, getClueLogic, getBrainStormIdeas, hasHints, findMutants, formatTime, categoryFilter, entityFilter, sanitize, adminPublicKeys}
 
 

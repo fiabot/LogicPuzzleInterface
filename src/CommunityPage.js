@@ -6,7 +6,8 @@ import PlayablePuzzleList from "./PlayablePuzzleList";
 import "./community_style.css"
 import { formatTime } from "./utils";
 import { sanitize } from "./utils";
-import { add_click } from "./API/SendToApi";
+import { add_click, remove_comment, remove_post } from "./API/SendToApi";
+import { adminPublicKeys } from "./utils";
 
 let PuzzlePost = ({post, selectPost}) => {
     let time = formatTime(post.time)
@@ -18,7 +19,7 @@ let PuzzlePost = ({post, selectPost}) => {
     let likes = "likes" in post ? post.likes : 0 
     return <div className="post">
         <h1>{post.title}</h1>
-        <p className="metadata">{post.username}</p>
+        <p className={adminPublicKeys.includes(post.username) ? "adminName" : "metadata"}>{post.username}</p>
         <p className="metadata">{time}</p>
         <p>{post.body}</p>
         <h2>Difficulty: {post.puzzle.difficulty}</h2>
@@ -37,7 +38,7 @@ let PuzzlePost = ({post, selectPost}) => {
 let SelectedPost = ({user, post, r, appMode, sessionStart, sessionId, start_liked = true}) => {
     let [commentText, setCommentText] = useState("")
     let [liked, setLiked] = useState(start_liked); //TODO: make this actually checked if we have already liked puzzle 
-    comments = post.comments.map((c, i) => <div className="comment" key={i}><p>{c.comment}</p><p className="metadata">{formatTime(c.time)}</p> <p className="metadata">{c.username}</p></div>)
+    comments = post.comments.map((c, i) => <div className="comment" key={i}><p>{c.comment}</p><p className="metadata">{formatTime(c.time)}</p> <p className={adminPublicKeys.includes(c.username) ? "adminName" : "metadata"}>{c.username}</p> {post["admin"] ? <button onClick={() => remove_comment( post._id, user, post.mode,c.time )}>Remove Comment</button> : "" }</div>)
 
     let time = formatTime(post.time)
     let views = "views" in post? post.views : 0 
@@ -45,7 +46,13 @@ let SelectedPost = ({user, post, r, appMode, sessionStart, sessionId, start_like
 
     let add_comment_button = async () => {
         add_click(sessionId, "add comment", sessionStart)
-        let result = await add_comment(post["_id"], sanitize(commentText), new Date().toJSON(), user)
+        let result = null; 
+        if (post["mode"]){
+            result = await add_comment(post["_id"], sanitize(commentText), new Date().toJSON(), user, post["mode"]) 
+        }else{
+            result = await add_comment(post["_id"], sanitize(commentText), new Date().toJSON(), user)
+        }
+        
 
         if (result.status < 300){
             alert("Successfully Posted")
@@ -71,8 +78,9 @@ let SelectedPost = ({user, post, r, appMode, sessionStart, sessionId, start_like
          {(liked)?<button className="likeButton" onClick={toggleLike}><img src="./icons/liked.png" width="40" height="40"/></button>:   <button  className="likeButton" onClick={toggleLike}><img src="./icons/unliked.png" width="40" height="40"/></button>} 
         <SelectedPuzzle puzzle={post.puzzle} user={user} appMode={appMode}  r={r} sessionStart={sessionStart} sessionId={sessionId} can_like={false}/> 
         <div className="post">
+        {post["admin"] ? <button onClick={() => remove_post( post._id, user, post.mode )}>Remove Post</button> : "" }
         <h1>{post.title}</h1>
-        <p className="metadata">{post.username}</p>
+        <p className={adminPublicKeys.includes(post.username) ? "adminName" : "metadata"}>{post.username}</p>
         <p className="metadata">{time}</p>
         
         <p>{post.body}</p>
@@ -167,14 +175,30 @@ let MakeNewPost = ({user, r, sessionStart, sessionId}) => {
 }
 
 let CommunityPage = ({user, appMode,  sessionStart, sessionId}) => {
-    let [postedPuzzles, setPostedPuzzles] = useState([])
+    let [postedPuzzles, setPostedPuzzles] = useState(appMode == "admin"? {"mixed": [], "serious":[]}: [])
     let [selectedPuzzle, setSelectedPuzzle] = useState(null)
     let [likedPostedPuzzles, setLikedPostedPuzzles] = useState([])
     let [mode, setMode] = useState("view")
     let fetch = async() => {
         let puzzles = await get_posted_puzzles(user)
 
-        console.log(puzzles)
+        if (appMode == "admin"){
+            puzzles["mixed"] = puzzles["mixed"].map((p) => 
+            {let puzzle ={...p}; 
+                puzzle["admin"] = true
+                puzzle["mode"] = "mixed"
+
+                return puzzle
+            })
+
+            puzzles["serious"] = puzzles["serious"].map((p) => 
+            {let puzzle = {...p}; 
+                puzzle["admin"] = true
+                puzzle["mode"] = "serious"
+
+                return puzzle
+            })
+        }
 
         setPostedPuzzles(puzzles)
 
@@ -192,7 +216,12 @@ let CommunityPage = ({user, appMode,  sessionStart, sessionId}) => {
     }
 
     let selectPost = (post) => {
-        view_puzzle(post._id, user)
+        if (post["mode"]) {
+            view_puzzle(post._id, user, mode)
+        }else{
+            view_puzzle(post._id, user)
+        }
+        
         setSelectedPuzzle(post)
         setMode("selected")
     }
@@ -214,7 +243,24 @@ let CommunityPage = ({user, appMode,  sessionStart, sessionId}) => {
 
     let mainContent = <div>Loading</div>
     if (mode == "view"){
-        mainContent= <div className="postContainer">{postedPuzzles.map((p,i) => <PuzzlePost key={i} post={p} selectPost={selectPost}/>)}</div>
+        if (appMode == "admin"){
+
+         
+                mainContent = <div>
+                <h1>Mixed</h1>
+                <div className="postContainer">{postedPuzzles["mixed"].map((p,i) => <PuzzlePost key={i} post={p} selectPost={selectPost} mode={"mixed"} admin={true}/>)}</div>
+
+                <h1>Hybrid</h1>
+                <div className="postContainer">{postedPuzzles["serious"].map((p,i) => <PuzzlePost key={i} post={p} selectPost={selectPost} mode={"mixed"} admin={true}/>)}</div>
+
+            </div>
+            
+            
+        }else { 
+            mainContent= <div className="postContainer">{postedPuzzles.map((p,i) => <PuzzlePost key={i} post={p} selectPost={selectPost}/>)}</div>
+
+        }
+      
     }else if (mode == "selected"){
         mainContent = <SelectedPost user={user} post={selectedPuzzle} r={r} appMode={appMode} sessionStart={sessionStart} sessionId={sessionId} start_liked={is_liked(selectedPuzzle)}/> 
     }else if (mode == "new"){

@@ -2,10 +2,9 @@
 import { add_account, login, new_session } from "./API/SendToApi"
 import { getNumSurveys } from "./API/GetFromApi"
 import { useEffect, useState } from "react"
+import { adminPublicKeys } from "./utils";
 
 import PlayablePuzzleList from "./PlayablePuzzleList";
-
-let adminPublicKeys = ["Admin 1", "Admin 2"]
 
 let openSurvey= (password) => {
     url_str =  pathname = window.location.href +"survey?user=" + password

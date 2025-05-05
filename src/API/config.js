@@ -1,7 +1,7 @@
 import _axios from "axios";
 import { useState } from "react";
-//const API_URL = 'http://127.0.0.1:3000' 
-const API_URL = 'https://christie.khoury.northeastern.edu' 
+const API_URL = 'http://127.0.0.1:3000' 
+//const API_URL = 'https://christie.khoury.northeastern.edu' 
 
 const EVOLVE_URL = API_URL + "/map_evolve"
 const SAMPLE_CAT_URL = API_URL + '/sample_categories'
@@ -37,6 +37,8 @@ const UNLIKED_POSTED_PUZZLE = API_URL + "/unlike_posted_puzzle"
 const VIEW_PUZZLE = API_URL + "/view_puzzle"
 const ADD_SURVEY = API_URL + "/add_survey"
 const NUM_SURVEYS = API_URL + "/get_num_surveys"
+const REMOVE_POST = API_URL + "/delete_post"
+const REMOVE_COMMENT = API_URL + "/delete_comment"
 
 
 const handleRes = (res) => {
@@ -52,4 +54,4 @@ const api = _axios.create( {credentials: false});
 api.interceptors.request.use(handleRes, handleErr);
 api.interceptors.response.use(handleRes, handleErr);
 
-export { API_URL, EVOLVE_URL, REMOVE_PUZZLE, UPDATE_PUZZLE, SAMPLE_CAT_URL, ADD_ACCOUNT_URL, LIKE_PUZZLE, GET_LIKED_PUZZLES, ITER_EVOLVE, GET_UNUSED_GRAMMARS, ADD_GRAMMAR_RULE, ADD_CATEGORY, GET_TEMPLATE, GET_PUBLIC_KEY, api, GET_BRAINSTORMS, ADD_BRAINSTORM, GET_SCEN, ADD_SCEN, UPDATE_SCEN, DELETE_SCEN, NEW_SESSION, ADD_CLICK, GET_POSTED_PUZZLES, POST_PUZZLE, ADD_COMMENT, LIKE_POSTED_PUZZLE, GET_LIKED_POSTED_PUZZLEs, UNLIKED_POSTED_PUZZLE, VIEW_PUZZLE, ADD_SURVEY, NUM_SURVEYS};
+export { API_URL, EVOLVE_URL, REMOVE_PUZZLE, UPDATE_PUZZLE, SAMPLE_CAT_URL, ADD_ACCOUNT_URL, LIKE_PUZZLE, GET_LIKED_PUZZLES, ITER_EVOLVE, GET_UNUSED_GRAMMARS, ADD_GRAMMAR_RULE, ADD_CATEGORY, GET_TEMPLATE, GET_PUBLIC_KEY, api, GET_BRAINSTORMS, ADD_BRAINSTORM, GET_SCEN, ADD_SCEN, UPDATE_SCEN, DELETE_SCEN, NEW_SESSION, ADD_CLICK, GET_POSTED_PUZZLES, POST_PUZZLE, ADD_COMMENT, LIKE_POSTED_PUZZLE, GET_LIKED_POSTED_PUZZLEs, UNLIKED_POSTED_PUZZLE, VIEW_PUZZLE, ADD_SURVEY, NUM_SURVEYS, REMOVE_COMMENT, REMOVE_POST};

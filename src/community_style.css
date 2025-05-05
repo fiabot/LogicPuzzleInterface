@@ -88,6 +88,13 @@
     margin: 1px;
 }
 
+.adminName {
+    color: #5d22bd; 
+    font-style: bold;
+    padding: 0px; 
+    margin: 1px;
+}
+
 .selectedPost{
     overflow: scroll;
 }
