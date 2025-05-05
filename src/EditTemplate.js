@@ -159,7 +159,7 @@ let EditIs = ({ empty, categories, user, update, sessionId, sessionStart, type =
             <p><i>The grammar for clues returned by the generator.</i></p>
             <p>Current grammar template: {currentGrammar}</p>
             <p>Example: {current_grammar_ex}</p>
-            <p>New template: <textarea  rows="1" cols="50" value={newGrammar} onChange={(e) => setNewGrammar(sanitize(e.target.value))} /></p>
+            <p>New template: <textarea  rows="2" cols="70" value={newGrammar} onChange={(e) => setNewGrammar(sanitize(e.target.value))} /></p>
             <p>Example: {new_grammar_ex}</p>
             <button onClick={saveGrammar}>Save Grammar Template</button>
         </div>
@@ -170,7 +170,7 @@ let EditIs = ({ empty, categories, user, update, sessionId, sessionStart, type =
             <h3>Edit Brainstorms</h3>
             <p><i>Suggestions for editing clues to enhance their narrative.</i></p>
             {currentBrainstormDisplay}
-            <p>Enter new brainstorm: <textarea  rows="2" cols="50" value={newBrainstorm} onChange={(e) => setNewBrainstorm(sanitize(e.target.value))} /></p>
+            <p>Enter new brainstorm: <textarea  rows="2" cols="70" value={newBrainstorm} onChange={(e) => setNewBrainstorm(sanitize(e.target.value))} /></p>
             <p>Example: {new_brainstorm_ex}</p>
             <button onClick={saveIdea}>Save Brainstorm</button>
         </div>
@@ -231,7 +231,7 @@ let EditOr = ({ empty, categories, user, update, sessionId, sessionStart }) => {
             setCat1(values[0])
             tempCat1 = values[0]
         } else if (num == 2) {
-            setCat2(value)
+            setCat2(values[0])
             tempCat2 = values[0]
         } else if (num == 3) {
             tempIs = values[0]
@@ -270,8 +270,8 @@ let EditOr = ({ empty, categories, user, update, sessionId, sessionStart }) => {
 
 
     selectAny = <div>
-        <p>Select category 1: <select onChange={(e) => changeCats(1, [e.target.value])}>{cat1Names}</select></p>
-        <p>Select category 2: <select onChange={(e) => changeCats(2, [e.target.value])}>{cat2Names}</select></p>
+        <p>Select category 1: <select value={cat1} onChange={(e) => changeCats(1, [e.target.value])}>{cat1Names}</select></p>
+        <p>Select category 2: <select value={cat2} onChange={(e) => changeCats(2, [e.target.value])}>{cat2Names}</select></p>
         <p>Select comparison category: <select value={isCat} onChange={(e) => changeCats(3, [e.target.value])}>{isNames}</select></p>
     </div>
 
@@ -333,7 +333,7 @@ let EditOr = ({ empty, categories, user, update, sessionId, sessionStart }) => {
             <p><i>The grammar for clues returned by the generator.</i></p>
             <p>Current grammar template: {currentGrammar}</p>
             <p>Example: {current_grammar_ex}</p>
-            <p>New template: <textarea  rows="1" cols="50" value={newGrammar} onChange={(e) => setNewGrammar(sanitize(e.target.value))} /></p>
+            <p>New template: <textarea  rows="2" cols="70" value={newGrammar} onChange={(e) => setNewGrammar(sanitize(e.target.value))} /></p>
             <p>Example: {new_grammar_ex}</p>
             <button onClick={saveGrammar}>Save Grammar Template</button>
         </div>
@@ -343,7 +343,7 @@ let EditOr = ({ empty, categories, user, update, sessionId, sessionStart }) => {
             <h3>Edit Brainstorms</h3>
             <p><i>Suggestions for editing clues to enhance their narrative.</i></p>
             {currentBrainstormDisplay}
-            <p>Enter new brainstorm: <textarea  rows="2" cols="50"  value={newBrainstorm} onChange={(e) => setNewBrainstorm(sanitize(e.target.value))} /></p>
+            <p>Enter new brainstorm: <textarea  rows="4" cols="70"  value={newBrainstorm} onChange={(e) => setNewBrainstorm(sanitize(e.target.value))} /></p>
             <p>Example: {new_brainstorm_ex}</p>
             <button onClick={saveIdea}>Save Brainstorm</button>
         </div>
@@ -576,12 +576,12 @@ let EditBefore = ({ empty, categories, user, update, sessionId, sessionStart }) 
             <p><i>The grammar for clues returned by the generator.</i></p>
             <p>Current specified grammar template: {currentSpecifiedGrammar}</p>
             <p>Example: {current_sp_grammar_ex}</p>
-            <p>New template: <textarea  rows="1" cols="50" value={newSpecifiedGrammar} onChange={(e) => setNewSpecifiedGrammar(sanitize(e.target.value))} /></p>
+            <p>New template: <textarea  rows="2" cols="70" value={newSpecifiedGrammar} onChange={(e) => setNewSpecifiedGrammar(sanitize(e.target.value))} /></p>
             <p>Example: {new_sp_grammar_ex}</p>
             <button onClick={() => saveGrammar(timed=true)}>Save Specified Grammar Template</button>
             <p>Current unspecified grammar template: {currentUnspecifiedGrammar}</p>
             <p>Example: {current_unsp_grammar_ex}</p>
-            <p>New template: <textarea  rows="1" cols="50" value={newUnspecifiedGrammar} onChange={(e) => setNewUnspecifiedGrammar(sanitize(e.target.value))} /></p>
+            <p>New template: <textarea  rows="2" cols="70" value={newUnspecifiedGrammar} onChange={(e) => setNewUnspecifiedGrammar(sanitize(e.target.value))} /></p>
             <p>Example: {new_unsp_grammar_ex}</p>
             <button onClick={() => saveGrammar(timed=false)}>Save Unspecified Grammar Template</button>
         </div>
@@ -592,11 +592,11 @@ let EditBefore = ({ empty, categories, user, update, sessionId, sessionStart }) 
             <h3>Edit Brainstorms</h3>
             <p><i>Suggestions for editing clues to enhance their narrative.</i></p>
             {currentSpecifiedBrainstormDisplay}
-            <p>Enter new specified brainstorm: <textarea  rows="2" cols="50" value={newSpecifiedBrainstorm} onChange={(e) => setNewSpecifiedBrainstorm(sanitize(e.target.value))} /></p>
+            <p>Enter new specified brainstorm: <textarea  rows="4" cols="70" value={newSpecifiedBrainstorm} onChange={(e) => setNewSpecifiedBrainstorm(sanitize(e.target.value))} /></p>
             <p>Example: {new_sp_brainstorm_ex}</p>
             <button onClick={() => saveIdea(timed=true)}>Save Specified Brainstorm</button>
             {currentUnspecifiedBrainstormDisplay}
-            <p>Enter new unspecified brainstorm: <textarea  rows="2" cols="50" value={newUnspecifiedBrainstorm} onChange={(e) => setNewUnspecifiedBrainstorm(sanitize(e.target.value))} /></p>
+            <p>Enter new unspecified brainstorm: <textarea  rows="4" cols="70" value={newUnspecifiedBrainstorm} onChange={(e) => setNewUnspecifiedBrainstorm(sanitize(e.target.value))} /></p>
             <p>Example: {new_unsp_brainstorm_ex}</p>
             <button onClick={() => saveIdea(timed=false)}>Save Unspecified Brainstorm</button>
         </div>
