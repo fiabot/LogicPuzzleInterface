@@ -125,6 +125,10 @@ let PlayPuzzle = () => {
 
 
   let startEvolve = (categories) => {
+    if (categories.length < 2) {
+      alert("Please add at least 2 categories to start generation")
+      return
+    }
     setCategories(categories)
     setMode("evolve")
 

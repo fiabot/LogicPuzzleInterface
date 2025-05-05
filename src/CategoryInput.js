@@ -6,6 +6,32 @@ import Collapseable from "./Collapseable"
 import EditTemplate from "./EditTemplate"
 import { sanitize } from "./utils"
 
+let CategoryWarning = ({categories, numEntities}) => {
+    let insufficientWarning = <b>Add at least 2 categories to start generation</b>
+    let slowdownWarning = <i><b>Warning:</b> Generation may be slow with more than 3 categories or more than 4 entities."</i>
+    let insufficient = false
+    let slowdown = false
+    if (categories.length < 2) {
+        insufficient = true
+    }
+    if (numEntities > 4 || categories.length > 3) {
+        slowdown = true
+    }
+
+    if (insufficient && slowdown) {
+        return <p>
+            {insufficientWarning}
+            <br/>
+            {slowdownWarning}
+        </p>
+    } else if (insufficient) {
+        return <p>{insufficientWarning}</p>
+    } else if (slowdown) {
+        return <p>{slowdownWarning}</p>
+    } else {
+        return <p/>
+    }
+};
 
 let CategoryMaker = ({ categories, setCategories, index, numEntities, sessionId, sessionStart, can_save = false, user = null }) => {
 
@@ -108,7 +134,7 @@ let CategoryMaker = ({ categories, setCategories, index, numEntities, sessionId,
 
 export default PuzzleMaker = ({ startEvolve, user, mode, scenario, setScenario, name, setName, sessionId, sessionStart }) => {
     let [categories, setCategories] = useState([]);
-    let [numEntites, setNumEntities] = useState(4);
+    let [numEntities, setNumEntities] = useState(4);
     let [templates, setTemplates] = useState(<div>Loading</div>)
     let [tempCats, setTempCats] = useState([])
     let [numEmpty, setNumEmpy] = useState([0])
@@ -121,7 +147,7 @@ export default PuzzleMaker = ({ startEvolve, user, mode, scenario, setScenario, 
     let [overwriting, setOverwriting] = useState(false)
 
     let categoryCreators = categories.map((cat, idx) => {
-        return <CategoryMaker key={idx} categories={categories} setCategories={setCategories} index={idx} numEntities={numEntites} starterName="name" can_save user={user} sessionId={sessionId} sessionStart={sessionStart} />
+        return <CategoryMaker key={idx} categories={categories} setCategories={setCategories} index={idx} numEntities={numEntities} starterName="name" can_save user={user} sessionId={sessionId} sessionStart={sessionStart} />
     })
 
     let evolvePuzzle = () => {
@@ -358,7 +384,6 @@ export default PuzzleMaker = ({ startEvolve, user, mode, scenario, setScenario, 
 
                 <div>
                     <button className="mediumButton" onClick={() => { add_scen(user, name, scenario, categories).then(() => {fetch()}) }}>{overwriting? 'Overwrite Scenario "' + name + '"' : 'Save New Scenario'}</button>
-
                     <button className="mediumButton" onClick={() => { setCategories([...categories, { name: "Name", entities: [], is_numeric: false, inc: 1 }]); add_click(sessionId, "new category", sessionStart) }}>Create New Category</button>
 
                     {/* <button disabled={scenId == 0 || origin == "sample"} className="mediumButton" onClick={() => { update_scen(user, name, scenario, categories).then(() => fetch()) }}>Update Scenario</button>
@@ -367,9 +392,11 @@ export default PuzzleMaker = ({ startEvolve, user, mode, scenario, setScenario, 
                 </div>
 
                 <div>
-                    Number of entities: <button onClick={() => { if (numEntites > 3) { setNumEntities(numEntites - 1) } }}>-</button> {numEntites}     <button onClick={() => setNumEntities(numEntites + 1)}>+</button>
+                    Number of entities: <button onClick={() => { if (numEntities > 3) { setNumEntities(numEntities - 1) } }}>-</button> {numEntities}     <button onClick={() => setNumEntities(numEntities + 1)}>+</button>
                 </div>
-                <div> <button className="largeButton" onClick={() => startEvolve(categories)}>Start Generation</button></div>
+                <div> 
+                    <CategoryWarning categories={categories} numEntities={numEntities}/>
+                    <button className="largeButton" onClick={() => startEvolve(categories)}>Start Generation</button></div>
 
             </div>
 
