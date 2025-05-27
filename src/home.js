@@ -1,9 +1,9 @@
 
 import { add_account, login, new_session } from "./API/SendToApi"
-import { getNumSurveys } from "./API/GetFromApi"
+import { getNumSurveys, getUserData } from "./API/GetFromApi"
 import { useEffect, useState } from "react"
 import { adminPublicKeys } from "./utils";
-
+import "./AuthoringStyle.css" 
 import PlayablePuzzleList from "./PlayablePuzzleList";
 
 let openSurvey= (password) => {
@@ -31,7 +31,7 @@ let images = {"Seed": "./icons/people/seed.png",
             "Pollinator":"./icons/people/polinator.png"}
 
 
-export default HomePage = ({user, publicKey  }) => {
+export default HomePage = ({user, publicKey, mode}) => {
 
     let [userMode, setUserMode] = useState("mixed")
 
@@ -108,10 +108,45 @@ export default HomePage = ({user, publicKey  }) => {
     
     }else{
 
+        const downloadFile = ({ data, fileName, fileType }) => {
+            // Create a blob with the data we want to download as a file
+            const blob = new Blob([data], { type: fileType })
+            // Create an anchor element and dispatch a click event on it
+            // to trigger a download
+            const a = document.createElement('a')
+            a.download = fileName
+            a.href = window.URL.createObjectURL(blob)
+            const clickEvt = new MouseEvent('click', {
+              view: window,
+              bubbles: true,
+              cancelable: true,
+            })
+            a.dispatchEvent(clickEvt)
+            a.remove()
+          }
+          const exportToJson = e => {
+            downloadFile({
+              data: JSON.stringify(e),
+              fileName: 'data.json',
+              fileType: 'text/json',
+            })
+          }
+
+          let get_user_data = async () =>{
+            let data = await getUserData(user)
+            exportToJson(data)
+          }
+
         return <div className='body'>
             <h1>Welcome {publicKey}</h1>
+            <button className="largeButton" onClick={get_user_data}>Download Data</button>
             <p>This is Puzzle Garden. This is an experimental tool for generating logic grid puzzles, with or without narrative elements. With this interface you will be able to create, play, and share your own logic grid puzzles. </p>
-        
+
+           
+            {mode == "mixed"? <p>Watch the beginner tutorial <a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/watch?v=6WtjwUvARt0"> here </a> and the advanced tutorial <a target="_blank" rel="noopener noreferrer" href=" https://www.youtube.com/watch?v=ssL9TOQTVsA">here</a></p>
+                :<p>Watch the video tutorial at <a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/watch?v=nAX14YCeD3o">here</a>.</p>}
+            {mode == "mixed"? <p>Get the written guide <a target="_blank" rel="noopener noreferrer" href="https://drive.google.com/drive/folders/1D0A6Xbcipixa8_38pyC4gIsceHqOa8er?usp=sharing"> here </a>. </p>:
+                <p>Get the written guide <a  target="_blank" rel="noopener noreferrer" href="https://drive.google.com/file/d/1xS9zKdgJvt3lNenDzV_Z2OwrLVOeFSKK/view">here</a>.</p>}
             <div className="personaCard">
             <div className="researchIcon">
             <img src={images[score]} width="500" height="500"/>
@@ -120,7 +155,7 @@ export default HomePage = ({user, publicKey  }) => {
             <h1>Research Zone</h1>
             <p> This is primarily a research project, so we greatly appreciate you contributing to our research by periodically filling out our survey.</p>
             <p>You have filled out <b>{numSurveys} surveys</b>, which makes you a {score}. {desc[score]} Fill out <b>{nextLevel} more surveys</b> to progress your research score. </p>
-            <p><b>After generating some puzzle</b>, please come back here to fill out a survey!</p>
+            <p><b>After generating some puzzles</b>, please come back here to fill out a survey!</p>
             </div>
        
         
@@ -130,6 +165,18 @@ export default HomePage = ({user, publicKey  }) => {
             <div className="faq">
                 <h1>Frequently Asked Questions</h1>
                 <p>We will update this page as we get questions. Please contact shyne.f@northeatern.edu with any questions.</p>
+
+
+                <h2>How do like save/post puzzles?</h2>
+                <p>When generating puzzles you save them by clicking the like button on the upper left-hand corner. You can then come back to these puzzles in the liked puzzles tab of the webpage. Additionally you can click the open link icon (box with an arrow) when will give you a unique URL to view your puzzle with. You won't need to login to view this link and it can be shared with other people. </p>
+
+                <p>To post a puzzle, go to the community page and click the post puzzle button. This will show all your liked puzzle and you can select one to post. You can also add a post title and body to give people more information about your puzzle. </p>
+
+                <h2>Why does it take a long time to generate puzzles?</h2>
+                <p>The larger the puzzle, the more time it will take to generate. In most cases you just need to be patient, especially if you have puzzles larger than 3 categories or 4 entities per category. Really large puzzle might cause a server timeout, and may never generate. 
+
+                    If task other then generations (e.g. logging in, posting a puzzle) please contact us at shyne.f@northeastern.edu. 
+                </p>
 
                 <h2>How are puzzles generated?</h2>
                 <p>Puzzles are generated using a type of algorithm called a Genetic Algorithm. 

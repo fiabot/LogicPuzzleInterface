@@ -70,6 +70,43 @@ function getFiles() {
 }
 
 
+let testPuzzle = `{
+  "solution": "------|XXXO||OXXX||XXOX||XOXX|",
+  "categories": [
+      {
+          "name": "oz",
+          "entities": [
+              "20oz",
+              "40oz",
+              "60oz",
+              "80oz"
+          ],
+          "is_numeric": true
+      },
+      {
+          "name": "plant",
+          "entities": [
+              "Potatoes",
+              "Green Onions",
+              "Eggplant",
+              "Broccoli"
+          ],
+          "is_numeric": false
+      }
+  ],
+  "hints": [
+      "The Green Onions need 40oz less then the Eggplant.",
+      "The plant that needs 40oz of water is Broccoli."
+  ],
+  "id": "0:1"
+}`
+
+
+let printPuzzle = (puzzle) => {
+  compStr = lzString.compressToEncodedURIComponent(puzzle)
+  url_str =  pathname = window.location.href +"play?puzzle=" + compStr
+  console.log(url_str)
+}
 
 let PlayPuzzle = () => {
   const queryParameters = new URLSearchParams(window.location.search)
@@ -108,6 +145,9 @@ let PlayPuzzle = () => {
   let [username, setUsername] = useState("user")
   let [sessionId, setSessionID] = useState(null)
   let [sessionStart, setSessionStart] = useState(null) 
+  
+  printPuzzle(testPuzzle); 
+
   
 
   let checkIfSaved = () => {
@@ -153,10 +193,17 @@ let PlayPuzzle = () => {
     if (checkIfSaved()) {
       setMode("community")
     }
-
- 
     
    }
+
+   let showConsent = () => {
+    if (checkIfSaved()) {
+      setMode("consent")
+    }
+    
+   }
+
+
 
    let openSurvey= (password) => {
     url_str =  pathname = window.location.href +"survey?user=" + password
@@ -173,12 +220,13 @@ let PlayPuzzle = () => {
   <button className={mode == "createPuzzle" || mode == "evolve"? "active": ""} onClick={startGeneration} >Generate Puzzles</button>
   <button className={mode == "liked"? "active": ""} onClick={showLikedPuzzles}>View Liked Puzzles</button>
   <button className={mode == "community"? "active": ""} onClick={showCommunity} >Community Puzzles</button>
+  <button className={mode == "consent"? "active": ""} onClick={showConsent} >View Informed Consent Form</button>
   <button onClick={() => openSurvey(user)} >Fill out a survey</button>
 </div>
 
    let content = <div>None</div>
    if (mode == "home"){
-    content = <HomePage user={user} publicKey={username}/> 
+    content = <HomePage user={user} publicKey={username} mode={userMode}/> 
     
    }else if (mode == "createPuzzle"){
     content = <CategoryInput startEvolve={startEvolve} user={user} mode={userMode} scenario={scenario} setScenario={setScenario} name={name} setName={setName}  sessionStart={sessionStart} sessionId={sessionId}/> 
@@ -189,6 +237,8 @@ let PlayPuzzle = () => {
     content = <ViewLikedPuzzles  user={user} mode={userMode}  sessionStart={sessionStart} sessionId={sessionId}/> 
    }else if (mode == "community"){
     content = <CommunityPage user={user} appMode={userMode}  sessionStart={sessionStart} sessionId={sessionId}/> 
+   }else if (mode == "consent"){
+    content = <InformedConsent /> 
    }
  
 

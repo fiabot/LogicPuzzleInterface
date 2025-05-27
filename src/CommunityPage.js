@@ -11,6 +11,7 @@ import { adminPublicKeys } from "./utils";
 
 let PuzzlePost = ({post, selectPost}) => {
     let time = formatTime(post.time)
+    console.log(post.puzzle)
 
     let cats = post.puzzle.categories.length
     let entities = post.puzzle.categories[0].entities.length
@@ -22,7 +23,7 @@ let PuzzlePost = ({post, selectPost}) => {
         <p className={adminPublicKeys.includes(post.username) ? "adminName" : "metadata"}>{post.username}</p>
         <p className="metadata">{time}</p>
         <p>{post.body}</p>
-        <h2>Difficulty: {post.puzzle.difficulty}</h2>
+        <h2>Difficulty: {post.puzzle.diff}</h2>
 
         <h2>Categories: {cats}</h2>
 
@@ -75,6 +76,7 @@ let SelectedPost = ({user, post, r, appMode, sessionStart, sessionId, start_like
 
 
     return <div>
+        
          {(liked)?<button className="likeButton" onClick={toggleLike}><img src="./icons/liked.png" width="40" height="40"/></button>:   <button  className="likeButton" onClick={toggleLike}><img src="./icons/unliked.png" width="40" height="40"/></button>} 
         <SelectedPuzzle puzzle={post.puzzle} user={user} appMode={appMode}  r={r} sessionStart={sessionStart} sessionId={sessionId} can_like={false}/> 
         <div className="post">
@@ -84,7 +86,7 @@ let SelectedPost = ({user, post, r, appMode, sessionStart, sessionId, start_like
         <p className="metadata">{time}</p>
         
         <p>{post.body}</p>
-        <h2>Difficulty: {post.puzzle.difficulty}</h2>
+        <h2>Difficulty: {post.puzzle.diff}</h2>
         <p className="metadata">{views} views</p>
         <p className="metadata">{likes} likes</p>
 
@@ -250,7 +252,7 @@ let CommunityPage = ({user, appMode,  sessionStart, sessionId}) => {
                 <h1>Mixed</h1>
                 <div className="postContainer">{postedPuzzles["mixed"].map((p,i) => <PuzzlePost key={i} post={p} selectPost={selectPost} mode={"mixed"} admin={true}/>)}</div>
 
-                <h1>Hybrid</h1>
+                <h1>Serious</h1>
                 <div className="postContainer">{postedPuzzles["serious"].map((p,i) => <PuzzlePost key={i} post={p} selectPost={selectPost} mode={"mixed"} admin={true}/>)}</div>
 
             </div>
