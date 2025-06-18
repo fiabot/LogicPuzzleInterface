@@ -1,0 +1,20 @@
+{"solution": "-----------\n|OXXX|XXOX|\n|XOXX|XXXO|\n|XXOX|OXXX|\n|XXXO|XOXX|\n------\n|XXOX|\n|XXXO|\n|OXXX|\n|XOXX|\n", 
+"categories": [{"name": "Order", "entities": ["1st", "2nd", "3rd", "4th"], "is_numeric": true},
+{"name": "Method", "entities": ["Whole", "Halved", "Chopped", "Mashed"], "is_numeric": false} , 
+{"name": "Ingredient", "entities": ["Potatoes", "Mushrooms", "Carrots", "Onions"], "is_numeric": false} 
+ 
+], 
+"hints": ["Potatoes are added some time before the mashed ingredient", 
+            "Either the 2nd ingredient added is halved, or the mushrooms are whole",
+             "Carrots are added one step before Mushrooms", 
+             "The 4th ingredient is halved"],
+"hint_grammar": [
+    {"before": ["Ingredient", "Potatoes", "Method","Mashed", "Order"]},
+    {"compound_or": [{"is":["Order", "2nd", "Method", "Halved"]}, {"is":["Ingredient","Mushrooms","Method", "Whole"]}]},
+    {"before":["Ingredient","Carrots", "Ingredient", "Mushrooms","Order", 1]},
+    {"is": ["Order","4th",  "Method", "Halved"]}
+
+],
+             
+            "id": "hub"}
+

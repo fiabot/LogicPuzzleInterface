@@ -1,0 +1,15 @@
+{"solution": "------\n|XOXX|\n|XXOX|\n|XXXO|\n|OXXX|\n", 
+"categories": [
+{"name": "Noodle", "entities": ["Elbow", "Bowtie", "Linguine", "Shell"], "is_numeric": false},
+{"name": "Order", "entities": ["1st", "2nd", "3rd", "4th"], "is_numeric": true}],
+"hints": ["The Linguine is served sometime before the Shells", 
+            "The Linguine is served 2 dishes before the Elbow pasta", 
+            "The Linguine is served 2nd"], 
+"hint_grammar": [
+    {"before": ["Noodle", "Linguine", "Noodle",  "Shell", "Order"]}, 
+    {"before": ["Noodle", "Linguine", "Noodle",  "Elbow","Order",  2]},
+    {"is": ["Noodle", "Linguine","Order",  "2nd"]}
+],
+            "id": "spoke1"}
+
+        

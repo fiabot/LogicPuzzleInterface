@@ -1,0 +1,11 @@
+{"solution": "------\n|XXXO|\n|OXXX|\n|XXOX|\n|XXOX|\n", 
+"categories": [
+  {"name": "Water", "entities": ["20oz", "40oz", "60oz", "80oz"], "is_numeric": true}, 
+{"name": "Plant", "entities": ["Green Onion", "Broccoli", "Eggplant", "Potatoes"], "is_numeric": false}], 
+"hints": ["Green Onions need 40oz less water than Eggplant", 
+            "Broccoli needs 40oz water"], 
+  "hint_grammar":[
+    {"before": ["Plant", "Green Onion","Plant", "Eggplant","Water", 1 ]},
+    {"is":["Plant", "Broccoli", "Water", "40oz" ]}
+  ],
+            "id": "spoke2"}

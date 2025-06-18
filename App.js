@@ -6,6 +6,9 @@ import InitialSurvey from './src/InitialSurvey';
 import PuzzleManager from './src/PuzzleManager';
 import Tutorial from './src/Tutorial';
 import * as Linking from 'expo-linking';
+import Debug from './debug';
+
+let MODE = "survey"
 
 let questions = ["The puzzle was cognitively demanding.", "I had to think very hard when playing the puzzle.",
     "The puzzle required a lot of mental gymnastics.", "The puzzle stimulated my brain.", "This puzzle doesn’t require a lot of mental effort.", 
@@ -37,6 +40,7 @@ function createPuzzle(data, setPuzzle) {
 }
 
 function getFiles() {
+
   let columns = [0, 1, 3, 5]
   let solutions = [12, 199, 352, 444]
   let files = []
@@ -59,24 +63,50 @@ function getFiles() {
 export default function App() {
 
   //addSubject(4, 3); 
+  
+
+  
 
   let [puzzle, setPuzzle] = useState(null);
   let [i, setI] = useState(0)
-  let [mode, setMode] = useState("survey")
+  let [mode, setMode] = useState(MODE)
   let [pid, setPID] = useState(0)
   let [content, setContent] = useState(<Tutorial imageFolder="tutorialSlides" numSlides={29} canSkip={12} startGame={() => { startGame() }} />);
-  //let [files, setFiles] = useState(); 
+  let [files, setFiles] = useState();
+  let [promptMode, setPromptMode] = useState(null) 
   //useEffect(() => {setFiles(getFiles())}, [])
-  let files = getFiles()
+
   useEffect(() => {
-    shuffleArray(questions)
+
+    let level_modes = ["hub", "scaffolded", "not_scaffolded"];
+    let mode_i = Math.floor(Math.random() * level_modes.length);
+    let level_mode = level_modes[mode_i]
+
+    let prompt_modes = ["none", "generic", "relevant"];
+    //let prompt_modes = ["relevant"]
+    mode_i = Math.floor(Math.random() * prompt_modes.length);
+    setPromptMode(prompt_modes[mode_i]) 
+    let files = []
+
+    if (level_mode == "hub"){
+      files = ["puzzles/hub.json"]
+    }else if (level_mode == "scaffolded"){
+      files = ["puzzles/Spoke1.json", "puzzles/spoke2.json", "puzzles/hub.json"]
+    }else{
+      files = ["puzzles/help1.json","puzzles/help2.json","puzzles/hub.json"]
+    }
+
+    setFiles(files)
+
+    console.log(level_mode, prompt_modes[mode_i])
   }, [])
+  
 
   //let files = ["puzzles/example.json"]
 
   let consent = <div className='parent'><InformedConsent consent={() => setMode("survey")} /></div>
   let tutorial = <Tutorial imageFolder="tutorialSlides" numSlides={29} canSkip={12} startGame={() => { startGame() }} />
-  let puzzleManager = <PuzzleManager files={files} i={i} setI={setI} pid={pid} postSurvey={addPuzzleSurvey} questions = {questions}/>
+  let puzzleManager = <PuzzleManager promptMode={promptMode} files={files} i={i} setI={setI} pid={pid} postSurvey={addPuzzleSurvey} questions = {questions}/>
 
   let startGame = () => {
     setMode("puzzle")
@@ -91,7 +121,13 @@ export default function App() {
   }
 
 
-  shuffleArray(files)
+  //shuffleArray(files)
+
+  if (mode == "debug"){
+
+
+    return  <div className='parent'><Debug /></div>
+  }
 
   const url = Linking.useURL();
 

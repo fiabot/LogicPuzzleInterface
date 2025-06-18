@@ -4,6 +4,7 @@ import Hints from "./hints";
 import StateSelector from "./stateSelector";
 import SubGrid from "./subgrid";
 import { createGamePlayInstance, addCellChange, addButtonPress } from "./Firestore/sendData";
+import UsePrompts from "./PromptUser";
 
 function initializeSubGrid(numRows, numCols, puzzle, recordPuzzle) {
     let subgrid = []
@@ -160,7 +161,40 @@ let clearPuzzle = (puzzle, strikes, setStrikes, instanceId, time) => {
     
 }
 
-export default Puzzle =({p, time, concede, finish})=>{
+
+const cleanState = (state) => {
+    if (state == "!" || state == "?") {
+        return "*"
+    }
+    if (state == "x") {
+        return "X"
+    }
+    if (state == "o") {
+        return "O"
+    }
+    return state
+} 
+const stateGridToArray = (puzzleDesc, stateGrid) => {
+    let grid = {};
+    for (const [I, subgridrow] of stateGrid.entries()) {
+        let catI = puzzleDesc.topBottom[I].name
+        for (const [J, subgrid] of subgridrow.entries()) {
+            let catJ = puzzleDesc.leftRight[J].name
+            let catKey = catJ + ":" + catI
+            grid[catKey] = []
+            for (const [i, row] of subgrid.entries()) {
+                grid[catKey][i] = []
+                for (const [j, cell] of row.entries()) {
+                    grid[catKey][i][j] = cleanState(cell.state)
+                }
+            }
+        }
+    }
+    console.log(grid)
+    return grid
+}
+
+export default Puzzle =({p, time, concede, finish, puzzleDesc, hints, promptMode="none"})=>{
     let puzzle = [[]];
     let displayGrid = [];
     let [select, setSelect] = useState("O");
@@ -169,6 +203,13 @@ export default Puzzle =({p, time, concede, finish})=>{
     let [strikes, setStrikes] = useState([]);
     let [isCorrect, setCorrect] = useState(false);
     let [instanceId, setInstanceId] = useState(null); 
+    let [displayPrompts, setDisplayPrompts] = useState(true)
+
+    let getCurGrid = () => {
+        return stateGridToArray(p, puzzle)
+    }
+
+    let promp = null; 
 
     useEffect(() => {async function fetchData() {
         // You can await here
@@ -178,9 +219,19 @@ export default Puzzle =({p, time, concede, finish})=>{
       }
       fetchData()}, []);
 
+    useEffect(() => {
+        if(isSolved(puzzle, p.solutionString)){
+            alert("You have solved the puzzle! You will now fill out the survey")
+            recordAndSubmit()
+
+        }
+    })
     let recordAndConcede = () =>{
         let newTime = new Date()
         let ms = newTime - time 
+        if (promp){
+            promp.stop(); 
+        }
         addButtonPress(instanceId,ms, "concede"); 
         concede();
     }
@@ -228,7 +279,7 @@ export default Puzzle =({p, time, concede, finish})=>{
 
     
     //let [hints, setHints] = useState(<Hints hints={p.hints} time={time} setStrikes ={setStrikes} strikes={strikes}/>); 
-
+    
 
     return (<div className="puzzleArea">
         <div className="puzzleLeft">
@@ -253,5 +304,12 @@ export default Puzzle =({p, time, concede, finish})=>{
 
             />
         </div>
+
+        <div>
+
+        <UsePrompts instanceId={instanceId} startTime={time} promptMode={promptMode} hints={hints} puzzle={puzzleDesc} grid={getCurGrid} displayPrompts={displayPrompts}/> 
+
+
+    </div>
     </div>);
 }

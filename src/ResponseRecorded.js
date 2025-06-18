@@ -1,10 +1,10 @@
 export default ResponseRecorded = ({goToNextPuzzle, finish, morePuzzles}) => {
-    if(morePuzzles()){
+    let numPuzzles = morePuzzles()
+    if(numPuzzles > 0){
         return (<div className="recorded">
             <h1>Thank you!</h1>
-            <h2>Your response has been recorded.</h2>
-            <button onClick={goToNextPuzzle}>Play another puzzle</button>
-            <button onClick={finish}>Finish</button>
+            <h2>We have {numPuzzles} more puzzle{numPuzzles == 1? "": "s"} for you to solve.</h2>
+            <button onClick={goToNextPuzzle}>Play next puzzle</button>
             
             </div>)
     }else{
