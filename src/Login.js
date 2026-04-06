@@ -22,17 +22,15 @@ export default HomePage = ({ user, setUser, mode, setMode, sessionId, setSession
     }
 
     let log_user_in = async () => {
-       result =  await login(sanitize(newUser), setUser, setUsername, setMode); 
-       
-       if (result == null){
-            alert("Key Not Regonized, try again")
-       }else{
+       start = new Date()
+       result =  await login(sanitize(newUser), start, setUser); 
+
         start = new Date()
         let session = await new_session(newUser, start.toJSON())
 
         setSessionStart(start)
         setSessionId(session)
-       }
+       
 
 
     }

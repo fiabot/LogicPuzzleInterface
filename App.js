@@ -7,6 +7,7 @@ import PuzzleManager from './src/PuzzleManager';
 import Tutorial from './src/Tutorial';
 // import Debug from './debug';
 import CategoryInput from './src/CategoryInput';
+import Scenarios from './src/Scenarios';
 import ViewPuzzles from './src/ViewPuzzles';
 import HomePage from './src/home';
 import Puzzle from './src/puzzle';
@@ -20,6 +21,7 @@ import Login from './src/Login';
 import ViewLikedPuzzles from './src/ViewLikedPuzzles';
 import {CommunityPage} from './src/CommunityPage';
 import SurveyPage from './src/surveyPage';
+import InteractiveEvolve from './src/InteractiveEvolve';
 let MODE = "mixed"
 
 
@@ -137,6 +139,7 @@ let PlayPuzzle = () => {
   let [userMode, setUserMode] = useState(MODE)
   let [categories, setCategories] = useState(null); 
   let [scenario, setScenario] = useState("")
+  let [scenarioId, setScenarioId] = useState(null)
   let [name, setName] = useState("")
 
   let [mode, setMode ] = useState("home")
@@ -145,6 +148,8 @@ let PlayPuzzle = () => {
   let [username, setUsername] = useState("user")
   let [sessionId, setSessionID] = useState(null)
   let [sessionStart, setSessionStart] = useState(null) 
+  let [evolveId, setEvolveId] = useState(null)
+  let [evolveSess, setEvolveSess] = useState(null) 
   
   printPuzzle(testPuzzle); 
 
@@ -158,13 +163,34 @@ let PlayPuzzle = () => {
     }
   }
 
-  let startGeneration =() =>{
+  let selectScenario = (scen) => {
+    console.log(scen)
+    setScenario(scen)
+    setScenarioId(scen["_id"])
     setMode("createPuzzle")
+  }
+
+  let createNewScen = () =>{
+    blankScen = {
+      "evolve_sessions":[], 
+      "data": {
+        "title":"", 
+        "desc": "", 
+        "categories":[]
+      }
+    }
+    setScenario(blankScen)
+    setMode("createPuzzle")
+  }
+
+  let startGeneration =() =>{
+    setMode("scenarios")
   }
 
 
 
-  let startEvolve = (categories) => {
+  let startEvolve = () => {
+    categories = scenario["data"]["categories"]
     if (categories.length < 2) {
       alert("Please add at least 2 categories to start generation")
       return
@@ -173,6 +199,19 @@ let PlayPuzzle = () => {
     setMode("evolve")
 
   }
+
+  let conEvolve = (sessId) => {
+    categories = scenario["data"]["categories"]
+    if (categories.length < 2) {
+      alert("Please add at least 2 categories to start generation")
+      return
+    }
+    setEvolveSess(sessId)
+    setCategories(categories)
+    setMode("evolve")
+
+  }
+
 
 
   let goHome = () => {
@@ -226,13 +265,14 @@ let PlayPuzzle = () => {
 
    let content = <div>None</div>
    if (mode == "home"){
-    content = <HomePage user={user} publicKey={username} mode={userMode}/> 
-    
+    content = <HomePage user={user} /> 
+   }else if (mode == "scenarios"){
+    content = <Scenarios user={user} select={selectScenario} new_scen={createNewScen} />
    }else if (mode == "createPuzzle"){
-    content = <CategoryInput startEvolve={startEvolve} user={user} mode={userMode} scenario={scenario} setScenario={setScenario} name={name} setName={setName}  sessionStart={sessionStart} sessionId={sessionId}/> 
+    content = <CategoryInput continueEvolve={conEvolve} startEvolve={startEvolve} user={user} scenario={scenario} setScenario={setScenario} scenarioId={scenarioId} setScenarioId={setScenarioId} name={name} setName={setName} /> 
   
    }else if (mode == "evolve"){
-    content =  <EvolveManager categories={categories} user={user} mode={userMode} name={name} scenario={scenario} sessionStart={sessionStart} sessionId={sessionId}/>
+    content =  <InteractiveEvolve user={user} mode={userMode} evolveSess={evolveSess} setEvolveSess={setEvolveSess} name={name} scenario={scenario} scenarioId={scenarioId} sessionStart={sessionStart} sessionId={sessionId}/>
    }else if (mode == "liked"){
     content = <ViewLikedPuzzles  user={user} mode={userMode}  sessionStart={sessionStart} sessionId={sessionId}/> 
    }else if (mode == "community"){
@@ -247,7 +287,7 @@ let PlayPuzzle = () => {
   }else if (pathname == "/survey") {
     return <SurveyPage /> 
   }else if (user == null){
-    return <Login  user={user} setUser={setUser} mode={userMode} setMode={setUserMode} sessionId={sessionId} setSessionId={setSessionID} sessionStart={sessionStart} setSessionStart={setSessionStart} username={username} setUsername={setUsername}/>
+    return <Login  user={user} setUser={setUser} sessionId={sessionId} setSessionId={setSessionID} setSessionStart={setSessionStart}/>
   } else{
     return <div>
       {header}

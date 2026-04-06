@@ -9,7 +9,7 @@ import Puzzle from "./puzzle";
 import { add_click } from "./API/SendToApi";
 
 
-export default selectedPuzzle = ({puzzle, setPuzzle, user, r, appMode, sessionId, sessionStart, otherPuzzles = [], reload=null, can_like = true}) => {
+export default selectedPuzzle = ({puzzle, setPuzzle, user, r, appMode, sessionId, sessionStart, evolveSession, otherPuzzles = [], reload=null, can_like = true}) => {
 
     let [mode, setMode] = useState("play")
     let [puzzleToEdit, setPuzzleToEdit] = useState(null)
@@ -41,7 +41,7 @@ export default selectedPuzzle = ({puzzle, setPuzzle, user, r, appMode, sessionId
 
     let likeButton = async (puzzle)  => {
         add_click(sessionId, "like puzzle", sessionStart)
-        result = await like_puzzle(puzzle, user)
+        result = await like_puzzle(puzzle, user, evolveSession)
      
         if (result.status < 300){
         
@@ -54,7 +54,7 @@ export default selectedPuzzle = ({puzzle, setPuzzle, user, r, appMode, sessionId
 
 
     let unlikeButton = async (puzzle)  => {
-        result = await remove_puzzle(puzzle["key"], user)
+        result = await remove_puzzle(puzzle["key"], user, evolveSession)
         console.log(result)
         if (result.status < 300){
     

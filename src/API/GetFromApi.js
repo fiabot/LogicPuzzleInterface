@@ -1,4 +1,4 @@
-import {api, API_URL, GET_USER_DATA, SAMPLE_CAT_URL, GET_LIKED_PUZZLES, GET_UNUSED_GRAMMARS, GET_TEMPLATE, GET_BRAINSTORMS, GET_SCEN, GET_POSTED_PUZZLES, GET_LIKED_POSTED_PUZZLEs, NUM_SURVEYS} from './config'
+import {api, API_URL, GET_EVOLVE_SESSION, GET_SCENARIOS, GET_USER_DATA, SAMPLE_CAT_URL, GET_LIKED_PUZZLES, GET_UNUSED_GRAMMARS, GET_TEMPLATE, GET_BRAINSTORMS, GET_SCEN, GET_POSTED_PUZZLES, GET_LIKED_POSTED_PUZZLEs, NUM_SURVEYS} from './config'
 
 
 let getNumSurveys = async(user) => {
@@ -30,11 +30,11 @@ let getUserData = async(user) => {
 }
 
 
-let getLikedPuzzles = async(user) => {
+let getLikedPuzzles = async(user, evolveId) => {
     if (user == null){
         return null 
     }
-    response = await api.get(GET_LIKED_PUZZLES, {params:{username:user}})
+    response = await api.get(GET_LIKED_PUZZLES, {params:{user:user, evolveId:evolveId}})
 
     if (response.status <= 300){
         return response.data
@@ -94,14 +94,21 @@ let  getSampleCategories = async(user = null) => {
 let  getScenarios = async(user = null, getSample = true) => {
 
     if (user == null){
-        response = await api.get(GET_SCEN, {params:{getSample: getSample}})
+        response = await api.get(GET_SCENARIOS, {params:{getSample: getSample}})
     }else{
-        response = await api.get(GET_SCEN, {params:{user:user, getSample: getSample}})
+        response = await api.get(GET_SCENARIOS, {params:{user:user}})
     }
 
     return response.data 
 }
 
+let getEvolveSession = async(user, evolveId) => {
+    request = {"user": user, "evolveId":evolveId}
+
+    response = await api.get(GET_EVOLVE_SESSION, {params: {user: user, evolveId:evolveId}})
+
+    return response.data 
+}
 
 let get_is_template = async(cat1, cat2, user)  => {
     request = {"user": user, "cat1": cat1, "cat2": cat2, type:"is"}
@@ -155,4 +162,4 @@ let get_before_brainstorm = async(cat1, cat2, num_cat, user)  => {
 
 
 
-export {getSampleCategories, getUserData, getLikedPuzzles, get_unused_grammar, get_is_template, get_not_template, get_before_template, get_or_template, get_before_brainstorm, get_is_brainstorm, get_not_brainstorm,get_or_brainstorm, getScenarios, get_posted_puzzles, getLikedPostedPuzzles, getNumSurveys}
+export {getEvolveSession, getSampleCategories, getUserData, getLikedPuzzles, get_unused_grammar, get_is_template, get_not_template, get_before_template, get_or_template, get_before_brainstorm, get_is_brainstorm, get_not_brainstorm,get_or_brainstorm, getScenarios, get_posted_puzzles, getLikedPostedPuzzles, getNumSurveys}

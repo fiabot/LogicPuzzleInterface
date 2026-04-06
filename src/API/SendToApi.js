@@ -1,4 +1,4 @@
-import {api, EVOLVE_URL, ADD_ACCOUNT_URL, LIKE_PUZZLE, ITER_EVOLVE, ADD_GRAMMAR_RULE, ADD_CATEGORY, GET_PUBLIC_KEY, ADD_BRAINSTORM, REMOVE_PUZZLE, UPDATE_PUZZLE, ADD_SCEN, UPDATE_SCEN, DELETE_SCEN, NEW_SESSION, ADD_CLICK, POST_PUZZLE, ADD_COMMENT, LIKE_POSTED_PUZZLE, UNLIKED_POSTED_PUZZLE, VIEW_PUZZLE, ADD_SURVEY, REMOVE_COMMENT, REMOVE_POST} from './config' 
+import {api, CREATE_GUEST, NEW_SCENARIO, EVOLVE_URL, ADD_ACCOUNT_URL, LIKE_PUZZLE, ITER_EVOLVE, ADD_GRAMMAR_RULE, ADD_CATEGORY, GET_PUBLIC_KEY, ADD_BRAINSTORM, REMOVE_PUZZLE, UPDATE_PUZZLE, ADD_SCEN, UPDATE_SCEN, DELETE_SCEN, NEW_SESSION, ADD_CLICK, POST_PUZZLE, ADD_COMMENT, LIKE_POSTED_PUZZLE, UNLIKED_POSTED_PUZZLE, VIEW_PUZZLE, ADD_SURVEY, REMOVE_COMMENT, REMOVE_POST, ADD_USER, START_EVOLVE, CONTINUE_EVOLVE} from './config' 
 
 
 let CLICK_TYPES = {"select scenario": "casual", "add example category" : "casual", "select recommendation": "casual", "view similar": "casual", "select similar": "casual", "get brainstorm": "casual",  "copy narrative": "casual",
@@ -7,6 +7,34 @@ let CLICK_TYPES = {"select scenario": "casual", "add example category" : "casual
 "filter by hint size": "neutral", "filter by difficulty": "neutral", "post puzzle": "neutral", "add comment": "neutral", "download": "neutral", "open link": "neutral", "like puzzle": "neutral" 
 
 } 
+
+let newScenario = async(user, time, data) => {
+    request = {user:user, time:time, data:data}
+
+    response = await api.post(NEW_SCENARIO, request)
+
+    return response.data
+}
+
+let update_scen = async (user, scen,time, data) => {
+    request = {"user": user,  "scenario":scen, time:time, data:data}
+    response = await api.post(UPDATE_SCEN, request)
+    return response 
+}
+
+let startEvolution = async(user, time, cons, scenario) => {
+    request = {"user": user, "time": time, "cons": cons,scenario:scenario}
+    response = await api.post(START_EVOLVE, request)
+
+    return response.data 
+}
+
+let continueEvolution = async(user, time, cons, id) => {
+    request = {"user": user, "time": time, "cons": cons, "id": id}
+    response = await api.post(CONTINUE_EVOLVE, request)
+
+    return response.data 
+}
 
 let postEvolution = async(categories, gens = 100, popsize = 50) => {
     request = {"puzzle": {"categories": categories}, "gens":gens, "pop_size": popsize}
@@ -42,20 +70,18 @@ let continueIterEvolve = async(id, user, gens = 40, popsize = 100) => {
 }
 
 
-let login = async(username, setUserId, setPublicKey, setMode) => {
-    request= {"user": username }
-    response = await api.post(GET_PUBLIC_KEY, request)
+let login = async(username, time, setUserId) => {
+    request= {"user": username, "time":time }
 
+    response = await api.post(ADD_USER, request)
     if (response.status < 300){
+ 
         setUserId(username)
-        setPublicKey(response.data.publicKey)
-        setMode(response.data.mode)
-        
-        return "success"
-        
+
     }else{
         return null 
     }
+    
 
    
 }
@@ -90,16 +116,16 @@ let add_survey = async(username, data) => {
 }
 
 let new_session = async(privateKey, time) => {
-    request=  {"privateKey": privateKey, "startTime": time}
+    request=  {"user": privateKey, "startTime": time}
 
     response = await api.post(NEW_SESSION, request)
 
     return response.data 
 }
 
-let add_click = async(sessionId, n, startTime, data = null) =>{
+let add_click = async(user, sessionId,  n, startTime, data = null) =>{
     time = new Date() - startTime 
-    request = {"sessionID": sessionId, "name": n, type: CLICK_TYPES[n], "time":time}
+    request = {"user": user, "sessionId":sessionId, "name": n, "type": CLICK_TYPES[n], "rel_time":time, "abs_time": new Date()}
 
     if (data != null){
         request["data"] = data 
@@ -155,11 +181,11 @@ let remove_comment = async(puzzle, user, mode, time) => {
     return response
 }
 
-let like_puzzle = async(puzzle, user) => {
+let like_puzzle = async(puzzle, user, evolveId) => {
     if (user == null){
         return "LOGIN"
     }
-    request= {"username":user, "puzzle":puzzle }
+    request= {"user":user, "evolveId": evolveId, "ind":puzzle }
     response = await api.post(LIKE_PUZZLE, request)
 
   
@@ -171,7 +197,7 @@ let like_posted_puzzle = async(puzzleId, user) => {
     if (user == null){
         return "LOGIN"
     }
-    request= {"username":user, "puzzleId":puzzleId }
+    request= {"user":user, "puzzleId":puzzleId }
     response = await api.post(LIKE_POSTED_PUZZLE , request)
 
   
@@ -179,11 +205,11 @@ let like_posted_puzzle = async(puzzleId, user) => {
     return response
 }
 
-let unlike_posted_puzzle = async(puzzleId, user) => {
+let unlike_posted_puzzle = async(puzzleId, user, evolveId) => {
     if (user == null){
         return "LOGIN"
     }
-    request= {"username":user, "puzzleId":puzzleId }
+    request= {"user":user, "evolveId": evolveId, "idx":puzzleId }
     response = await api.post(UNLIKED_POSTED_PUZZLE , request)
 
   
@@ -220,11 +246,11 @@ let add_comment = async(puzzle_id, comment,  time, user, mode=null) => {
     return response
 }
 
-let remove_puzzle = async(key, user) => {
+let remove_puzzle = async(key, user, evolveId) => {
     if (user == null){
         return "LOGIN"
     }
-    request= {"username":user, "key":key }
+    request= {"username":user, "evolveId": evolveId, "idx":key }
     response = await api.post(REMOVE_PUZZLE, request)
 
   
@@ -232,11 +258,11 @@ let remove_puzzle = async(key, user) => {
     return response 
 }
 
-let update_puzzle = async(key, puzzle, user) => {
+let update_puzzle = async(key, puzzle, user, evolveId) => {
     if (user == null){
         return "LOGIN"
     }
-    request= {"username":user, "key":key, "puzzle":puzzle }
+    request= {"username":user, "key":key, "evolveId": evolveId, "puzzle":puzzle }
     response = await api.post(UPDATE_PUZZLE, request)
 
   
@@ -258,11 +284,6 @@ let add_scen = async (user, name, scen, cats) => {
 
 }
 
-let update_scen = async (user, name, scen, cats) => {
-    request = {"user": user, "name": name, "scenario":scen, categories: cats}
-    response = await api.post(UPDATE_SCEN, request)
-    return response 
-}
 
 let delete_scen = async (user, name) => {
     request = {"user": user, "scen_id": name}
@@ -328,4 +349,4 @@ let add_or_brain  = async (cat1, cat2, is_cat,  template, user) => {
 
 }
 
-export {postEvolution, add_account, like_puzzle, startIterEvolve, continueIterEvolve, add_is, add_not, add_before, add_or, add_cat, login,add_before_brain, add_is_brain, add_or_brain, add_not_brain, remove_puzzle, update_puzzle, add_scen, update_scen, delete_scen, new_session, add_click, post_puzzle, add_comment, like_posted_puzzle, unlike_posted_puzzle, view_puzzle, add_survey, remove_comment, remove_post}
+export {newScenario, startEvolution, continueEvolution, postEvolution, add_account, like_puzzle, startIterEvolve, continueIterEvolve, add_is, add_not, add_before, add_or, add_cat, login,add_before_brain, add_is_brain, add_or_brain, add_not_brain, remove_puzzle, update_puzzle, add_scen, update_scen, delete_scen, new_session, add_click, post_puzzle, add_comment, like_posted_puzzle, unlike_posted_puzzle, view_puzzle, add_survey, remove_comment, remove_post}

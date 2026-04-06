@@ -20,7 +20,7 @@ import Personas from './Personas';
 import Collapseable from "./Collapseable" 
 import { add_click } from './API/SendToApi';
 import {  createTheme } from '@mui/material/styles';
-
+import HintWriter from './HintWriter';
 const theme = createTheme({
     palette: {
       primary: {
@@ -419,6 +419,8 @@ export default ViewPuzzles = ({puzzles, user, setPuzzles, mode, sessionId, sessi
     let viewAll = <div className='filterView'>
         <div>
             <h1>Filter</h1>
+
+            {puzzles.length > 0 ? <HintWriter categories={createPuzzle(puzzles[0]).categories}/> : "" } 
 
             <h2>Filter Hints</h2>
             {puzzles.length > 0 ? <HintFilters setFilters={setHintFilters} filters={hintFilters}  categories={createPuzzle(puzzles[0]).categories} sessionId={sessionId} sessionStart={sessionStart}/> : ""} 

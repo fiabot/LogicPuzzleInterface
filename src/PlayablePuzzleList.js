@@ -11,8 +11,8 @@ import SelectedPuzzle from "./SelectedPuzzle";
 
 
 
-export default PuzzleList= ({puzzles, setPuzzles, user, reload, sessionId, sessionStart, showMutants=false, appMode="mixed"}) => {
-
+export default PuzzleList= ({puzzles, setPuzzles, user, reload, sessionId, sessionStart, evolveSession, showMutants=false, appMode="mixed"}) => {
+    console.log(puzzles)
     let [mode, setMode] = useState("view")
     let [selectedPuzzle, setSelectedPuzzle] = useState(null)
 
@@ -47,7 +47,7 @@ export default PuzzleList= ({puzzles, setPuzzles, user, reload, sessionId, sessi
             if (showMutants){
                 otherPuzzles = puzzles
             }
-            return <SelectedPuzzle puzzle={selectedPuzzle} setPuzzle={setSelectedPuzzle} user={user} appMode={appMode} r={() => setMode("view")} reload={reload} otherPuzzles={otherPuzzles} sessionId={sessionId} sessionStart={sessionStart}/> 
+            return <SelectedPuzzle evolveSession={evolveSession} puzzle={selectedPuzzle} setPuzzle={setSelectedPuzzle} user={user} appMode={appMode} r={() => setMode("view")} reload={reload} otherPuzzles={otherPuzzles} sessionId={sessionId} sessionStart={sessionStart}/> 
         }
   
 

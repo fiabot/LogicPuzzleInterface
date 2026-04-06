@@ -1,7 +1,9 @@
+import { alertTitleClasses } from "@mui/material"
 import { useEffect, useState } from "react"
 import { getScenarios } from "./API/GetFromApi"
-import { add_cat, add_click, add_scen, postEvolution } from "./API/SendToApi"
+import {add_click, newScenario, update_scen} from "./API/SendToApi"
 import "./AuthoringStyle.css"
+import "./ViewPuzzlesStyle.css"
 import Collapseable from "./Collapseable"
 import EditTemplate from "./EditTemplate"
 import { sanitize } from "./utils"
@@ -33,7 +35,7 @@ let CategoryWarning = ({categories, numEntities}) => {
     }
 };
 
-let CategoryMaker = ({ categories, setCategories, index, numEntities, sessionId, sessionStart, can_save = false, user = null }) => {
+let CategoryMaker = ({ categories, setCategories, index, numEntities, sessionId, sessionStart, can_save = false, user = null, setEdited }) => {
 
     let [list, setList] = useState([])
     let [name, setName] = useState(categories[index].name)
@@ -64,6 +66,7 @@ let CategoryMaker = ({ categories, setCategories, index, numEntities, sessionId,
 
     useEffect(() => {
         setCategories(newCategories)
+        setEdited(true)
     }, [name, list, is_numeric, inc])
 
 
@@ -104,7 +107,7 @@ let CategoryMaker = ({ categories, setCategories, index, numEntities, sessionId,
     }
 
 
-    let listInput = list.map((element, idx) => <li key={idx}><input value={element} onClick={() => add_click(sessionId, "edit entity", sessionStart)} onChange={e => {
+    let listInput = list.map((element, idx) => <li key={idx}><input value={element} onClick={() => add_click(user, "edit entity", sessionStart)} onChange={e => {
         const nextList = list.map((element, i) => {
             if (i === idx) {
                 return sanitize(e.target.value);
@@ -129,247 +132,89 @@ let CategoryMaker = ({ categories, setCategories, index, numEntities, sessionId,
 }
 
 
+let EvolveCard = ({ evolveId, continueEvolve}) => {
+    return <div class="card">
+    <div class="card-details">
+      <p class="text-title">session: {evolveId}</p>
+      <p class="text-body">TODO: what to put here</p>
+    </div>
+    <button class="card-button" onClick={() => continueEvolve(evolveId)}>Start Session</button>
+  </div>
+}
 
 
+let NewCard = ({startEvolve}) => {
+    return <div class="card">
+    <div class="card-details">
+      <p class="text-title">Create New</p>
+      <p class="text-body">TODO: replace with plus sign</p>
+    </div>
+    <button class="card-button" onClick={startEvolve}>New Session</button>
+  </div>
+}
 
-export default PuzzleMaker = ({ startEvolve, user, mode, scenario, setScenario, name, setName, sessionId, sessionStart }) => {
+
+export default PuzzleMaker = ({ startEvolve, continueEvolve, user, scenarioId, setScenarioId, scenario, setScenario, sessionId, sessionStart }) => {
     let [categories, setCategories] = useState([]);
     let [numEntities, setNumEntities] = useState(4);
-    let [templates, setTemplates] = useState(<div>Loading</div>)
-    let [tempCats, setTempCats] = useState([])
-    let [numEmpty, setNumEmpy] = useState([0])
+    let [title, setTitle] = useState("")
+    let [desc, setDesc] = useState("")
+    let [tempScen, setTempScen] = useState({})
+    let [canSave, setCanSave] = useState(true)
+    let [edited, setEdited] = useState(false)
 
-    let [scens, setScens] = useState([])
-    let [cats, setCats] = useState([])
-    let [suggest, setSuggest] = useState([])
-    let [scenUpdated, setScenUpdated] = useState(false)
-    let [origin, setOrigin] = useState("sample")
-    let [overwriting, setOverwriting] = useState(false)
+    let createScen = async () => {
+        setCanSave(false)
+        let result =await  newScenario(user, new Date(), tempScen)
+        setScenarioId(result)
+        setScenario({... scenario,
+            "data":tempScen})
+        setEdited(false)
+        setCanSave(true)
+    }
+
+    let updateScene = async () => {
+        setCanSave(false)
+        let result =await update_scen(user, scenarioId, new Date(),  tempScen)
+        setScenario({... scenario,
+            "data":tempScen})
+        setEdited(false)
+        setCanSave(true)
+    }
+    useEffect(() => {
+        if (scenarioId != null){
+            setCategories(scenario["data"]["categories"])
+            setTitle(scenario["data"]["title"])
+            setDesc(scenario["data"]["desc"])
+        }
+    }, [])
+    useEffect(() => {
+        scen = {"title": title, "desc": desc, "categories": categories}
+        setTempScen(scen)
+    }, [title, desc, categories])
 
     let categoryCreators = categories.map((cat, idx) => {
-        return <CategoryMaker key={idx} categories={categories} setCategories={setCategories} index={idx} numEntities={numEntities} starterName="name" can_save user={user} sessionId={sessionId} sessionStart={sessionStart} />
+        return <CategoryMaker key={idx} categories={categories} setCategories={setCategories} index={idx} numEntities={numEntities} starterName="name" canSave user={user} sessionId={sessionId} sessionStart={sessionStart} setEdited={setEdited} />
     })
 
-    let evolvePuzzle = () => {
-        return new Promise(async (resolve, reject) => {
 
-            puzzle = await postEvolution(categories)
-            resolve(puzzle)
-        })
-    }
+    evolveCards = scenario["evolve_sessions"].map((evo) => <EvolveCard key={evo} evolveId={evo}  continueEvolve={continueEvolve}/>)
 
-    let getScens = () => {
-        return new Promise(async (resolve, reject) => {
-            cats = await getScenarios(user, mode == "casual" || mode == "mixed" || mode == "admin")
-            if (mode == "serious"){
-                cats = cats.filter((cat) => cat.origin == "user")
-            }
-            resolve(cats)
-        })
-    }
+    newEvolve= <NewCard key={"new"} startEvolve={startEvolve}/> 
 
-    let fetch = async () => {
-        getScens().then(
-            (scens) => updateScens(scens)
-        )
-    }
+    evolveCards.push(newEvolve)
 
-    let updateName = (newName, scens) => {
-        setName(newName)
-        shouldOverwrite = false
-        overwriteScen = null
-        adminScen = null
-        // Go through existing scenarios
-        for (let scen of scens) {
-            // Find any scenario with the same name
-            if (scen.name == newName) {
-                // Check if the scenario should be overwritten by the user (because the user created it or the user is an admin)
-                if (scen.origin == "user" || mode == "admin") {
-                    shouldOverwrite = true
-                    overwriteScen = scen
-                }
-                else {
-                    adminScen = scen
-                }
-            }
-        }
-
-        // Set the value of overwriting appropriately, 
-        // if it is not currently at the correct value.
-        // We check the current value to avoid triggering React updates in a loop.
-        if (!overwriting && shouldOverwrite) {
-            setOverwriting(true)
-        } else if (overwriting && !shouldOverwrite) {
-            setOverwriting(false)
-        }
-
-        shouldSuggest = []
-        if (overwriteScen != null) {
-            shouldSuggest = overwriteScen.categories
-        } else if (adminScen != null) {
-            shouldSuggest = adminScen.categories
-        } 
-
-        // Check if suggested categories should be updated.
-        equal = true
-        for (cat1 of shouldSuggest) {
-            found = false
-            for (cat2 of suggest) {
-                if (cat1.name == cat2.name) {
-                    found = true
-                    continue
-                }
-            }
-            if (!found) {
-                equal = false
-                break
-            }
-        }
-        if (equal) {
-            for (cat1 of suggest) {
-                found = false
-                for (cat2 of shouldSuggest) {
-                    if (cat1.name == cat2.name) {
-                        found = true
-                        continue
-                    }
-                }
-                if (!found) {
-                    equal = false
-                    break
-                }
-            }
-        }
-        if (!equal) {
-            setSuggest(shouldSuggest)
-        }
-    }
-
-    let updateScens = (scens) => {
-        nameFound = false
-        toUpdate = null
-        scens.map((s) => {
-            let c = s.categories.map((cat) => {
-                let cat2 = cat
-                cat2["origin"] = s.origin
-                return cat
-
-            })
-
-            s.categories = c
-
-            if (name == s.name) {
-                if (s.origin == "user" || mode == "admin" || !nameFound) {
-                    toUpdate = s
-                    nameFound = true
-                } 
-            }
-            return s
-        })
-        setScens(scens)
-        let cats = scens.map((s2) => s2.categories).flat()
-        let nodupes = []
-        let samplecatnames = []
-        let usercatnames = []
-        for (let cat of cats) {
-            if (cat["origin"] == "user" && !usercatnames.includes(cat["name"])) {
-                usercatnames.push(cat["name"])
-                nodupes.push(cat)
-            }
-            else if (cat["origin"] == "sample" && !samplecatnames.includes(cat["name"])) {
-                samplecatnames.push(cat["name"])
-                nodupes.push(cat)
-            }
-        }
-        cats = nodupes
-        setCats(cats)
-        if (nameFound) {
-            updateScenario(toUpdate, scens)
-        }
-    }
-
-    useEffect(() => {
-        async function fetch() { 
-            getScens().then(
-                (scens) => updateScens(scens)
-            )
-        }
-        fetch()
-    }, [])
-
-
-    let updateScenario = (s, scens) => {
-        setScenario(s.scenario)
-        setScenUpdated(true)
-        setSuggest(s.categories)
-        setOrigin(s.origin)
-        updateName(s.name, scens)
-    }
-
-    tempbutton = tempCats.map((cat, idx) => {
-        return <button className="smallButton" key={idx} onClick={() => setCategories([...categories, cat])} >{cat.name}</button>
-    })
-
-    scenarioButton = scens.map((s, idx) => {
-        className = "userButton"
-        if (s.origin == "sample") {
-            className = "sampleButton"
-        }
-        if (name == s.name) {
-            if (overwriting && (s.origin == "user" || mode == "admin")) {
-                className += " selectedScenario"
-            } 
-            else if (!overwriting && s.origin == "sample") {
-                className += " selectedScenario"
-            }
-        } 
-        return <button className={className} key={idx} onClick={() => { updateScenario(s, scens); add_click(sessionId, "select scenario", sessionStart) }} >{s.name}</button>
-    })
-
-    scenarioButton.push(<button button className="userButton" key={scens.length} onClick={() => { updateScenario({ "name": "custom scenario", "scenario": "Enter scenario text", "categories": [], "origin": "new"}, scens); add_click(sessionId, "new scenario", sessionStart) }}><b>+ New Scenario</b></button>)
-
-    categoryButton = cats.map((cat, idx) => {
-        return <button className={cat.origin == "sample" ? "sampleButton" : "userButton"} key={idx} onClick={() => { setCategories([...categories, cat]); cat.origin == "sample" ? add_click(sessionId, "add example category", sessionStart) : "" }} >{cat.name}</button>
-    })
-
-    suggestedButton = suggest.map((cat, idx) => {
-        return <button className={cat.origin == "sample" ? "sampleButton" : "userButton"} key={idx} onClick={() => { setCategories([...categories, cat]); cat.origin == "sample" ? add_click(sessionId, "add example category", sessionStart) : "" }} >{cat.name}</button>
-    })
-
-    let sampleCategories = <div>
-
-        <h1>Scenarios</h1>
-        <div className="categoryTemplate">
-            {scenarioButton}
-            <hr />
-            <p>Scenario Categories</p>
-            {suggestedButton}
-        </div>
-
-        <h1>All Categories</h1>
-        <div className="categoryTemplate">
-            {categoryButton}
-        </div>
-    </div>
-
-    let editGrammar = <div>
-        <EditTemplate categories={categories} user={user} sessionId={sessionId} sessionStart={sessionStart} />
-    </div>
-
-    if (!scenUpdated) {
-        updateScenario({ "name": "custom scenario", "scenario": "Enter scenario text", "categories": [], "origin": "new"}, scens)
-    }
-
-    return <div className="puzzleView">
+    
+    return <div className="body">
 
         <div className="puzzleViewLeft">
 
             <div className="authoringView">
                 <h1>Scenario Title</h1>
-                <input className="categoryInput" value={name} onChange={e => updateName(sanitize(e.target.value), scens)} />
+                <input className="categoryInput" value={title} onChange={e => {setTitle(sanitize(e.target.value), title);setEdited(true)}} />
 
                 <h1>Narrative</h1>
-                <textarea className={"scenarioInput"} value={scenario} onChange={(e) => setScenario(sanitize(e.target.value))} onClick={() => add_click(sessionId, "edit narrative", sessionStart)} />
+                <textarea className={"scenarioInput"} value={desc} onChange={(e) => {setDesc(sanitize(e.target.value)); setEdited(true)}} onClick={() => add_click(user, "edit narrative", sessionId, sessionStart)} />
 
 
 
@@ -383,35 +228,46 @@ export default PuzzleMaker = ({ startEvolve, user, mode, scenario, setScenario, 
 
 
                 <div>
-                    <button className="mediumButton" onClick={() => { add_scen(user, name, scenario, categories).then(() => {fetch()}) }}>{overwriting? 'Overwrite Scenario "' + name + '"' : 'Save New Scenario'}</button>
-                    <button className="mediumButton" onClick={() => { setCategories([...categories, { name: "Name", entities: [], is_numeric: false, inc: 1 }]); add_click(sessionId, "new category", sessionStart) }}>Create New Category</button>
-
-                    {/* <button disabled={scenId == 0 || origin == "sample"} className="mediumButton" onClick={() => { update_scen(user, name, scenario, categories).then(() => fetch()) }}>Update Scenario</button>
-
-                    <button disabled={scenId == 0 || origin == "sample"} className="mediumButton" onClick={() => { delete_scen(user, name).then(() => fetch()) }}>Delete Scenario</button> */}
+            <button className="mediumButton" onClick={() => { setCategories([...categories, { name: "Name", entities: [], is_numeric: false, inc: 1 }]); add_click(user, "new category", sessionStart) }}>Create New Category</button>
+                   {scenarioId == null ? 
+                    <button disabled={!edited}  className="mediumButton" onClick={createScen}>{edited? "*": ""} Save Scenario</button>
+                    : 
+                    <div>
+                        <button disabled={!edited}  className="mediumButton" onClick={createScen}>{edited? "*": ""} Save Scenario</button>
+                        <button disabled={!edited}  className="mediumButton" onClick={updateScene}>{edited? "*": ""} Save as New Scenario</button>
+                    </div>
+                }
+                   
                 </div>
 
                 <div>
                     Number of entities: <button onClick={() => { if (numEntities > 3) { setNumEntities(numEntities - 1) } }}>-</button> {numEntities}     <button onClick={() => setNumEntities(numEntities + 1)}>+</button>
                 </div>
                 <div> 
-                    <CategoryWarning categories={categories} numEntities={numEntities}/>
-                    <button className="largeButton" onClick={() => startEvolve(categories)}>Start Generation</button></div>
+                    {/*<CategoryWarning categories={categories} numEntities={numEntities}/>
+                    <button className="largeButton" onClick={() => startEvolve(categories)}>Start Generation</button></div>*/}
 
             </div>
 
         </div>
 
+        </div>
         <div className="puzzleViewRight">
             <div className="authoringView">
 
-                <Collapseable content={sampleCategories} title="Scenarios" showByDefault={true} />
-                <Collapseable content={editGrammar} title="Edit Default Grammar and Narrative Suggestions for Current Categories" showByDefault={mode == "serious"} />
+                
+            <h1>Evolution Sessions</h1>
+            <div className="cardList">
+             {evolveCards}
+            </div>
+            
+               
+           
             </div>
 
         </div>
-
-    </div>
+    
+</div>
 
 
 }
