@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from 'react';
-import { addPuzzleSurvey, addSubject } from './src/Firestore/sendData';
+
 import InformedConsent from './src/InformedConsent';
 import InitialSurvey from './src/InitialSurvey';
 import PuzzleManager from './src/PuzzleManager';

@@ -3,7 +3,6 @@ import FinishButtons from "./EndPuzzleButtons";
 import Hints from "./hints";
 import StateSelector from "./stateSelector";
 import SubGrid from "./subgrid";
-import { createGamePlayInstance, addCellChange, addButtonPress } from "./Firestore/sendData";
 
 function initializeSubGrid(numRows, numCols, puzzle, recordPuzzle) {
     let subgrid = []

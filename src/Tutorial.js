@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { setTutorialInfo } from "./Firestore/sendData";
+
 
 export default Tutorial = ({ imageFolder, numSlides, canSkip, startGame }) => {
     let [idx, setIdx] = useState(1);

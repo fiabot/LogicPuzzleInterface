@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { addHintToggle } from "./Firestore/sendData"
+
 
 let recordHint = (time, hint, strikes, i, instanceId) =>{
     let newTime = new Date()

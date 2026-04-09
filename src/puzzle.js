@@ -4,7 +4,6 @@ import FinishButtons from "./EndPuzzleButtons";
 import Hints from "./hints";
 import StateSelector from "./stateSelector";
 import SubGrid from "./subgrid";
-import { createGamePlayInstance, addCellChange, addButtonPress } from "./Firestore/sendData";
 import { printDocument } from "./utils";
 import { useReactToPrint } from "react-to-print";
 import { add_click } from "./API/SendToApi";

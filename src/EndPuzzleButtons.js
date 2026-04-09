@@ -1,6 +1,6 @@
 import Popup from 'reactjs-popup';
 import { useEffect, useState, useMemo } from 'react';
-import { addButtonPress } from './Firestore/sendData';
+
 
 
 let CorrectPop = ({isCorrect, time}) => {
