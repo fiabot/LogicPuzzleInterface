@@ -4,8 +4,8 @@ import FinishButtons from "./EndPuzzleButtons";
 import Hints from "./hints";
 import StateSelector from "./stateSelector";
 import SubGrid from "./subgrid";
-import { printDocument } from "./utils";
-import { useReactToPrint } from "react-to-print";
+//import { printDocument } from "./utils";
+//import { useReactToPrint } from "react-to-print";
 import { add_click } from "./API/SendToApi";
 import "./narrative.css";
 
@@ -282,9 +282,9 @@ export default Puzzle =({p, time, concede, finish, sessionId = null, sessionStar
   };
     
     //let [hints, setHints] = useState(<Hints hints={p.hints} time={time} setStrikes ={setStrikes} strikes={strikes}/>); 
-    const reactToPrintFn = useReactToPrint({
+    /*const reactToPrintFn = useReactToPrint({
         documentTitle: "SuperFileName"
-      });
+      });*/ 
 
 
     return (<div className="printArea" >
@@ -311,7 +311,7 @@ export default Puzzle =({p, time, concede, finish, sessionId = null, sessionStar
       <div>Full Color</div> 
         <div>B&W</div> 
       </label></div> : ""}
-    {printable?   <button className="likeButton" onClick={() =>{sessionId? add_click(sessionId, "download", sessionStart): ""; reactToPrintFn(reactToPrintContent)}}><img src="./icons/download.png" width="40" height="40"/></button>: ""}
+    {/*printable?   <button className="likeButton" onClick={() =>{sessionId? add_click(sessionId, "download", sessionStart): ""; reactToPrintFn(reactToPrintContent)}}><img src="./icons/download.png" width="40" height="40"/></button>: ""*/}
 
   
     

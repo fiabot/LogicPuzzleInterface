@@ -1,10 +1,10 @@
-import { useReactToPrint } from "react-to-print";
+//import { useReactToPrint } from "react-to-print";
 import { get_is_brainstorm, get_not_brainstorm, get_or_brainstorm, get_before_brainstorm } from "./API/GetFromApi";
 import { stringSimilarity } from "string-similarity-js"; 
 let printDocument=(ref) =>{
-    const reactToPrintFn = useReactToPrint({ ref })
+    //const reactToPrintFn = useReactToPrint({ ref })
 
-    reactToPrintFn()
+    //reactToPrintFn()
 ;
   }
 
