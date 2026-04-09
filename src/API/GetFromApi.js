@@ -1,4 +1,4 @@
-import {api, API_URL, GET_EVOLVE_SESSION, GET_SCENARIOS, GET_USER_DATA, SAMPLE_CAT_URL, GET_LIKED_PUZZLES, GET_UNUSED_GRAMMARS, GET_TEMPLATE, GET_BRAINSTORMS, GET_SCEN, GET_POSTED_PUZZLES, GET_LIKED_POSTED_PUZZLEs, NUM_SURVEYS} from './config'
+import {api, API_URL, GET_EXAMPLES, GET_EVOLVE_SESSION, GET_SCENARIOS, GET_USER_DATA, SAMPLE_CAT_URL, GET_LIKED_PUZZLES, GET_UNUSED_GRAMMARS, GET_TEMPLATE, GET_BRAINSTORMS, GET_SCEN, GET_POSTED_PUZZLES, GET_LIKED_POSTED_PUZZLEs, NUM_SURVEYS} from './config'
 
 
 let getNumSurveys = async(user) => {
@@ -6,6 +6,18 @@ let getNumSurveys = async(user) => {
         return null 
     }
     response = await api.post(NUM_SURVEYS, {user:user})
+
+    if (response.status <= 300){
+        return response.data
+    }else{
+        
+        return null 
+    }
+}
+
+let getExamples = async() => {
+
+    response = await api.get(GET_EXAMPLES)
 
     if (response.status <= 300){
         return response.data
@@ -162,4 +174,4 @@ let get_before_brainstorm = async(cat1, cat2, num_cat, user)  => {
 
 
 
-export {getEvolveSession, getSampleCategories, getUserData, getLikedPuzzles, get_unused_grammar, get_is_template, get_not_template, get_before_template, get_or_template, get_before_brainstorm, get_is_brainstorm, get_not_brainstorm,get_or_brainstorm, getScenarios, get_posted_puzzles, getLikedPostedPuzzles, getNumSurveys}
+export {getExamples, getEvolveSession, getSampleCategories, getUserData, getLikedPuzzles, get_unused_grammar, get_is_template, get_not_template, get_before_template, get_or_template, get_before_brainstorm, get_is_brainstorm, get_not_brainstorm,get_or_brainstorm, getScenarios, get_posted_puzzles, getLikedPostedPuzzles, getNumSurveys}

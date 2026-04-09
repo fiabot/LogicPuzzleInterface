@@ -12,7 +12,7 @@ let toggleState = (s, setState, select) => {
     // addUserAction(pid, "mark", {cell, mark}, time)
 }
 
-export default Cell = ({ state, setState, mousedown = false, topText = "", leftText = "", select = "*" }) => {
+export default Cell = ({ state, setState, mousedown = false, topText = "", leftText = "", select = "*", reveal=false, value="*" }) => {
 
     let className = "";
     let text = ""
@@ -32,7 +32,15 @@ export default Cell = ({ state, setState, mousedown = false, topText = "", leftT
         text = "X"
     }
 
-    return (<div className="cell" onMouseDown={() => { toggleState(state, setState, select) }} onMouseEnter={() => { if (mousedown) { toggleState(state, setState, select) } }}>
+    let changeState = () => {
+        if (!reveal){
+            toggleState(state, setState, select) 
+        }else{
+            toggleState(state, setState, value) 
+        }
+    }
+
+    return (<div className="cell" onMouseDown={() => { changeState() }} onMouseEnter={() => { if (mousedown) { changeState() } }}>
 
         <span className={className}> {text}</span>
 

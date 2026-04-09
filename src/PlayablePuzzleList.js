@@ -1,6 +1,6 @@
 import "./ViewPuzzlesStyle.css"; 
 import lzString from  "lz-string"
-import { like_puzzle, remove_puzzle } from './API/SendToApi';
+import { like_puzzle, remove_puzzle , add_click} from './API/SendToApi';
 import EditPuzzle from "./EditPuzzle";
 import { useState, useEffect } from "react"
 import { findMutants } from "./utils";
@@ -12,7 +12,6 @@ import SelectedPuzzle from "./SelectedPuzzle";
 
 
 export default PuzzleList= ({puzzles, setPuzzles, user, reload, sessionId, sessionStart, evolveSession, showMutants=false, appMode="mixed"}) => {
-    console.log(puzzles)
     let [mode, setMode] = useState("view")
     let [selectedPuzzle, setSelectedPuzzle] = useState(null)
 

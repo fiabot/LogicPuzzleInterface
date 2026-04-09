@@ -125,7 +125,7 @@ let new_session = async(privateKey, time) => {
 
 let add_click = async(user, sessionId,  n, startTime, data = null) =>{
     time = new Date() - startTime 
-    request = {"user": user, "sessionId":sessionId, "name": n, "type": CLICK_TYPES[n], "rel_time":time, "abs_time": new Date()}
+    request = {"user": user, "sessionId":sessionId, "name": n, "rel_time":time, "abs_time": new Date()}
 
     if (data != null){
         request["data"] = data 

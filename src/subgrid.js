@@ -3,7 +3,7 @@ import { useState } from "react";
 import Cell from "./cell";
 import "./style.css";
 
-export default SubGrid = ({ numRows, numCols, cells, topCat = null, leftCat = null, select = "*" }) => {
+export default SubGrid = ({ numRows, numCols, cells, topCat = null, leftCat = null, select = "*", reveal=false }) => {
 
     // displayGrid.push(<div style={{ gridRow: displayRowIdx, gridColumn: displayColIdx }}><span className="leftCategoryText">{leftCategories[row]}</span></div>)
 
@@ -46,7 +46,7 @@ export default SubGrid = ({ numRows, numCols, cells, topCat = null, leftCat = nu
         for (let j = 0; j < numCols; j++) {
             displayGrid.push(
                 <div style={{ gridRow: displayRowIdx, gridColumn: displayColIdx}} key={i + "," + j}>
-                    <Cell mousedown={mousedown} select={select} state={cells[i][j].state} setState={cells[i][j].setState} />
+                    <Cell mousedown={mousedown} select={select} state={cells[i][j].state} setState={cells[i][j].setState} reveal={reveal} value={"trueState" in cells[i][j]? cells[i][j].trueState : "*"} />
                 </div>
             );
             displayColIdx++;

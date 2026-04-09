@@ -32,7 +32,7 @@ export default selectedPuzzle = ({puzzle, setPuzzle, user, r, appMode, sessionId
       };
 
     let playPuzzle = (puzzle) => {
-        add_click(sessionId, "open link", sessionStart)
+        add_click(user, sessionId, "Open link", sessionStart)
         str = JSON.stringify(puzzle)
         compStr = lzString.compressToEncodedURIComponent(str)
         url_str =  pathname = window.location.href +"play?puzzle=" + compStr
@@ -40,7 +40,7 @@ export default selectedPuzzle = ({puzzle, setPuzzle, user, r, appMode, sessionId
     }
 
     let likeButton = async (puzzle)  => {
-        add_click(sessionId, "like puzzle", sessionStart)
+        add_click(user, sessionId, "Like puzzle", sessionStart)
         result = await like_puzzle(puzzle, user, evolveSession)
      
         if (result.status < 300){
@@ -54,8 +54,9 @@ export default selectedPuzzle = ({puzzle, setPuzzle, user, r, appMode, sessionId
 
 
     let unlikeButton = async (puzzle)  => {
+        add_click(user, sessionId, "Remove puzzle", sessionStart)
         result = await remove_puzzle(puzzle["key"], user, evolveSession)
-        console.log(result)
+
         if (result.status < 300){
     
             setLiked(!liked)

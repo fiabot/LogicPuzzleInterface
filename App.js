@@ -170,15 +170,25 @@ let PlayPuzzle = () => {
     setMode("createPuzzle")
   }
 
-  let createNewScen = () =>{
-    blankScen = {
-      "evolve_sessions":[], 
-      "data": {
-        "title":"", 
-        "desc": "", 
-        "categories":[]
+  let createNewScen = (scen = null) =>{
+    if (scen == null){
+      blankScen = {
+        "evolve_sessions":[], 
+        "data": {
+          "title":"", 
+          "desc": "", 
+          "categories":[]
+        }
       }
-    }
+      
+    }else{
+      blankScen = {
+        "evolve_sessions":[], 
+        "data": scen
+        }
+      }
+    
+    
     setScenario(blankScen)
     setMode("createPuzzle")
   }
@@ -187,6 +197,9 @@ let PlayPuzzle = () => {
     setMode("scenarios")
   }
 
+  let goBackToScen = () => {
+    setMode("createPuzzle")
+  }
 
 
   let startEvolve = () => {
@@ -235,6 +248,14 @@ let PlayPuzzle = () => {
     
    }
 
+   let showTutorial = () => {
+    if (checkIfSaved()) {
+      setMode("tutorial")
+    }
+    
+   }
+
+
    let showConsent = () => {
     if (checkIfSaved()) {
       setMode("consent")
@@ -257,8 +278,9 @@ let PlayPuzzle = () => {
          <img src="./icons/logo.png" width="100" height="60"/>
   <button className={mode == "home"? "active": ""} onClick={goHome}>Home</button>
   <button className={mode == "createPuzzle" || mode == "evolve"? "active": ""} onClick={startGeneration} >Generate Puzzles</button>
-  <button className={mode == "liked"? "active": ""} onClick={showLikedPuzzles}>View Liked Puzzles</button>
-  <button className={mode == "community"? "active": ""} onClick={showCommunity} >Community Puzzles</button>
+  {/*<button className={mode == "liked"? "active": ""} onClick={showLikedPuzzles}>View Liked Puzzles</button>
+  <button className={mode == "community"? "active": ""} onClick={showCommunity} >Community Puzzles</button>*/}
+  <button className={mode == "tutorial"? "active": ""} onClick={showCommunity} >Tutorial</button>
   <button className={mode == "consent"? "active": ""} onClick={showConsent} >View Informed Consent Form</button>
   <button onClick={() => openSurvey(user)} >Fill out a survey</button>
 </div>
@@ -267,12 +289,12 @@ let PlayPuzzle = () => {
    if (mode == "home"){
     content = <HomePage user={user} /> 
    }else if (mode == "scenarios"){
-    content = <Scenarios user={user} select={selectScenario} new_scen={createNewScen} />
+    content = <Scenarios user={user} select={selectScenario} new_scen={createNewScen} sessionId={sessionId} sessionStart={sessionStart}/>
    }else if (mode == "createPuzzle"){
-    content = <CategoryInput continueEvolve={conEvolve} startEvolve={startEvolve} user={user} scenario={scenario} setScenario={setScenario} scenarioId={scenarioId} setScenarioId={setScenarioId} name={name} setName={setName} /> 
+    content = <CategoryInput goBack={startGeneration} continueEvolve={conEvolve} startEvolve={startEvolve} user={user} scenario={scenario} setScenario={setScenario} scenarioId={scenarioId} setScenarioId={setScenarioId} name={name} setName={setName} /> 
   
    }else if (mode == "evolve"){
-    content =  <InteractiveEvolve user={user} mode={userMode} evolveSess={evolveSess} setEvolveSess={setEvolveSess} name={name} scenario={scenario} scenarioId={scenarioId} sessionStart={sessionStart} sessionId={sessionId}/>
+    content =  <InteractiveEvolve goBack={goBackToScen} user={user} mode={userMode} evolveSess={evolveSess} setEvolveSess={setEvolveSess} name={name} scenario={scenario} scenarioId={scenarioId} sessionStart={sessionStart} sessionId={sessionId}/>
    }else if (mode == "liked"){
     content = <ViewLikedPuzzles  user={user} mode={userMode}  sessionStart={sessionStart} sessionId={sessionId}/> 
    }else if (mode == "community"){

@@ -11,8 +11,9 @@
 .postContainer{
     display: grid;
     overflow: auto;
+    height: 90%;
     
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 }
 
 

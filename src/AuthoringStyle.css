@@ -69,7 +69,11 @@
   border-radius: 15px;
   border: 1px black;
   margin: 5px;
+}
 
+
+.smallButton:disabled {
+  opacity: 0.5;
 
 }
 
@@ -373,6 +377,18 @@
   font-size: 16px;
 }
 
+.writerHelp{
+  position: absolute;
+  display: inline-block;
+  border: 1px solid black;
+  /* color of the span text */
+  background-color: white;
+  padding: 16px;
+  z-index: 300;
+  width: 500px;
+  opacity: 1;
+}
+
 .tooltip {
   position: relative;
   display: inline-block;
@@ -380,6 +396,8 @@
   /* color of the span text */
   color: rgb(119, 162, 241);
 }
+
+
 
 .tooltip .tooltiptext ol {
   width: 80%;
@@ -445,6 +463,24 @@
 }
 
 
+.design{
+  width: 95%;
+  height: inherit;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 20px;
+
+}
+
+.design h1{
+  color:#4d3f4b; 
+  font-size: 30px; 
+  border-bottom: 1px solid #4d3f4b;
+  margin: 5px;
+  
+
+}
+
 .topButtons {
   width: inherit;
   height: 45px;
@@ -465,12 +501,21 @@
   padding: 0px 20px;
   height: 45px;
   ;
-
-
-
 }
 
+.hintWriter{
+  display: inline-block;
+}
 
+.hintWriter input{
+  display: inline-block;
+}
+
+.editButton{
+  background-color: transparent;
+  border: none;
+  font-size: medium;
+}
 
 .returnButton {
   float: left;
@@ -493,7 +538,7 @@
 
 .likeButton {
   float: right;
-
+  border: None; 
   width: 40px !important;
   height: 40px !important;
   background-color: transparent !important;
@@ -510,6 +555,45 @@
 
 }
 
+
+
+.lockButton {
+
+  width: 30px !important;
+  height: 30px !important;
+  background-color: transparent !important;
+  padding: 0px;
+  border:none;
+
+
+}
+
+.lockButton:hover {
+
+  background-color: #A0717890 !important;
+
+}
+
+.unlockButton {
+
+
+  width: 30px !important;
+  height: 30px !important;
+  background-color: transparent !important;
+  padding: 0px;
+  opacity: 0.5;
+  border:none;
+
+
+}
+
+.unlockButton:hover {
+
+  background-color: #A0717890 !important;
+
+
+
+}
 
 .collapsibleDiv {
   height: 60%;
@@ -622,6 +706,17 @@
  
  .text-body {
   color: rgb(134, 134, 134);
+ }
+
+ .text-body-small {
+  font-size:medium;  
+  color: rgb(134, 134, 134);
+ }
+
+ .text-body-large {
+  font-size:2em;;  
+  color: rgb(134, 134, 134);
+  text-align: center;
  }
  
  /*Text*/
