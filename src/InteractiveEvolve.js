@@ -219,7 +219,7 @@ let ConstraintWriter = ({cons, setCons, texts, setTexts, categories, user, sessi
 
 
     let conManagers = cons.map((f, idx) => {
-        return <WriterManager index={idx} setCons={setCons} cons={cons} setTexts={setTexts} texts={texts} categories={categories}/> 
+        return <WriterManager index={idx} setCons={setCons} cons={cons} setTexts={setTexts} texts={texts} categories={categories} user={user} sessionId={sessionId} sessionStart={sessionStart}/> 
     }) 
 
     let add_filter = () => {
@@ -334,7 +334,7 @@ let ShowAndEdit = ({generatedPuzzle, cons, setCons, texts, setTexts, categories,
     
         cons.forEach((c,idx) => {
             if (! shownIdxs.includes(idx)){
-                writer =  <li> <WriterManager index={idx} setCons={setCons} cons={cons} setTexts={setTexts} texts={texts} categories={categories}/> </li>
+                writer =  <li> <WriterManager index={idx} setCons={setCons} cons={cons} setTexts={setTexts} texts={texts} categories={categories} user={user} sessionId={sessionId} sessionStart={sessionStart}/> </li>
                 other.push(writer)
             }
 

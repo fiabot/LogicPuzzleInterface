@@ -160,10 +160,13 @@ const isSolved = (puzzle, solution) => {
     }
 }
 
-const recordPuzzle = (puzzle, play, user, sessionId, sessionStart) => {
-    let mode = play? "Play": "Reveal"
-    str = puzzleToString(puzzle)
-    add_click(user, sessionId, "Puzzle grid click", sessionStart, {"mode": mode, "Puzzle": str})
+const recordPuzzle = (puzzle, solution, play, user, sessionId, sessionStart) => {
+    if(solution != null){
+        let mode = play? "Play":  "Reveal"
+        str = puzzleToString(puzzle)
+        add_click(user, sessionId, "Puzzle grid click", sessionStart, {"mode": mode, "Puzzle": str})
+    }
+    
 
  
     
@@ -228,7 +231,7 @@ export default Puzzle =({p, solution,user, sessionId, sessionStart})=>{
         puzzle[row] = []
         let displayColIdx = 1;
         for (let col = 0; col < rowLength; col++) {
-            let subgrid = initializeSubGrid(p.numEnt, p.numEnt, puzzle, ()=>{recordPuzzle(puzzle,play, user, sessionId, sessionStart)}, trueState=true);
+            let subgrid = initializeSubGrid(p.numEnt, p.numEnt, puzzle, ()=>{recordPuzzle(puzzle, solution, play, user, sessionId, sessionStart)}, trueState=true);
             puzzle[row][col] = subgrid;
 
             topCat = null;
