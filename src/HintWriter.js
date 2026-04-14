@@ -448,7 +448,7 @@ export default HintWriter = ({categories, grammar, setGrammar, hintString, setHi
 
         <input ref={refs.setReference} {...getReferenceProps()} onKeyDown={handleKeyDown}
                 value={hintString} size={40} onChange={(v) => setHintString(v.target.value)} ></input>
-        <p color="red">{error}</p>
+        <p className="error">{error}</p>
         {isFocused && <FloatingFocusManager order={"reference"} context={context} modal={true}>
           <div
             ref={refs.setFloating}

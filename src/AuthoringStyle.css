@@ -359,7 +359,9 @@
 
 
 
-
+.error{
+  color: red; 
+}
 
 .center {
   width: 100%;
