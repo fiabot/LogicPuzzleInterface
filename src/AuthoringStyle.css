@@ -1,3 +1,35 @@
+/* HTML: <div class="loader"></div> */
+.loader {
+  width: 90px;
+  height: 14px;
+  box-shadow: 0 3px 0 #fff;
+  position: relative;
+  display: grid;
+  clip-path: inset(-60px 0 -5px)
+}
+.loader:after {
+  content: "";
+  position: relative;
+  background: repeating-linear-gradient(90deg,#0000 0 calc(50% - 8px), #ccc 0 calc(50% + 8px), #0000 0 100%) 0 0/calc(100%/3) 100%;
+  animation: l6-1 1s infinite;
+} 
+.loader:before {
+  content: "";
+  position: absolute;
+  width: 14px;
+  aspect-ratio: 1;
+  left: calc(50% - 7px);
+  bottom: 0;
+  border-radius: 50%;
+  background: #A07178;
+  animation: l6-2 1s infinite;
+}
+@keyframes l6-1 {
+  50%,100% {background-position: calc(100%/2) 0}
+}
+@keyframes l6-2 {
+  0%,50% {transform:translateY(-80px)}
+}
 .categoryInput {
   color: #624146;
   border: none;
@@ -399,6 +431,7 @@
 
 
 
+
 .tooltip .tooltiptext ol {
   width: 80%;
 }
@@ -421,6 +454,36 @@
 .tooltip:hover .tooltiptext {
   visibility: visible;
 }
+
+.smallTooltip {
+  position: relative;
+  display: inline-block;
+
+}
+
+.smallTooltip .tooltiptext {
+  visibility: hidden;
+  background-color: rgb(61, 61, 61);
+  opacity: 1;
+  color: #fff;
+  text-align: center;
+  font-size: smaller;
+  bottom: 100%;
+  left: 65%;
+  margin-left: -65px;
+  border-radius: 6px;
+  width: 130px;
+
+ 
+  /* Position the tooltip text - see examples below! */
+  position: absolute;
+  z-index: 1;
+}
+
+.smallTooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
 
 .collapseButton {
   width: 100%;
@@ -514,7 +577,7 @@
 .editButton{
   background-color: transparent;
   border: none;
-  font-size: medium;
+  font-size: 1.7vmin;
 }
 
 .returnButton {
@@ -673,7 +736,7 @@
   border-radius: 20px;
   background: #E9D0C4;
   position: relative;
-  padding: 1.8rem;
+  padding: 1rem;
   margin: 0.5vmin;
   border: 2px solid #A07178;
   transition: 0.5s ease-out;
@@ -714,14 +777,15 @@
  }
 
  .text-body-large {
-  font-size:2em;;  
+  font-size:1em;;  
   color: rgb(134, 134, 134);
   text-align: center;
+  padding: 0.5em;
  }
  
  /*Text*/
  .text-title {
-  font-size: 1.3em;
+  font-size: 1em;
   font-weight: bold;
  }
  

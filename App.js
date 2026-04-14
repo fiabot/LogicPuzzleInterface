@@ -241,12 +241,12 @@ let PlayPuzzle = () => {
     
   }
 
-   let showCommunity = () => {
+  let showCommunity = () => {
     if (checkIfSaved()) {
       setMode("community")
     }
-    
-   }
+  }
+
 
    let showTutorial = () => {
     if (checkIfSaved()) {
@@ -280,7 +280,7 @@ let PlayPuzzle = () => {
   <button className={mode == "createPuzzle" || mode == "evolve"? "active": ""} onClick={startGeneration} >Generate Puzzles</button>
   {/*<button className={mode == "liked"? "active": ""} onClick={showLikedPuzzles}>View Liked Puzzles</button>
   <button className={mode == "community"? "active": ""} onClick={showCommunity} >Community Puzzles</button>*/}
-  <button className={mode == "tutorial"? "active": ""} onClick={showCommunity} >Tutorial</button>
+  <button className={mode == "tutorial"? "active": ""} onClick={showTutorial} >Tutorial</button>
   <button className={mode == "consent"? "active": ""} onClick={showConsent} >View Informed Consent Form</button>
   <button onClick={() => openSurvey(user)} >Fill out a survey</button>
 </div>
@@ -297,8 +297,8 @@ let PlayPuzzle = () => {
     content =  <InteractiveEvolve goBack={goBackToScen} user={user} mode={userMode} evolveSess={evolveSess} setEvolveSess={setEvolveSess} name={name} scenario={scenario} scenarioId={scenarioId} sessionStart={sessionStart} sessionId={sessionId}/>
    }else if (mode == "liked"){
     content = <ViewLikedPuzzles  user={user} mode={userMode}  sessionStart={sessionStart} sessionId={sessionId}/> 
-   }else if (mode == "community"){
-    content = <CommunityPage user={user} appMode={userMode}  sessionStart={sessionStart} sessionId={sessionId}/> 
+   }else if (mode == "tutorial"){
+    content = <Tutorial  imageFolder={"tutorialSlides"} numSlides={38}/>
    }else if (mode == "consent"){
     content = <InformedConsent /> 
    }

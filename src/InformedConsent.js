@@ -9,108 +9,41 @@ const ConsentViewer =() => {
 
     return <div className='body'>
 
-<p><b>Northeastern University, Department of Computer Science </b></p>
+<p>Northeastern University, Khoury College of Computer Sciences Name of Investigator(s): Seth Cooper Title of Project: Engagement and Effectiveness in Human Computation and Entertainment Video Games Version: v2024-05</p>
 
-<p><b>Name of Investigator(s): Seth Cooper, Fiona Shyne, Kaylah Facey </b></p>
+<p><b>Information Sheet</b></p>
 
-<p><b>Title of Project</b>: Mixed-initiative authoring tools for game development  </p>
+<p>We would like to invite you to participate in a web-based online game authoring tool. The game is part of a research study whose purpose is to examine how participants use authoring tools and analyze how different authoring tool designs can affect engagement and performance. You may receive different game designs than other participants. Your interaction data will be recorded and analyzed. You may be asked to answer some questions about your experience. You may participate as long as you like.</p>
 
- 
+<p>We are asking you to participate in this study because of your interest in playing the game.<b>You must be fluent in English and at least 18 years old to participate.</b></p>
 
-<p>Request to Participate in Research </p>
+<p><b>The decision to participate in this research project is voluntary.</b> You do not have to participate and you can refuse to participate. Even if you begin the game, you can stop at any time.</p>
 
- 
+<p><b>The risks or discomforts to you for taking part in this study are low</b> and are similar to participating in online games or surveys.</p>
 
-<p>We would like to invite you to take part in a research project. The purpose of this research is to improve the experience of authoring game content using interfaces with computational support. 
-</p>
- 
+<p><b>There are no direct benefits to you from participating in this study.</b> However, your participation may help us learn more about engagement and performance in games.</p>
 
-<p><b>Key Information </b></p> 
+<p><b>You will not be paid for your participation in this study.</b></p>
 
-<ul>
-<li>Your consent is being sought for participation in a research project and your participation is voluntary.</li> 
+<p><b>Your part in this study is anonymized to the researchers. We will not save any information (e.g., user IDs) or ask you for any information that could be used to uniquely identify you.</b> Any reports or publications based on this research will use only anonymized data and will not identify you or any individual as being affiliated with this project. Data that are completely stripped of identifiable information may be made available online or shared with other researchers. Your de-identified information could be used for future research without additional informed consent. Some games are developed with Unity game engine, which has its own policies.</p>
 
-<li>The purpose of the research is to help designers develop better game authoring experiences. </li>
+<p><b>If you have any questions regarding electronic privacy</b>, please contact Northeastern University’s Office of Information Security via phone at 617-373-7901, or via email at privacy@northeastern.edu.</p>
 
-<li>This study will last over a period of between 05-05-2025 and 05-31-2025. You are free to participate as much or as little as you choose during this period. </li>
+<p><b>If you have any questions about this study</b>, please feel free to contact Seth Cooper, email: seth.cooper.study@gmail.com, the person mainly responsible for the research.</p>
 
-<li>The procedures that you will be asked to complete will be to create, edit, and play game content using an interface with computational support. </li>
+<p><b>If you have any questions regarding your rights as a research participant</b>, please contact Nan C. Regina, Director, Human Subject Research Protection, Mail Stop: 560-177, Northeastern University, Boston, MA 02115. Tel: 617-373-4588, Email: n.regina@neu.edu. You may call anonymously if you wish.</p>
 
-<li>Your usage of and interaction with the interface will be logged and recorded with telemetry. </li>
+<p><b>This study has been reviewed and approved by the Northeastern University Institutional Review Board (#17-10-07).</b></p>
 
-<li>We will ask you to answer surveys about your experience using the interface. </li>
+<p>Please note that the game may consume Internet data allocation if played on mobile devices, just as any other Internet game would.</p>
 
-<li>We will ask you to participate in recorded interviews about your experience using the interface. </li>
+<p>You have already confirmed your agreement and by continuing to use this interface you are indicating your consent to participant. Please print out a copy of this consent form for your records.</p>
 
-<li>We may ask you to share the content you have created with others, or to participate in a synchronous session with others playing your content. </li>
-
-<li>You may receive a different interface than other participants, and the interface may adapt to you. </li>
-
-<li>You may feel minor fatigue associated with using computer software. </li>
-
-<li>The interface is new and may have bugs or design flaws that could cause frustration. </li>
-
-<li>There are no direct benefits to your participation. </li>
-</ul>
- 
-
-<p><b>You must be at least 18 years old, fluent in English, and currently in the United States</b> to participate in this research.  </p>
+<p>Thank you for your time.</p>
 
  
 
-<p>The study will take place online, and you will be free to complete tasks on your own time. You can spend as much or as little time on this study as you want. We ask that you fill out surveys, available on the interface, as frequently as possible. After the study period is over, we may reach out to you to ask if you are interested in participating in further research studies.  
-</p>
- 
-
-<p><b>The possible risks or discomforts of the study are minimal</b>. You may feel minor fatigue associated with using computer software. The interface is new and may have bugs or design flaws that could cause frustration. 
-</p>
- 
-
-<p><b>There are no direct benefits to you for participating in the study.</b>  However, your answers may help us to improve game authoring tools. 
-</p>
- 
-
-<p><b>Your part in this study will be handled in a confidential manner.</b> Only the researchers will know that you participated in this study. However, we cannot guarantee confidentiality if sensitive information is contained in generated puzzles or in comments. 
-</p>
- 
-
-<p>We may capture telemetry data from the software and your survey responses. </p>
-
- 
-
-<p>We will do our best to anonymize data by removing any directly identifying information from the data you provide before any dissemination in reports, publications, or datasets. However, if you provide such information, we cannot guarantee all can be removed. Quotes from, and other analysis of your data, may be used in publications and other reports derived from this research. Responses and data, including generated artifacts or quotes may be used in publications, made publicly available online or shared with other researchers. 
-</p>
- 
-
-<p>Your data could be used for future research <b>without additional informed consent.</b> 
-</p>
- 
-
-<p><b>The decision to participate in this research project is up to you. </b> You do not have to participate, and you can refuse to answer any question. Even if you begin the study, you may withdraw at any time without payment, and we will discard your data. 
-</p>
- 
-
-<p><b>You will not receive payment for your participation. </b> If you are interested, we may ask you to participate in further research at a later date. 
-</p>
- 
-
-<p><b>If you have any questions about this study</b>, please feel free to contact Fiona Shyne, (shyne.f@northeastern.edu), or Kaylah Facey (facey.k@northeastern.edu) the people mainly responsible for the research. You can also contact Seth Cooper (seth.cooper.study@gmail.com) the Principal Investigator. 
-</p>
- 
-
-<p><b>If you have any questions about your rights in this research</b>, you may contact the Human Subject Research Protection, Mail Stop: 560-177, 360 Huntington Avenue, Northeastern University, Boston, MA  02115. Tel:  617.373.4588, Email: IRBReview@northeastern.edu. You may call anonymously if you wish. 
-</p>
- 
-
-<p><b>This study has been reviewed and approved by the Northeastern University Institutional Review Board. </b></p>
-
-<p>You may keep this form for yourself.  </p>
-
- 
-
-<p>Thank you, </p>
-
-<p><i>Fiona Shyne </i></p>
+<p>Seth Cooper</p>
     </div>
    
 };

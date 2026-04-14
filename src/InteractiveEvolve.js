@@ -110,7 +110,7 @@ let conEvolve = async (user, cons, id, setPuzzles, setId, setInEvolution, startT
 
 
 let WriterManager = ({index, cons, setCons, texts, setTexts, categories, user, sessionId, sessionStart}) => {
-    let [editable, setEditable] = useState(cons[index].origin == "human")
+    let [editable, setEditable] = useState(texts[index] == "")
     let [grammar, setGrammar] = useState(cons[index])
     let [hintString, setHintString] = useState(texts[index])
     let [deleteMe, setDeleteMe] = useState(false)
@@ -201,7 +201,13 @@ let WriterManager = ({index, cons, setCons, texts, setTexts, categories, user, s
     }else{
         return <div className="hintWriter">
             <button className="editButton" onClick={edit}>{hintString}</button>
+            <div class="smallTooltip"> 
             <button className="lockButton" onClick={deleteWriter}><img src={"./icons/lock.png"} width="30" height="30"/></button>
+            <span class="tooltiptext">
+                <p>Remove hint Lock</p>
+            </span>
+            </div>
+            
         </div>
     }
     
@@ -244,7 +250,13 @@ let ConstraintWriter = ({cons, setCons, texts, setTexts, categories, user, sessi
         {conManagers}
 
         <div>
-            <button className='smallButton' onClick={add_filter}>+</button>
+        <div class="smallTooltip"> 
+        <button className='smallButton' onClick={add_filter}>+</button>
+            <span class="tooltiptext">
+                <p>Add new hint lock</p>
+            </span>
+            </div>
+            
         </div>
     </div>
 }
@@ -302,7 +314,13 @@ let ShowAndEdit = ({generatedPuzzle, cons, setCons, texts, setTexts, categories,
             if (conIdx == -1){
                 return <li>
                     {generatedPuzzle.hints[idx]}
+                    <div class="smallTooltip"> 
                     <button className="unlockButton" onClick={() => lock_hint(grammar,generatedPuzzle.hints[idx] )}><img src={"./icons/lock.png"} width="30" height="30"/></button>
+            <span class="tooltiptext">
+                <p>Add hint lock</p>
+            </span>
+            </div>
+                   
                     </li>
             }else{
                 shownIdxs.push(conIdx)
@@ -350,7 +368,12 @@ let ShowAndEdit = ({generatedPuzzle, cons, setCons, texts, setTexts, categories,
 
 
         <div>
-            <button className='smallButton' onClick={add_filter}>+</button>
+        <div class="smallTooltip"> 
+        <button className='smallButton' onClick={add_filter}>+</button>
+            <span class="tooltiptext">
+                <p>Add new hint lock</p>
+            </span>
+            </div>
         </div>
     </div>
 
@@ -459,13 +482,13 @@ export default EvolveScreen = ({user,scenario, scenarioId, evolveSess, setEvolve
         if (!selectedLiked){
             results = await like_puzzle(selectedPuzzle, user, evolveSess)
 
-            new_puzzle = {...selectedPuzzle, key:results}
+            new_puzzle = {...selectedPuzzle, idx:results}
             setSelectedLiked(true)
             setSelectedPuzzle(new_puzzle)
             setLikedPuzzles([...likedPuzzles, new_puzzle])
             add_click(user, sessionId, "Like puzzle", sessionStart)
         }else{
-            result = await remove_puzzle(selectedPuzzle["key"], user, evolveSess)
+            result = await remove_puzzle(selectedPuzzle["idx"], user, evolveSess)
             setSelectedLiked(false)
             add_click(user, sessionId, "Remove puzzle", sessionStart)
 
@@ -514,7 +537,16 @@ export default EvolveScreen = ({user,scenario, scenarioId, evolveSess, setEvolve
         <div className="cropped">
             <h1>Generate</h1>
             <button className="mediumButton" disabled={inEvolution} onClick={generateNext}>{evolveSess == null? "Generate First Round": "Generate Next Round"}</button>
-           <ShowGeneratedPuzzle generated={puzzles} select={setSelectedPuzzle} user={user} sessionId={sessionId} sessionStart={sessionStart}/>
+           {inEvolution? 
+           <div class="smallTooltip"> 
+           <div class="loader"></div> 
+       
+               <span class="tooltiptext">
+                   <p>Working hard generating puzzles. This can take awhile (especially for large puzzles)</p>
+               </span>
+               </div>
+          : ""}
+           <ShowGeneratedPuzzle generated={puzzles} select={(s) => {setSelectedPuzzle(null);setSelectedPuzzle(s)}} user={user} sessionId={sessionId} sessionStart={sessionStart}/>
             
         </div>
     </div>

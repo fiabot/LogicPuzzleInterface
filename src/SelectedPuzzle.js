@@ -14,7 +14,7 @@ export default selectedPuzzle = ({puzzle, setPuzzle, user, r, appMode, sessionId
     let [mode, setMode] = useState("play")
     let [puzzleToEdit, setPuzzleToEdit] = useState(null)
 
-    let [liked, setLiked] = useState("key" in puzzle && puzzle["key"] != null)
+    let [liked, setLiked] = useState("idx" in puzzle && puzzle["idx"] != null)
    
 
     let model = createPuzzle(puzzle)
@@ -55,7 +55,7 @@ export default selectedPuzzle = ({puzzle, setPuzzle, user, r, appMode, sessionId
 
     let unlikeButton = async (puzzle)  => {
         add_click(user, sessionId, "Remove puzzle", sessionStart)
-        result = await remove_puzzle(puzzle["key"], user, evolveSession)
+        result = await remove_puzzle(puzzle["idx"], user, evolveSession)
 
         if (result.status < 300){
     
@@ -127,7 +127,7 @@ export default selectedPuzzle = ({puzzle, setPuzzle, user, r, appMode, sessionId
     let editPuzzle = () => {
         add_click(sessionId, "edit puzzle", sessionStart)
         setMode("edit")
-        setContent( <EditPuzzle puzzleData={puzzle} setPlayable={setPuzzle} user={user} r={null} sessionId={sessionId} sessionStart={sessionStart}/>)
+        setContent( <EditPuzzle puzzleData={puzzle} setPlayable={setPuzzle} user={user} r={null} sessionId={sessionId} sessionStart={sessionStart} evolveId={evolveSession}/>)
        
     }
 

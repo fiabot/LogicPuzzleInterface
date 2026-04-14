@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react"
 
 
-export default Tutorial = ({ imageFolder, numSlides, canSkip, startGame }) => {
+
+export default Tutorial = ({ imageFolder, numSlides}) => {
     let [idx, setIdx] = useState(1);
     let [proceed, setProceed] = useState("");
     let [time, setTime] = useState(null); 
@@ -17,9 +18,7 @@ export default Tutorial = ({ imageFolder, numSlides, canSkip, startGame }) => {
         if (idx < numSlides) {
             setIdx(idx + 1);
         }
-        if(idx + 1 == canSkip ){
-            setProceed(<button className="startGame" onClick={() => {sendInfo(); startGame()}}>Start game</button>)
-        }
+        
 
     }
 

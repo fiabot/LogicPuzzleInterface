@@ -33,80 +33,7 @@ let images = {"Seed": "./icons/people/seed.png",
 
 export default HomePage = ({user, publicKey, mode}) => {
 
-    let [userMode, setUserMode] = useState("mixed")
-
-    let [numSurveys, setNumSurvey] = useState(-1); 
-
-    let [score, setScore] = useState("Seed")
-
-    let [nextLevel, setNextLevel] = useState(1)
-
-    let [newPrivateKey, setNewPrivateKey] = useState("")
-    let [newPublicKey, setNewPublicKey] = useState("")
-
-    useEffect(() => {
-        let fetch = async() => {
-            let surveys = await getNumSurveys(user)
-            if (surveys != null){
-                setNumSurvey(surveys)
-
-                if (surveys > 0){
-                    level = Math.floor((surveys - 1) / 2)
-                    if (level + 1 < researchScore.length){
-                        setScore(researchScore[level + 1])
-                        if (surveys % 2 == 1){
-                            setNextLevel(2)
-                        }else{
-                            setNextLevel(1)
-                        }
-                    }else{
-                        setScore(researchScore[researchScore.length -1])
-                        setNextLevel(-1)
-                    }
-                    
-
-                }else{
-                    
-                }
-
-
-            }
-
-        }
-        fetch()
-    }, [])
-
-     if (adminPublicKeys.includes(publicKey)){
-        // admin view 
-
-        let add_user = async () => {
-            result =  await add_account(user, newPrivateKey, newPublicKey, userMode) 
-            if (result == "failure"){
-                 alert("Failed to add user")
-            }else{
-                alert("successfully added user")
-            }
-         }
-
-        return <div className='body'>
-        <h1>Welcome {publicKey}</h1>
-        <h2>Add users</h2>
-            <p>Enter Public Key</p>
-            <input value={newPublicKey} onChange={(e) => setNewPublicKey(e.target.value)}></input>
-
-            <p>Enter Private Key</p>
-            <input value={newPrivateKey} onChange={(e) => setNewPrivateKey(e.target.value)}></input>
-            <p>Select Mode</p><select value={userMode} onChange={(e) => setUserMode(e.target.value)}>
-                <option value="mixed">mixed</option>
-                <option value="serious">serious</option>
-                <option value="casual">casual</option>
-                <option value="admin">admin</option>
-            </select>
-            <button onClick={() => {add_user()}}>Add User</button>
-
-    </div>
     
-    }else{
 
         const downloadFile = ({ data, fileName, fileType }) => {
             // Create a blob with the data we want to download as a file
@@ -132,46 +59,26 @@ export default HomePage = ({user, publicKey, mode}) => {
             })
           }
 
-          let get_user_data = async () =>{
-            let data = await getUserData(user)
-            exportToJson(data)
-          }
 
         return <div className='body'>
             <h1>Welcome {publicKey}</h1>
-            <button className="largeButton" onClick={get_user_data}>Download Data</button>
-            <p>This is Puzzle Garden. This is an experimental tool for generating logic grid puzzles, with or without narrative elements. With this interface you will be able to create, play, and share your own logic grid puzzles. </p>
+      
+            <p>This is Puzzle Garden. This is an experimental tool for generating logic grid puzzles. With this interface you will be able to create, play, and share your own logic grid puzzles. </p>
 
-           
-            {mode == "mixed"? <p>Watch the beginner tutorial <a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/watch?v=6WtjwUvARt0"> here </a> and the advanced tutorial <a target="_blank" rel="noopener noreferrer" href=" https://www.youtube.com/watch?v=ssL9TOQTVsA">here</a></p>
-                :<p>Watch the video tutorial at <a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/watch?v=nAX14YCeD3o">here</a>.</p>}
-            {mode == "mixed"? <p>Get the written guide <a target="_blank" rel="noopener noreferrer" href="https://drive.google.com/drive/folders/1D0A6Xbcipixa8_38pyC4gIsceHqOa8er?usp=sharing"> here </a>. </p>:
-                <p>Get the written guide <a  target="_blank" rel="noopener noreferrer" href="https://drive.google.com/file/d/1xS9zKdgJvt3lNenDzV_Z2OwrLVOeFSKK/view">here</a>.</p>}
-            <div className="personaCard">
-            <div className="researchIcon">
-            <img src={images[score]} width="500" height="500"/>
-            </div>
-            <div className="personaText">
-            <h1>Research Zone</h1>
-            <p> This is primarily a research project, so we greatly appreciate you contributing to our research by periodically filling out our survey.</p>
-            <p>You have filled out <b>{numSurveys} surveys</b>, which makes you a {score}. {desc[score]} Fill out <b>{nextLevel} more surveys</b> to progress your research score. </p>
-            <p><b>After generating some puzzles</b>, please come back here to fill out a survey!</p>
-            </div>
-       
-        
-        </div>
-        <button className="selectButton" onClick={() => openSurvey(user)}>Fill out a survey!</button>
+           <p>If this is your first time, or if you need a refresher, using this interface, please refer to the tutorial page at the top menu. This will guide you with the basics you need to get started making puzzles.</p>
+            
+
 
             <div className="faq">
                 <h1>Frequently Asked Questions</h1>
                 <p>We will update this page as we get questions. Please contact shyne.f@northeatern.edu with any questions.</p>
 
-
-                <h2>How do like save/post puzzles?</h2>
-                <p>When generating puzzles you save them by clicking the like button on the upper left-hand corner. You can then come back to these puzzles in the liked puzzles tab of the webpage. Additionally you can click the open link icon (box with an arrow) when will give you a unique URL to view your puzzle with. You won't need to login to view this link and it can be shared with other people. </p>
-
-                <p>To post a puzzle, go to the community page and click the post puzzle button. This will show all your liked puzzle and you can select one to post. You can also add a post title and body to give people more information about your puzzle. </p>
-
+                <h2>What is a logic grid puzzle?</h2>
+                <p>Logic grid puzzles are a particular type puzzle that started out as pen and paper puzzles. You may also have heard them referred to as "Zebra" or "Einstein" puzzles. 
+                    In this puzzles you have to use a series of hints to determine if entities are related ("O") or not related ("X").  Each entity belongs to exactly one other entity in each of the categories. 
+                    For example in our murder mystery example scenario you have to determine where each suspect was at each time. If you have the hints "Ms. Scarlet is the study", you can place an "O" in the grid space between Ms.Scarlet and Study, a "X" for all other suspects in the study, and a "X" for all other rooms Ms. Scarlet could have been in. </p>
+                <h2> Why are the hints not always grammatically correct</h2>
+                <p>In our tool hints are not actually written in English, but in a format that represents the logical relationship between entities. This serves as the easiest way to communicate between human authors/readers and the generation system. Hints can be manually edited once they are liked. </p>
                 <h2>Why does it take a long time to generate puzzles?</h2>
                 <p>The larger the puzzle, the more time it will take to generate. In most cases you just need to be patient, especially if you have puzzles larger than 3 categories or 4 entities per category. Really large puzzle might cause a server timeout, and may never generate. 
 
@@ -182,11 +89,7 @@ export default HomePage = ({user, publicKey, mode}) => {
                 <p>Puzzles are generated using a type of algorithm called a Genetic Algorithm. 
                     This program <b>does not</b> use generative AI (such as Chat-GPT), and does not use any training data. 
                     Instead puzzles are first randomly generated, by creating lists of clues. These puzzles are then optimized until they become solvable. This generator creates many puzzles but only keeps the puzzle with the smallest hint size for puzzles with the same difficulty and solution.  </p>
-                
-                <h2>Why do I need to add a grammar for new categories?</h2>
-                <p>Our generator only knows logic, not the English language. Because of this, clues end up looking awkward if you don't tell the generator how to phrase different clues.</p>
-            
-
+             
             <h2>How does this project help research?</h2>
             <p>We are looking how to best make interfaces where humans work with a computational system. By trying our system and providing feedback, you are helping other designers better create tools like this in the future.</p>
     
@@ -195,6 +98,6 @@ export default HomePage = ({user, publicKey, mode}) => {
 
            
         </div>
-    }
+    
     
 }

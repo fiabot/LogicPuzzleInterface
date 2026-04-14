@@ -428,7 +428,17 @@ export default HintWriter = ({categories, grammar, setGrammar, hintString, setHi
     kind_value = kind == null? null : kindOptions.filter((o) => o.value == kind)[0]
 
     const helper = <div className="writerHelp">
-      Kind
+      Kind <div class="tooltip"> &#40; ? &#41;
+            <span class="tooltiptext">There are five kinds of hints: 
+                <ol>
+                    <li><b>is</b>: the first and second entity are connected</li>
+                    <li><b>not</b>: the first and second entity are not connected</li>
+                    <li><b>before</b>: the first entity is before/less than the second entity in a numeric category </li>
+                    <li><b>simple_or</b>: either the first or the second entity is the comparison entity, but not both</li>
+                    <li><b>compound_or</b>: either the first or the second <i>is</i> statement is true, but not both</li>
+                </ol> 
+            </span>
+        </div>
       <Select value={kind_value} onChange={kindChange} options={kindOptions}/> 
 
       {kind != null? paramOptions: ""}

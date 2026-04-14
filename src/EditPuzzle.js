@@ -79,9 +79,10 @@ let EditNarratives = ({narratives, setNarratives, grammar, user, sessionId, sess
     
 }
 
-export default EditPuzzle = ({puzzleData, setPlayable, r, user, sessionId, sessionStart}) => {
+export default EditPuzzle = ({puzzleData, setPlayable, r, user, sessionId, sessionStart, evolveId}) => {
+ 
 
-    let [key, setKey] = useState("key" in puzzleData? puzzleData["key"]: null)
+    let [key, setKey] = useState("idx" in puzzleData? puzzleData["idx"]: null)
 
     let puzzle = createPuzzle(puzzleData) 
 
@@ -110,7 +111,7 @@ export default EditPuzzle = ({puzzleData, setPlayable, r, user, sessionId, sessi
         if (key != null && user != null){
             let newPuzzle = getNewPuzzle()
 
-            let result = await update_puzzle(key, newPuzzle, user )
+            let result = await update_puzzle(key, newPuzzle, user,evolveId )
 
             if (result.data =="success"){
                 alert("updated puzzle")
@@ -127,7 +128,7 @@ export default EditPuzzle = ({puzzleData, setPlayable, r, user, sessionId, sessi
         if (user != null){
             let newPuzzle = getNewPuzzle() 
 
-            let result = await like_puzzle( newPuzzle, user )
+            let result = await like_puzzle( newPuzzle, user, evolveId )
 
             if (result.status < 300){
                setKey(result.data["key"]) 
@@ -153,7 +154,7 @@ export default EditPuzzle = ({puzzleData, setPlayable, r, user, sessionId, sessi
     let content = ""
     if (!editNarrative){
         let editHints = hints.map((hint, i) => {
-            return <li  key={i}><input value={hints[i]} onClick={() => add_click(sessionId, "edit hint", sessionStart)} onChange={(e) => editHint(i, e.target.value)}/> <div class="tooltip">See Logic
+            return <li  key={i}><input value={hints[i]} onClick={() => add_click(user,sessionId, "edit hint", sessionStart)} onChange={(e) => editHint(i, e.target.value)}/> <div class="tooltip">See Logic
             <span class="tooltiptext">{getClueLogic(puzzleData.hint_grammar[i])}</span>
           </div> </li>})
         content  = <ol className="hintEditor">
@@ -182,7 +183,7 @@ export default EditPuzzle = ({puzzleData, setPlayable, r, user, sessionId, sessi
     <input className={"nameInput"} value={title} onChange={(e)=> setTitle(e.target.value)} />
 
     <h2>Edit Scenario Text</h2>
-    <textarea className={"scenarioInput"} value={scenario} onClick={() => add_click(sessionId, "edit narrative")} onChange={(e)=> setScenario(e.target.value)} />
+    <textarea className={"scenarioInput"} value={scenario} onClick={() => add_click(user, sessionId, "edit narrative")} onChange={(e)=> setScenario(e.target.value)} />
 
     <h2>Edit Hints</h2>
     {content}

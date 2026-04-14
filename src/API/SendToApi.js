@@ -250,7 +250,7 @@ let remove_puzzle = async(key, user, evolveId) => {
     if (user == null){
         return "LOGIN"
     }
-    request= {"username":user, "evolveId": evolveId, "idx":key }
+    request= {"user":user, "evolveId": evolveId, "idx":key }
     response = await api.post(REMOVE_PUZZLE, request)
 
   
@@ -262,7 +262,7 @@ let update_puzzle = async(key, puzzle, user, evolveId) => {
     if (user == null){
         return "LOGIN"
     }
-    request= {"username":user, "key":key, "evolveId": evolveId, "puzzle":puzzle }
+    request= {"user":user, "key":key, "evolveId": evolveId, "idx": puzzle["idx"], "ind":puzzle }
     response = await api.post(UPDATE_PUZZLE, request)
 
   

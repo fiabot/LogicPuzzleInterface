@@ -1,7 +1,7 @@
 import _axios from "axios";
 import { useState } from "react";
-const API_URL = 'http://127.0.0.1:3000' 
-//const API_URL = 'https://christie.khoury.northeastern.edu' 
+const API_URL = 'http://127.0.0.1:3000/api' 
+//const API_URL = 'https://christie.khoury.northeastern.edu/api' 
 
 
 const ADD_USER = API_URL + "/add_user"
