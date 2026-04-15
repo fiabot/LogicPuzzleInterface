@@ -196,13 +196,19 @@ let WriterManager = ({index, cons, setCons, texts, setTexts, categories, user, s
         return <div>
         <HintWriter categories={categories} setGrammar={setGrammar} grammar={grammar} hintString={hintString} setHintString={setHintString} onEnter={submit}/>
         <button disabled={grammar==null} className="smallButton" onClick={submit}>Submit</button>
+        <div class="smallTooltip"> 
+            <button className="lockButton" onClick={() => deleteWriter(index)}><img src={"./icons/lock.png"} width="30" height="30"/></button>
+            <span class="tooltiptext">
+                <p>Remove hint Lock</p>
+            </span>
+            </div>
         
     </div>
     }else{
         return <div className="hintWriter">
             <button className="editButton" onClick={edit}>{hintString}</button>
             <div class="smallTooltip"> 
-            <button className="lockButton" onClick={deleteWriter}><img src={"./icons/lock.png"} width="30" height="30"/></button>
+            <button className="lockButton" onClick={() => deleteWriter(index)}><img src={"./icons/lock.png"} width="30" height="30"/></button>
             <span class="tooltiptext">
                 <p>Remove hint Lock</p>
             </span>
@@ -219,7 +225,7 @@ let ConstraintWriter = ({cons, setCons, texts, setTexts, categories, user, sessi
 
 
     let conManagers = cons.map((f, idx) => {
-        return <WriterManager index={idx} setCons={setCons} cons={cons} setTexts={setTexts} texts={texts} categories={categories} user={user} sessionId={sessionId} sessionStart={sessionStart}/> 
+        return <li><WriterManager index={idx} setCons={setCons} cons={cons} setTexts={setTexts} texts={texts} categories={categories} user={user} sessionId={sessionId} sessionStart={sessionStart}/> </li>
     }) 
 
     let add_filter = () => {
@@ -234,26 +240,28 @@ let ConstraintWriter = ({cons, setCons, texts, setTexts, categories, user, sessi
     }
 
     return <div>
-        <h2>Included Hints <div class="tooltip"> &#40;  ? &#41;
+        <h2>Hints in the current puzzle <div class="tooltip"> &#40;  ? &#41;
             <span class="tooltiptext">
-                <p>These are the hints are not in the current puzzle, but will be included in all puzzles when you generate the next round.</p>
+                <p>These are the hints in the current puzzle. Hints can be locked to ensure they are added to all puzzles generated in the next round.</p>
             </span>
             </div></h2>
         <p>No generated puzzle added. Select a puzzle or generate the next round. 
         </p>
-        <h2>Not Included <div class="tooltip"> &#40;  ? &#41;
+        <h2>Hints for Future Generated Puzzles <div class="tooltip"> &#40;  ? &#41;
             <span class="tooltiptext">
-                <p>These are the hints are not in the current puzzle, but will be included in all puzzles when you generate the next round.</p>
+                <p>These hints are not in the current puzzle, but will be included in all puzzles when you generate the next round.</p>
             </span>
             </div></h2>
        
-        {conManagers}
+            <ol className='hintList'>
+            {conManagers}
+        </ol>
 
         <div>
         <div class="smallTooltip"> 
         <button className='smallButton' onClick={add_filter}>+</button>
             <span class="tooltiptext">
-                <p>Add new hint lock</p>
+                <p>Add new locked hint</p>
             </span>
             </div>
             
@@ -317,7 +325,7 @@ let ShowAndEdit = ({generatedPuzzle, cons, setCons, texts, setTexts, categories,
                     <div class="smallTooltip"> 
                     <button className="unlockButton" onClick={() => lock_hint(grammar,generatedPuzzle.hints[idx] )}><img src={"./icons/lock.png"} width="30" height="30"/></button>
             <span class="tooltiptext">
-                <p>Add hint lock</p>
+                <p>Lock hint</p>
             </span>
             </div>
                    
@@ -340,7 +348,7 @@ let ShowAndEdit = ({generatedPuzzle, cons, setCons, texts, setTexts, categories,
 
         setOtherHints(other)
         })
-    }, [cons, selectedPuzzle])
+    }, [generatedPuzzle, cons])
 
 
 
@@ -359,7 +367,7 @@ let ShowAndEdit = ({generatedPuzzle, cons, setCons, texts, setTexts, categories,
 
         <h2>Not Included <div class="tooltip"> &#40;  ? &#41;
             <span class="tooltiptext">
-                <p>These are the hints are not in the current puzzle, but will be included in all puzzles when you generate the next round.</p>
+                <p>These hints are not in the current puzzle, but will be included in all puzzles when you generate the next round.</p>
             </span>
             </div></h2> 
         <ol className='hintList'>
@@ -388,9 +396,9 @@ let ShowGeneratedPuzzle = ({generated, select, user, sessionId, sessionStart}) =
     const handleChange = (event, newValue) => {
         setValue(newValue);
       }
-
+    let has_puzzle = false 
     puzzlePannels = generated.map((li,idx) =>{
-         puzzles= li.map((puzzle, id2) => {
+         puzzles= li.map((puzzle, id2) => {has_puzzle=true; 
             return <li className='puzzleListElement' key = {id2}>
                 <h3>Hints</h3>
                 <ol className='hintList'>
@@ -410,15 +418,19 @@ let ShowGeneratedPuzzle = ({generated, select, user, sessionId, sessionStart}) =
         
     })
 
+
+
     if (generated.length == 0){
-        return <div>
-            Start generation
-        </div>
-    }else{
-       
+        return  <div>
+        Start generation
+    </div>
+    }else if (! has_puzzle){
+        return <div>No puzzles generated. This can happen if there are too many hint locks, locked hints are contradictory, or puzzles are large. You can try generating another round now, or you can remove hint locks before generating again.</div>
+    }
+    
+    else{
 
         return <div>
-                
                 <Tabs.Root className={"Tabs"} onChange={handleChange}>
                 <p>Search Puzzles by Difficulty</p>
                   <Tabs.List className="List"> 
@@ -538,7 +550,7 @@ export default EvolveScreen = ({user,scenario, scenarioId, evolveSess, setEvolve
             <h1>Generate</h1>
             <button className="mediumButton" disabled={inEvolution} onClick={generateNext}>{evolveSess == null? "Generate First Round": "Generate Next Round"}</button>
            {inEvolution? 
-           <div class="smallTooltip"> 
+           <div class="tooltip"> 
            <div class="loader"></div> 
        
                <span class="tooltiptext">
@@ -546,7 +558,7 @@ export default EvolveScreen = ({user,scenario, scenarioId, evolveSess, setEvolve
                </span>
                </div>
           : ""}
-           <ShowGeneratedPuzzle generated={puzzles} select={(s) => {setSelectedPuzzle(null);setSelectedPuzzle(s)}} user={user} sessionId={sessionId} sessionStart={sessionStart}/>
+           <ShowGeneratedPuzzle evolveSess={evolveSess} generated={puzzles} select={(s) => setSelectedPuzzle(s)} user={user} sessionId={sessionId} sessionStart={sessionStart}/>
             
         </div>
     </div>
@@ -564,7 +576,7 @@ export default EvolveScreen = ({user,scenario, scenarioId, evolveSess, setEvolve
         <Collapseable content={design} title={"Design Puzzle"}/> 
 
         <Collapseable content={puzzleDisplay} title="Liked Puzzles" /> 
-i89
+
 
     </div>
 

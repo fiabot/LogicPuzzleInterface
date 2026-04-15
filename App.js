@@ -194,34 +194,65 @@ let PlayPuzzle = () => {
   }
 
   let startGeneration =() =>{
+    setScenario(null)
+    setScenarioId(null)
+    setEvolveSess(null)
     setMode("scenarios")
   }
 
   let goBackToScen = () => {
+    setEvolveSess(null)
     setMode("createPuzzle")
+  }
+
+  let canEvolve = () => {
+    categories = scenario["data"]["categories"]
+    if (categories.length < 2) {
+      alert("Please add at least 2 categories to start generation")
+      return false 
+    }
+
+    let findDuplicates = arr => arr.filter((item, index) => arr.indexOf(item) !== index).length > 0 
+
+    catnames = categories.map((c) => c.name) 
+    console.log(catnames)
+
+    if (findDuplicates(catnames)){
+      alert("Categories cannot have the same name")
+      return false 
+    }
+
+    entities = categories.map((c) => c.entities )
+    entities = entities.flat()
+
+    if (findDuplicates(entities)){
+      alert("Entities cannot have the same name")
+      return false 
+    }
+
+    return true 
   }
 
 
   let startEvolve = () => {
     categories = scenario["data"]["categories"]
-    if (categories.length < 2) {
-      alert("Please add at least 2 categories to start generation")
-      return
+    if (canEvolve()){
+      setCategories(categories)
+      setMode("evolve")
     }
-    setCategories(categories)
-    setMode("evolve")
+    
 
   }
 
   let conEvolve = (sessId) => {
     categories = scenario["data"]["categories"]
-    if (categories.length < 2) {
-      alert("Please add at least 2 categories to start generation")
-      return
+    if (canEvolve()){
+      setEvolveSess(sessId)
+      setCategories(categories)
+      setMode("evolve")
     }
-    setEvolveSess(sessId)
-    setCategories(categories)
-    setMode("evolve")
+
+
 
   }
 
@@ -282,7 +313,7 @@ let PlayPuzzle = () => {
   <button className={mode == "community"? "active": ""} onClick={showCommunity} >Community Puzzles</button>*/}
   <button className={mode == "tutorial"? "active": ""} onClick={showTutorial} >Tutorial</button>
   <button className={mode == "consent"? "active": ""} onClick={showConsent} >View Informed Consent Form</button>
-  <button onClick={() => openSurvey(user)} >Fill out a survey</button>
+  {/*<button onClick={() => openSurvey(user)} >Fill out a survey</button>*/}
 </div>
 
    let content = <div>None</div>
@@ -291,7 +322,7 @@ let PlayPuzzle = () => {
    }else if (mode == "scenarios"){
     content = <Scenarios user={user} select={selectScenario} new_scen={createNewScen} sessionId={sessionId} sessionStart={sessionStart}/>
    }else if (mode == "createPuzzle"){
-    content = <CategoryInput goBack={startGeneration} continueEvolve={conEvolve} startEvolve={startEvolve} user={user} scenario={scenario} setScenario={setScenario} scenarioId={scenarioId} setScenarioId={setScenarioId} name={name} setName={setName} /> 
+    content = <CategoryInput goBack={startGeneration} continueEvolve={conEvolve} startEvolve={startEvolve} user={user} scenario={scenario} setScenario={setScenario} scenarioId={scenarioId} setScenarioId={setScenarioId} name={name} setName={setName} sessionId={sessionId} sessionStart={sessionStart}/> 
   
    }else if (mode == "evolve"){
     content =  <InteractiveEvolve goBack={goBackToScen} user={user} mode={userMode} evolveSess={evolveSess} setEvolveSess={setEvolveSess} name={name} scenario={scenario} scenarioId={scenarioId} sessionStart={sessionStart} sessionId={sessionId}/>

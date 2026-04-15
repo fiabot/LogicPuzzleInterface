@@ -12,7 +12,7 @@ let ScenarioCard = ({title, desc, select,user, sessionId, sessionStart}) => {
     return <div class="card">
     <div class="card-details">
       <p class="text-title">{title}</p>
-      <p class="text-body">{desc}</p>
+      <p class="text-body-small">{desc}</p>
     </div>
     <button class="card-button" onClick={() => {select(); add_click(user, sessionId, "Select Scenario", sessionStart)}}>Select</button>
   </div>
@@ -47,7 +47,7 @@ let PickFromExamples = ({pickScenario}) => {
     content = examples.map((e) => <ScenarioCard title={e.title} desc={e.desc} select={() => pickScenario(e)} />)
   }
 
-  return content 
+  return <div className="cardList">{content} </div>
 
   
 }
@@ -62,15 +62,12 @@ let CreateNew = ({new_scen,user, sessionId, sessionStart}) => {
   });
  
   const click = useClick(context);
-  const dismiss = useDismiss(context, {
-    outsidePressEvent: 'mousedown',
-  });
+
   const role = useRole(context);
  
   // Merge all the interactions into prop getters
   const {getReferenceProps, getFloatingProps} = useInteractions([
     click,
-    dismiss,
     role,
   ]);
  
@@ -79,7 +76,7 @@ let CreateNew = ({new_scen,user, sessionId, sessionStart}) => {
   const descriptionId = useId();
 
   let showExamples = () => {
-    setContent(<PickFromExamples className="cardList" pickScenario={new_scen} />)
+    setContent(<PickFromExamples  pickScenario={new_scen} />)
   }
 
   let fromScratch = <button className="mediumButton" onClick={() => {new_scen(); add_click(user, sessionId, "Create from Scratch", sessionStart)}}>Start from scratch</button>
@@ -89,8 +86,8 @@ let CreateNew = ({new_scen,user, sessionId, sessionStart}) => {
 
   return (
     <>
-      <button ref={refs.setReference} {...getReferenceProps()}>
-        Reference element
+      <button className="invisible" ref={refs.setReference} {...getReferenceProps()}>
+      
       </button>
       {isOpen && (
         <FloatingOverlay
@@ -104,8 +101,6 @@ let CreateNew = ({new_scen,user, sessionId, sessionStart}) => {
               aria-describedby={descriptionId}
               {...getFloatingProps()}
             >
-              <h2 id={labelId}>Heading element</h2>
-              <p id={descriptionId}>Description element</p>
               {content}
             </div>
           </FloatingFocusManager>

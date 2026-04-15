@@ -357,7 +357,9 @@
 }
 
 
-
+.invisible{
+  opacity: 0;
+}
 
 .error{
   color: red; 
@@ -579,7 +581,18 @@
 .editButton{
   background-color: transparent;
   border: none;
-  font-size: 1.7vmin;
+  font-size: 2vmin;
+ 
+  
+}
+
+
+
+.editButton:hover{
+  background-color: rgb(128,128,128,0.3);
+  
+ 
+  
 }
 
 .returnButton {

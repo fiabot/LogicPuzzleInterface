@@ -69,7 +69,7 @@ let CategoryMaker = ({ categories, setCategories, index, numEntities, sessionId,
 
         setCategories(newCategories)
 
-    }, [name, list, is_numeric, inc])
+    }, [name, list, is_numeric, inc, deleteMe])
 
 
     let save_categories = () => {

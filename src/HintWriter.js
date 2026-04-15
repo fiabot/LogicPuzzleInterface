@@ -329,6 +329,7 @@ export default HintWriter = ({categories, grammar, setGrammar, hintString, setHi
     let [paramOptions, setParamOptions] = useState([])
     //let [grammar, setGrammar] = useState(null)
     let ent_map = create_entity_map(categories) 
+    let has_numeric = categories.filter(c=>c.is_numeric).length >= 1 
 
     const handleKeyDown = (event) => {
       if (event.key === 'Enter') {
@@ -412,8 +413,8 @@ export default HintWriter = ({categories, grammar, setGrammar, hintString, setHi
     const kindOptions = [
       {value: "is", label:"is"}, 
       {value: "not", label:"not"}, 
-      {value:"before_un", label:"before unspecified"}, 
-      {value: "before", label:"before specified"}, 
+      {value:"before_un", label:"before unspecified",isdisabled: !has_numeric}, 
+      {value: "before", label:"before specified",isdisabled: !has_numeric}, 
       {value: "simple_or", label: "simple or"}, 
       {value: "compound_or", label: "compound or"}
     ]
