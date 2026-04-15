@@ -143,8 +143,8 @@ let validateHint = (kind, params, ent_map, categories) => {
 
 let toGrammar = (kind, params, ent_map) =>{
 
-  ob = {}
-  attrs = [] 
+  let ob = {}
+  let attrs = [] 
 
   if (kind == "is" | kind == "not"){
     attrs = [ent_map[params["ent1"]].name, params["ent1"], ent_map[params["ent2"]].name, params["ent2"]]
@@ -160,6 +160,7 @@ let toGrammar = (kind, params, ent_map) =>{
     let params2 = {"ent1": params["ent3"], "ent2": params["ent4"]} 
     let is_1 = toGrammar("is", params1, ent_map)
     let is_2 = toGrammar("is", params2, ent_map)
+
     attrs = [is_1, is_2]
   }
   ob[kind] = attrs 

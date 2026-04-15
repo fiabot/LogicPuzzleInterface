@@ -25,14 +25,9 @@ let is_duplicate = (grammar1, grammar2) => {
     }else if (kind == "not" || kind == "is"){
         ents1 = [grammar1[kind][1], grammar1[kind][3]] 
         ents2 = [grammar2[kind][1], grammar2[kind][3]] 
-        console.log(grammar1 )
-        console.log(grammar2)
-
         
-
         one_match = ents1[0] == ents2[0] && ents1[1] == ents2[1]
-        second_match = ents1[0] == ents2[1] || ents1[1] == ents2[0]
-
+        second_match = ents1[0] == ents2[1] && ents1[1] == ents2[0]
 
         return one_match || second_match 
     }else if (kind == "before"){
@@ -136,7 +131,7 @@ let WriterManager = ({index, cons, setCons, texts, setTexts, categories, user, s
         if (grammar != null){
             const newCons = cons.map((element, i) => {
                 if (i == index) {
-                   
+
                         return {con:grammar, origin:cons[index].origin}
         
                     
