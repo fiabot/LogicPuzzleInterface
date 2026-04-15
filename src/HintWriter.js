@@ -38,7 +38,7 @@ function matchTemplate(template, input) {
   }
 
 
-const base_templates = {"compound_or":"Either {ent1} is {ent2} or {ent3} is {ent4}", "simple_or": "Either {ent1} or {ent2} is {is_ent}",  "not": "{ent1} is not {ent2}", "is": "{ent1} is {ent2}",  "before_un": "{ent1} has less {num_cat} than {ent2}", "before": "{ent1} has {amount} less {num_cat} then {ent2}"}
+const base_templates = {"compound_or":"Either {ent1} is {ent2} or {ent3} is {ent4}", "simple_or": "Either {ent1} or {ent2} is {is_ent}",  "not": "{ent1} is not {ent2}", "is": "{ent1} is {ent2}",  "before_un": "{ent1} has less {num_cat} than {ent2}", "before": "{ent1} has {amount} less {num_cat} than {ent2}"}
 let kindAttributes = {"is": ["ent1", "ent2"], "not": [ "ent1", "ent2"], "before": [ "ent1", "ent2", "num_cat", "amount" ], "before_un": [ "ent1", "ent2", "num_cat"], "simple_or":  [ "ent1", , "ent2",  "is_ent"], "compound_or": ["ent1", "ent2", "ent3", "ent4"]}
 
 
