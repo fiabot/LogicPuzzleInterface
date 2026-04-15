@@ -74,24 +74,24 @@ export default HomePage = ({user, publicKey, mode}) => {
                 <p>We will update this page as we get questions. Please contact shyne.f@northeatern.edu with any questions.</p>
 
                 <h2>What is a logic grid puzzle?</h2>
-                <p>Logic grid puzzles are a particular type puzzle that started out as pen and paper puzzles. You may also have heard them referred to as "Zebra" or "Einstein" puzzles. 
-                    In this puzzles you have to use a series of hints to determine if entities are related ("O") or not related ("X").  Each entity belongs to exactly one other entity in each of the categories. 
-                    For example in our murder mystery example scenario you have to determine where each suspect was at each time. If you have the hints "Ms. Scarlet is the study", you can place an "O" in the grid space between Ms.Scarlet and Study, a "X" for all other suspects in the study, and a "X" for all other rooms Ms. Scarlet could have been in. </p>
-                <h2> Why are the hints not always grammatically correct</h2>
-                <p>In our tool hints are not actually written in English, but in a format that represents the logical relationship between entities. This serves as the easiest way to communicate between human authors/readers and the generation system. Hints can be manually edited once they are liked. </p>
+                <p>Logic grid puzzles are a particular type of puzzle that started out as pen and paper puzzles. You may also have heard them referred to as "Zebra" or "Einstein" puzzles. 
+                    In these puzzles you have to use a series of hints to determine if entities are related ("O") or not related ("X").  Each entity belongs to exactly one other entity in each of the other categories. 
+                    For example, in our murder mystery example scenario you have to determine where each suspect was at each time. If you have the hint "Ms. Scarlet is the study", you can place an "O" in the grid space intersecting Ms.Scarlet and Study, a "X" for all other suspects in the study, and a "X" for all other rooms Ms. Scarlet could have been in. </p>
+                <h2> Why are the hints not always grammatically correct?</h2>
+                <p>In our tool hints are not actually written in English, but in a format that represents the logical relationship between entities. This serves as the easiest way to communicate between human authors/readers and the generation system. A puzzle's hints can be manually edited once it is "liked". </p>
                 <h2>Why does it take a long time to generate puzzles?</h2>
-                <p>The larger the puzzle, the more time it will take to generate. In most cases you just need to be patient, especially if you have puzzles larger than 3 categories or 4 entities per category. Really large puzzle might cause a server timeout, and may never generate. 
+                <p>The larger the puzzle, the more time it will take to generate. In most cases you just need to be patient, especially if you have puzzles larger than 3 categories or 4 entities per category. Really large puzzles might cause a server timeout, and may never generate.
 
-                    If task other then generations (e.g. logging in, posting a puzzle) please contact us at shyne.f@northeastern.edu. 
+                    If tasks other than generations fail (e.g. logging in, posting a puzzle) please contact us at shyne.f@northeastern.edu. 
                 </p>
 
                 <h2>How are puzzles generated?</h2>
                 <p>Puzzles are generated using a type of algorithm called a Genetic Algorithm. 
                     This program <b>does not</b> use generative AI (such as Chat-GPT), and does not use any training data. 
-                    Instead puzzles are first randomly generated, by creating lists of clues. These puzzles are then optimized until they become solvable. This generator creates many puzzles but only keeps the puzzle with the smallest hint size for puzzles with the same difficulty and solution.  </p>
+                    Instead puzzles are first randomly generated, by creating lists of hints. These puzzles are then optimized until they become solvable. This generator creates many puzzles but only keeps the puzzles with the smallest number of hints for puzzles with the same difficulty and solution.  </p>
              
             <h2>How does this project help research?</h2>
-            <p>We are looking how to best make interfaces where humans work with a computational system. By trying our system and providing feedback, you are helping other designers better create tools like this in the future.</p>
+            <p>We are looking into how to best make interfaces where humans work with a computational system. By trying our system and providing feedback, you are helping other designers better create tools like this in the future.</p>
     
             </div>
            
