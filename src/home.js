@@ -65,7 +65,7 @@ export default HomePage = ({user, publicKey, mode}) => {
       
             <p>This is Puzzle Garden. This is an experimental tool for generating logic grid puzzles. With this interface you will be able to create, play, and share your own logic grid puzzles. </p>
 
-           <p>If this is your first time, or if you need a refresher, using this interface, please refer to the tutorial page at the top menu. This will guide you with the basics you need to get started making puzzles.</p>
+           <p>If this is your first time, or if you need a refresher on using this interface, please refer to the tutorial page at the top menu. This will guide you with the basics you need to get started making puzzles.</p>
             
 
 
