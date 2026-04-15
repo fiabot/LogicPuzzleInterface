@@ -39,20 +39,94 @@ http://localhost:8081/
 
 Note: the exact numbers may be different, look at the output in the terminal 
 
-## Deploy online 
-To step up follow instructions in: https://docs.expo.dev/distribution/publishing-websites/
 
-Once this is set up, you can update the interface in two steps: 
+## Deploy on VM 
+* Step 1: Git clone repo onto the VM 
+* Step 2: Make a build for web 
+
+```npx expo export -p web```
+
+* Step 3: Create a script to run your local server 
+    * Create a file script.sh and put the following content 
+    * ```#! /bin/bash
+        source ${HOME}/.bashrc
+        export NODE_ENV=development
+        npx serve dist --single -p 8081 ''' 
 
 
-Step 1: 
+* Step 3: Create a server to run your script 
+  * ```sudo nano /etc/systemd/system/front_end.service```
+  * Add the following 
 ```
-firebase login 
+[Unit]
+Description=Serving a server for the logic puzzle front end
+After=network.target
+[Service]
+User=root
+Group=root
+WorkingDirectory=/home/path/to/repo
+ExecStart=/home/path/to/script
+Restart=always
+[Install]
+WantedBy=multi-user.target
 ```
 
 
+* Step 4: Use nginx to sent local server to online url 
+  * Install nginx ```sudo apt-get install nginx``
+  * Start and enable nginx 
 ```
-npm run deploy-hosting 
+sudo systemctl start nginx
+sudo systemctl enable nginx
 ```
+
+  * ```Nano /etc/nginx/nginx.conf```
+  * Add the following 
+
+```
+upstream front_end {
+         server 127.0.0.1:8081;
+   }
+
+
+  upstream back_end {
+      server 127.0.0.1:3000;
+}
+
+    server {
+	    ....
+
+
+       	location /api/ {
+              proxy_pass http://back_end;
+        }       
+        location / {
+            proxy_pass http://front_end;
+            }
+
+        ... 
+        }
+```
+
+## Update VM 
+
+* Step 1: pull changes 
+* Step 2: Make new build 
+
+```npx expo export -p web```
+
+* Step 3: Refresh Service 
+
+
+```sudo systemctl daemon-reload``` 
+
+```sudo systemctl restart front_end.service``
+
+* Step 5: Check the status 
+ ```sudo systemctl status front_end.service``
+
+
+ If you need to debug, check the logs using 
+ ```sudo journalctl -u front_end.service -n 200```
 
 
