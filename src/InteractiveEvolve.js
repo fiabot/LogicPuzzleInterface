@@ -52,10 +52,12 @@ let is_duplicate = (grammar1, grammar2) => {
     }else if (kind == "simple_or"){
         ents1 = [grammar1[kind][1], grammar1[kind][3]] 
         ents2 = [grammar2[kind][1], grammar2[kind][3]]
-        is_ent = grammar1[kind][6] == grammar2[kind][6]
+        is_ent = grammar1[kind][5] == grammar2[kind][5]
+   
         one_match = ents1[0] == ents2[0] && ents1[1] == ents2[1]
         second_match = ents1[0] == ents2[1] || ents1[1] == ents2[0] 
 
+        console.log(is_ent && (one_match || second_match))
         return is_ent && (one_match || second_match)
     }else if (kind == "compound_or"){
         statement1_1 = grammar1[kind][0]
