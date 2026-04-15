@@ -204,7 +204,7 @@ let WriterManager = ({index, cons, setCons, texts, setTexts, categories, user, s
             <div class="smallTooltip"> 
             <button className="lockButton" onClick={deleteWriter}><img src={"./icons/lock.png"} width="30" height="30"/></button>
             <span class="tooltiptext">
-                <p>Remove hint Lock</p>
+                <p>Unlock hint for generator</p>
             </span>
             </div>
             
@@ -234,16 +234,16 @@ let ConstraintWriter = ({cons, setCons, texts, setTexts, categories, user, sessi
     }
 
     return <div>
-        <h2>Included Hints <div class="tooltip"> &#40;  ? &#41;
+        <h2>Hints in Selected Puzzle <div class="tooltip"> &#40;  ? &#41;
             <span class="tooltiptext">
-                <p>These are the hints are not in the current puzzle, but will be included in all puzzles when you generate the next round.</p>
+                <p>These are the hints in the currently selected puzzle. Lock hints to enforce them to be included in the next round of generated puzzles.</p>
             </span>
             </div></h2>
         <p>No generated puzzle added. Select a puzzle or generate the next round. 
         </p>
-        <h2>Not Included <div class="tooltip"> &#40;  ? &#41;
+        <h2>Hints for Next Round <div class="tooltip"> &#40;  ? &#41;
             <span class="tooltiptext">
-                <p>These are the hints are not in the current puzzle, but will be included in all puzzles when you generate the next round.</p>
+                <p>These hints are not in the current puzzle, but will be included in all puzzles when you generate the next round.</p>
             </span>
             </div></h2>
        
@@ -253,7 +253,7 @@ let ConstraintWriter = ({cons, setCons, texts, setTexts, categories, user, sessi
         <div class="smallTooltip"> 
         <button className='smallButton' onClick={add_filter}>+</button>
             <span class="tooltiptext">
-                <p>Add new hint lock</p>
+                <p>Add new locked hint</p>
             </span>
             </div>
             
@@ -317,7 +317,7 @@ let ShowAndEdit = ({generatedPuzzle, cons, setCons, texts, setTexts, categories,
                     <div class="smallTooltip"> 
                     <button className="unlockButton" onClick={() => lock_hint(grammar,generatedPuzzle.hints[idx] )}><img src={"./icons/lock.png"} width="30" height="30"/></button>
             <span class="tooltiptext">
-                <p>Add hint lock</p>
+                <p>Lock hint for generator</p>
             </span>
             </div>
                    
