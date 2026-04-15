@@ -205,7 +205,7 @@ let CheckSolution = ({puzzle, solution}) => {
         if (isSolved(puzzle, solution)){
             setContent(<p>The solution is correct</p>)
         }else{
-            setContent(<p>One or more marks or missing or incorrect</p>)
+            setContent(<p>One or more marks is missing or incorrect</p>)
         }
     }
 
