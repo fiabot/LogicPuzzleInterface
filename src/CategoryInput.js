@@ -113,7 +113,7 @@ let CategoryMaker = ({ categories, setCategories, index, numEntities, sessionId,
     
 
 
-    let listInput = list.map((element, idx) => <li key={idx}><input value={element} onClick={() => add_click(user, "edit entity", sessionStart)} onChange={(e) => {
+    let listInput = list.map((element, idx) => <li key={idx}><input value={element} onClick={() => add_click(user, sessionId,"Edit Entity", sessionStart)} onChange={(e) => {
         const nextList = list.map((element, i) => {
             if (i === idx) {
                 return sanitize(e.target.value);
@@ -125,14 +125,14 @@ let CategoryMaker = ({ categories, setCategories, index, numEntities, sessionId,
     }} /></li>)
 
     return (<div className="categoryDiv">
-        <input className="categoryInput" value={name} onChange={(e) => {setName(sanitize(e.target.value)); add_click(user, sessionId, "Edit Entity", sessionStart)}} />
+        <input className="categoryInput" value={name} onChange={(e) => {setName(sanitize(e.target.value)); add_click(user, sessionId, "Edit Category", sessionStart)}} />
         <ol className="entityList">
             {listInput}
         </ol>
         <label> Category is numeric:</label><input checked={is_numeric} type="checkbox" onChange={() => setNumeric(!is_numeric)} />
-        {is_numeric ? <div><label> Increment Value:</label><input type="number" onChange={(e) => setInc(e.target.value)} value={inc}></input></div> : ""}
+      
 
-        <button className="smallButton" onClick={() => { deleteCategory(index) }}>Disable Category</button>
+        <button className="smallButton" onClick={() => { deleteCategory(index) }}>Delete Category</button>
     </div>)
 
 }
@@ -191,7 +191,7 @@ export default PuzzleMaker = ({ startEvolve, continueEvolve, user, scenarioId, s
     //let [edited, setEdited] = useState(false)
 
     let startEvolution = () => {
-        if (scenarioId == null){
+        if (edited){
             alert("Please save the scenario before starting a evolution session")
         }else{
             startEvolve()

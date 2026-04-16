@@ -295,7 +295,7 @@ export default Puzzle =({p, solution,user, sessionId, sessionStart})=>{
 
 
     <div>
-        {solution != null?  <div><input   onClick={()=>{clear();setPlay(!play); add_click(user, sessionId, play? "Set mode to play": "Set mode to reveal", sessionStart)}}  checked={play} type="checkbox" className="toggleCheckbox" id="playToggle"/>
+        {solution != null?  <div><input   onClick={()=>{setPlay(!play); add_click(user, sessionId, play? "Set mode to play": "Set mode to reveal", sessionStart)}}  checked={play} type="checkbox" className="toggleCheckbox" id="playToggle"/>
       <label for="playToggle" className="toggleButton">
       <div>Reveal</div> 
         <div>Play</div> 

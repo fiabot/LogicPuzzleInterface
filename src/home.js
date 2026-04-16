@@ -71,7 +71,7 @@ export default HomePage = ({user, publicKey, mode}) => {
 
             <div className="faq">
                 <h1>Frequently Asked Questions</h1>
-                <p>We will update this page as we get questions. Please contact shyne.f@northeatern.edu with any questions.</p>
+                <p>We will update this page as we get questions. Please contact shyne.f@northeastern.edu with any questions.</p>
 
                 <h2>What is a logic grid puzzle?</h2>
                 <p>Logic grid puzzles are a particular type of puzzle that started out as pen and paper puzzles. You may also have heard them referred to as "Zebra" or "Einstein" puzzles. 

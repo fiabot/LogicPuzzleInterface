@@ -22,6 +22,10 @@ export default HomePage = ({ user, setUser, mode, setMode, sessionId, setSession
     }
 
     let log_user_in = async () => {
+        if (newUser.length < 5){
+            alert("Invalid key, please enter the key exactly as it appears on Qualtrics")
+            return 
+        }
        start = new Date()
        result =  await login(sanitize(newUser), start, setUser); 
 
@@ -30,10 +34,14 @@ export default HomePage = ({ user, setUser, mode, setMode, sessionId, setSession
 
         setSessionStart(start)
         setSessionId(session)
-       
-
-
+    
     }
+
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+          log_user_in()
+        }
+      }
 
     async function fetch() { 
         getPuzzles().then(
@@ -57,7 +65,7 @@ export default HomePage = ({ user, setUser, mode, setMode, sessionId, setSession
     
         return <div  className='puzzlesView'>
             <h1>Enter Private Key</h1>
-            <input value={newUser} onChange={(e) => setNewuser(e.target.value)} ></input>
+            <input  onKeyDown={handleKeyDown} value={newUser} onChange={(e) => setNewuser(e.target.value)} ></input>
             <button onClick={() => {log_user_in()}}>Login</button>
         </div>
     }else{
