@@ -13,7 +13,7 @@ const ConsentViewer =() => {
 
 <p><b>Information Sheet</b></p>
 
-<p>We would like to invite you to participate in a web-based online game authoring tool. The game is part of a research study whose purpose is to examine how participants use authoring tools and analyze how different authoring tool designs can affect engagement and performance. You may receive different game designs than other participants. Your interaction data will be recorded and analyzed. You may be asked to answer some questions about your experience. You may participate as long as you like.</p>
+<p>We would like to invite you to participate in a web-based online game. The game is part of a research study whose purpose is to examine how participants play games and analyze how different game designs can affect engagement and performance. You may receive different game designs than other participants. Your interaction data will be recorded and analyzed. You may be asked to answer some questions about your experience. You may participate as long as you like.</p>
 
 <p>We are asking you to participate in this study because of your interest in playing the game.<b>You must be fluent in English and at least 18 years old to participate.</b></p>
 
@@ -31,7 +31,7 @@ const ConsentViewer =() => {
 
 <p><b>If you have any questions about this study</b>, please feel free to contact Seth Cooper, email: seth.cooper.study@gmail.com, the person mainly responsible for the research.</p>
 
-<p><b>If you have any questions regarding your rights as a research participant</b>, please contact Nan C. Regina, Director, Human Subject Research Protection, Mail Stop: 560-177, Northeastern University, Boston, MA 02115. Tel: 617-373-4588, Email: n.regina@neu.edu. You may call anonymously if you wish.</p>
+<p><b>If you have any questions regarding your rights as a research participant</b>, pyou can contact the Northeastern University Department of Human Research at Tel: (773) 396-2327, or Email: IRBReview@northeastern.edu. You may call anonymously if you want.</p>
 
 <p><b>This study has been reviewed and approved by the Northeastern University Institutional Review Board (#17-10-07).</b></p>
 
