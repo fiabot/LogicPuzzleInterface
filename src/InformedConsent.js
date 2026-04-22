@@ -29,7 +29,7 @@ const ConsentViewer =() => {
 
 <p><b>If you have any questions regarding electronic privacy, please contact Northeastern University’s Office of Information Security via phone at 617-373-7901, or via email at privacy@northeastern.edu.</b></p>
 
-<p><b>If you have any questions about this study</b>, please feel free to contact Seth Cooper, email: seth.cooper.study@gmail.com, the person mainly responsible for the research.</p>
+<p><b>If you have any questions about this study</b>, please feel free to contact Seth Cooper, email: se.cooper+study@northeastern.edu, the person mainly responsible for the research.</p>
 
 <p><b>If you have any questions regarding your rights as a research participant</b>, you can contact the Northeastern University Department of Human Research at Tel: (773) 396-2327, or Email: IRBReview@northeastern.edu. You may call anonymously if you want.</p>
 
