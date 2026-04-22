@@ -9,7 +9,7 @@ const ConsentViewer =() => {
 
     return <div className='body'>
 
-<p>Northeastern University, Khoury College of Computer Sciences Name of Investigator(s): Seth Cooper Title of Project: Engagement and Effectiveness in Human Computation and Entertainment Video Games Version: Version: v2026-04</p>
+<p>Northeastern University, Khoury College of Computer Sciences</p><p> Name of Investigator(s): Seth Cooper</p> <p>Title of Project: Engagement and Effectiveness in Human Computation and Entertainment Video Games Version: Version: v2026-04</p>
 
 <p><b>Information Sheet</b></p>
 
@@ -27,17 +27,17 @@ const ConsentViewer =() => {
 
 <p><b>Your part in this study is anonymized to the researchers. We will not save any information (e.g., user IDs) or ask you for any information that could be used to uniquely identify you.</b> Any reports or publications based on this research will use only anonymized data and will not identify you or any individual as being affiliated with this project. Data that are completely stripped of identifiable information may be made available online or shared with other researchers. Your de-identified information could be used for future research without additional informed consent. Some games are developed with Unity game engine, which has its own policies.</p>
 
-<p><b>If you have any questions regarding electronic privacy</b>, please contact Northeastern University’s Office of Information Security via phone at 617-373-7901, or via email at privacy@northeastern.edu.</p>
+<p><b>If you have any questions regarding electronic privacy, please contact Northeastern University’s Office of Information Security via phone at 617-373-7901, or via email at privacy@northeastern.edu.</b></p>
 
 <p><b>If you have any questions about this study</b>, please feel free to contact Seth Cooper, email: seth.cooper.study@gmail.com, the person mainly responsible for the research.</p>
 
-<p><b>If you have any questions regarding your rights as a research participant</b>, pyou can contact the Northeastern University Department of Human Research at Tel: (773) 396-2327, or Email: IRBReview@northeastern.edu. You may call anonymously if you want.</p>
+<p><b>If you have any questions regarding your rights as a research participant</b>, you can contact the Northeastern University Department of Human Research at Tel: (773) 396-2327, or Email: IRBReview@northeastern.edu. You may call anonymously if you want.</p>
 
 <p><b>This study has been reviewed and approved by the Northeastern University Institutional Review Board (#17-10-07).</b></p>
 
-<p>Please note that the game may consume Internet data allocation if played on mobile devices, just as any other Internet game would.</p>
+<p><b>Please note that the game may consume Internet data allocation if played on mobile devices, just as any other Internet game would.</b></p>
 
-<p>You have already confirmed your agreement and by continuing to use this interface you are indicating your consent to participant. Please print out a copy of this consent form for your records.</p>
+<p><b>By continuing to play the game, you are indicating that you consent to participate in this study. Please print out a copy of this consent form for your records.</b></p>
 
 <p>Thank you for your time.</p>
 
