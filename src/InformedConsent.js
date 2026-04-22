@@ -9,7 +9,7 @@ const ConsentViewer =() => {
 
     return <div className='body'>
 
-<p>Northeastern University, Khoury College of Computer Sciences</p><p> Name of Investigator(s): Seth Cooper</p> <p>Title of Project: Engagement and Effectiveness in Human Computation and Entertainment Video Games Version: Version: v2026-04</p>
+<p>Northeastern University, Khoury College of Computer Sciences</p><p> Name of Investigator(s): Seth Cooper</p> <p>Title of Project: Engagement and Effectiveness in Human Computation and Entertainment Video Games</p> <p> Version: v2026-04</p>
 
 <p><b>Information Sheet</b></p>
 
