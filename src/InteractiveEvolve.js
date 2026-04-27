@@ -89,10 +89,15 @@ let startEvolve = async (user, scenario, cons, setPuzzles, setId, setInEvolution
     time = new Date() - startTime 
     setInEvolution(true)
     results = await startEvolution(user, time, cons, scenario)
-    setPuzzles(results["output"])
-    setId(results["id"])
-    setEvolveSess(results["sessionId"])
     setInEvolution(false)
+    setPuzzles(results["output"])
+    if(results == null){
+        alert("There was an error with the generator, please try again")
+    }else{
+        setPuzzles(results["output"])
+        setId(results["id"])
+    }
+    
 }
 
 let conEvolve = async (user, cons, id, setPuzzles, setId, setInEvolution, startTime)=> {
@@ -100,9 +105,15 @@ let conEvolve = async (user, cons, id, setPuzzles, setId, setInEvolution, startT
     time = new Date() - startTime 
     setInEvolution(true)
     results = await continueEvolution(user,time, cons, id)
-    setPuzzles(results["output"])
-    setId(results["id"])
     setInEvolution(false)
+    if(results == null){
+        alert("There was an error with the generator, please try again")
+    }else{
+        setPuzzles(results["output"])
+        setId(results["id"])
+    }
+    
+    
 }
 
 

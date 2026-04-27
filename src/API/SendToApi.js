@@ -26,14 +26,29 @@ let startEvolution = async(user, time, cons, scenario) => {
     request = {"user": user, "time": time, "cons": cons,scenario:scenario}
     response = await api.post(START_EVOLVE, request)
 
-    return response.data 
+    if (response.status < 300){
+ 
+        return response.data 
+
+    }else{
+        return null 
+    }
+    
+
+
 }
 
 let continueEvolution = async(user, time, cons, id) => {
     request = {"user": user, "time": time, "cons": cons, "id": id}
     response = await api.post(CONTINUE_EVOLVE, request)
 
-    return response.data 
+    if (response.status < 300){
+ 
+        return response.data 
+
+    }else{
+        return null 
+    } 
 }
 
 let postEvolution = async(categories, gens = 100, popsize = 50) => {
