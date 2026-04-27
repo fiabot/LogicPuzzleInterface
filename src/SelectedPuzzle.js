@@ -81,7 +81,7 @@ export default selectedPuzzle = ({puzzle, setPuzzle, user, r, appMode, sessionId
         <ol className='hintList'>
         {puzzle.hints.map((hint, id) => <li key={id}>{hint}</li>)}
         </ol>
-        <button onClick={()=> {setPuzzle(puzzle); setContent(playable); is_mutant? add_click(sessionId, "select similar", sessionStart): ""}}>Select</button>
+        <button onClick={()=> {setPuzzle(puzzle); setContent(playable); is_mutant? add_click(user, sessionId, "select similar", sessionStart): ""}}>Select</button>
         </div>
 
     })
@@ -125,7 +125,7 @@ export default selectedPuzzle = ({puzzle, setPuzzle, user, r, appMode, sessionId
     
 
     let editPuzzle = () => {
-        add_click(sessionId, "edit puzzle", sessionStart)
+        add_click(user, sessionId, "edit puzzle", sessionStart)
         setMode("edit")
         setContent( <EditPuzzle puzzleData={puzzle} setPlayable={setPuzzle} user={user} r={null} sessionId={sessionId} sessionStart={sessionStart} evolveId={evolveSession}/>)
        
@@ -133,7 +133,7 @@ export default selectedPuzzle = ({puzzle, setPuzzle, user, r, appMode, sessionId
 
     let seeMutants = () => {
         setMode("mutant")
-        add_click(sessionId, "view similar", sessionStart)
+        add_click(user, sessionId, "view similar", sessionStart)
         setContent(<ShowMutants puzzle={puzzle} puzzleList={otherPuzzles}/> )
       
     }

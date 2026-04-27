@@ -59,7 +59,7 @@ let EditNarratives = ({narratives, setNarratives, grammar, user, sessionId, sess
             <p>{clueLogic}</p>
             <GetClues brainstorms={brainstorms[idx]} setNarrative={(v) => setNarrative(v, idx)} sessionId={sessionId} sessionStart={sessionStart}/>
             <h2>Write Narrative</h2> 
-            <textarea className={"scenarioInput"}  value={nar}  onChange={(e)=> setNarrative(e.target.value, idx)} onClick={() => add_click(sessionId, "edit narrative", sessionStart)} />
+            <textarea className={"scenarioInput"}  value={nar}  onChange={(e)=> setNarrative(e.target.value, idx)} onClick={() => add_click(user, sessionId, "edit narrative", sessionStart)} />
 
         </div>
 
