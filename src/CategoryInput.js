@@ -199,7 +199,7 @@ export default PuzzleMaker = ({ startEvolve, continueEvolve, user, scenarioId, s
     }
 
     edited = !((tempScen["title"] == scenario["data"]["title"]) && 
-            (tempScen["desc"] == scsenario["data"]["desc"]) && 
+            (tempScen["desc"] == scenario["data"]["desc"]) && 
             (isEqual(tempScen["categories"], scenario["data"]["categories"])))
 
     let createScen = async () => {
