@@ -191,7 +191,7 @@ export default PuzzleMaker = ({ startEvolve, continueEvolve, user, scenarioId, s
     //let [edited, setEdited] = useState(false)
 
     let startEvolution = () => {
-        if (edited){
+        if (edited || scenarioId == null){
             alert("Please save the scenario before starting a evolution session")
         }else{
             startEvolve()
@@ -199,7 +199,7 @@ export default PuzzleMaker = ({ startEvolve, continueEvolve, user, scenarioId, s
     }
 
     edited = !((tempScen["title"] == scenario["data"]["title"]) && 
-            (tempScen["desc"] == scenario["data"]["desc"]) && 
+            (tempScen["desc"] == scsenario["data"]["desc"]) && 
             (isEqual(tempScen["categories"], scenario["data"]["categories"])))
 
     let createScen = async () => {
