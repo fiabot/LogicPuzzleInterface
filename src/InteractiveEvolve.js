@@ -387,7 +387,7 @@ let ShowAndEdit = ({generatedPuzzle, cons, setCons, texts, setTexts, categories,
         <div class="smallTooltip"> 
         <button className='smallButton' onClick={add_filter}>+</button>
             <span class="tooltiptext">
-                <p>Add new hint lock</p>
+                <p>Add new locked hint</p>
             </span>
             </div>
         </div>
