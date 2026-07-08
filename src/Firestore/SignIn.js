@@ -1,17 +1,17 @@
-import { getAuth, signInAnonymously } from "firebase/auth";
+// import { getAuth, signInAnonymously } from "firebase/auth";
 
 
 let signIn = () =>{
-    const auth = getAuth();
-        signInAnonymously(auth)
-        .then(() => {
-            // Signed in..
-        })
-        .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            // ...
-        });
+    // const auth = getAuth();
+    //     signInAnonymously(auth)
+    //     .then(() => {
+    //         // Signed in..
+    //     })
+    //     .catch((error) => {
+    //         const errorCode = error.code;
+    //         const errorMessage = error.message;
+    //         // ...
+    //     });
 }
 
 export function getCurrentUser(){
