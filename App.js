@@ -6,7 +6,7 @@ import InitialSurvey from './src/InitialSurvey';
 import PuzzleManager from './src/PuzzleManager';
 import Tutorial from './src/Tutorial';
 import * as Linking from 'expo-linking';
-import Debug from './debug';
+// import Debug from './debug';
 
 let MODE = "survey"
 
@@ -123,11 +123,11 @@ export default function App() {
 
   //shuffleArray(files)
 
-  if (mode == "debug"){
+  // if (mode == "debug"){
 
 
-    return  <div className='parent'><Debug /></div>
-  }
+  //   return  <div className='parent'><Debug /></div>
+  // }
 
   const url = Linking.useURL();
 
