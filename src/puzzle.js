@@ -118,22 +118,12 @@ const isSolved = (puzzle, solution) => {
 const recordPuzzle = (puzzle, solution, time, instanceId) => {
     let newTime = new Date()
     let ms = newTime - time
-    //console.log("Time since start:" + ms)
     str = puzzleToString(puzzle)
-    //console.log(str)
-    //console.log(solution)
     let [correct, incorrect, total] = amountCorrect(puzzle, solution)
-    //console.log("Correct: " + correct + ", incorrect: " + incorrect + ", total:" + total)
-    //console.log("Is solved: " + isSolved(puzzle, solution));
-    // addUserSolution(pid, str, correct, incorrect, isSolved)
 
     if (instanceId != null){
         addCellChange(instanceId, ms, str, correct, incorrect, isSolved(puzzle,solution));
-
     }
-
- 
-    
 }
 
 let clearPuzzle = (puzzle, strikes, setStrikes, instanceId, time) => {
@@ -214,10 +204,7 @@ export default Puzzle =({p, time, concede, finish, puzzleDesc, hints, promptMode
     useEffect(() => {async function fetchData() {
         // You can await here
         createGamePlayInstance(p.num).then((data) => {setInstanceId(data); })
-        
-       
-      }
-      fetchData()}, []);
+    } fetchData()}, []);
 
     useEffect(() => {
         if(isSolved(puzzle, p.solutionString)){
@@ -226,16 +213,6 @@ export default Puzzle =({p, time, concede, finish, puzzleDesc, hints, promptMode
 
         }
     })
-    let recordAndConcede = () =>{
-        let newTime = new Date()
-        let ms = newTime - time 
-        if (promp){
-            promp.stop(); 
-        }
-        addButtonPress(instanceId,ms, "concede"); 
-        concede();
-    }
-
     let recordAndSubmit = () =>{
         let newTime = new Date()
         let ms = newTime - time 
@@ -243,8 +220,6 @@ export default Puzzle =({p, time, concede, finish, puzzleDesc, hints, promptMode
         finish();
     }
   
-
-   
     for (let row = 0; row < p.topBottom.length; row++) {
         puzzle[row] = []
         let displayColIdx = 1;
@@ -267,18 +242,6 @@ export default Puzzle =({p, time, concede, finish, puzzleDesc, hints, promptMode
         rowLength--;
         displayRowIdx++;
     }
-
-    /*useEffect(() => {
-        // run something every time name changes
-        recordPuzzle(puzzle, p.solutionString, time)
-    }, [puzzle]);*/ 
-
-    /*setInterval(() => {
-      setTime( 1)
-  }, 1000);*/
-
-    
-    //let [hints, setHints] = useState(<Hints hints={p.hints} time={time} setStrikes ={setStrikes} strikes={strikes}/>); 
     
 
     return (<div className="puzzleArea">
@@ -294,14 +257,12 @@ export default Puzzle =({p, time, concede, finish, puzzleDesc, hints, promptMode
         <div className="puzzleRight">
             <Hints hints={p.hints} time={time} setStrikes ={setStrikes} strikes={strikes} instanceId={instanceId}/>
             <FinishButtons 
-                giveUp={() => {recordAndConcede()}}
+                submit={() => {recordAndSubmit()}}
                 isCorrect = {() => isSolved(puzzle, p.solutionString)}
                 clearPuzzle = {function () {clearPuzzle(puzzle,strikes, setStrikes,instanceId, time)}}
-                finish = {() => {recordAndSubmit()}}
                 puzzle={puzzle}
                 instanceId={instanceId}
                 time={time}
-
             />
         </div>
 
