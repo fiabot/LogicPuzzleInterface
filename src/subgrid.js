@@ -1,7 +1,6 @@
 // Script.js
 import { useState } from "react";
 import Cell from "./cell";
-import "./style.css";
 
 export default SubGrid = ({ numRows, numCols, cells, topCat = null, leftCat = null, select = "*" }) => {
 

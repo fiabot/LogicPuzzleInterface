@@ -6,6 +6,7 @@ import Puzzle from "./puzzle";
 import PuzzleModel from "./puzzleModel";
 import Survey from "./survey";
 import { createGamePlayInstance } from './Firestore/sendData';
+import UsePrompts from "./PromptUser";
 
 function createPuzzle(data) {
     let categories = []
@@ -30,7 +31,9 @@ function load(i, setI, setContent, files, postSurvey, questions, promptMode) {
                 let hints = response.data["hint_grammar"]
                 let time = new Date()
                 setI(i + 1);
-                setContent(<Puzzle p={p} hints={hints} puzzleDesc={response.data} time={time} promptMode={promptMode} continue={() => {}}/>);
+                setContent(
+                    <Puzzle p={p} hints={hints} puzzleDesc={response.data} time={time} promptMode={promptMode} continue={() => {}}/>
+                );
             });
     }
 
@@ -43,7 +46,7 @@ function showRecordedScreen(setContent, i, setI, files, postSurvey, questions, p
     setContent(<ResponseRecorded goToNextPuzzle={() => { load(i + 1, setI, setContent, files, postSurvey, questions, promptMode) }} finish={() => { finish(setContent) }} morePuzzles={() => { return files.length - (i + 1) }} />)
 }
 
-export default PuzzleManager = ({ files, i, setI, pid }) => {
+export default PuzzleManager = ({ files, i, setI, pid, postSurvey, questions, promptMode}) => {
     let [content, setContent] = useState(<div>loading</div>);
     let [puzzle, setPuzzle] = useState(null);
     let [puzzleId, setPuzzleId] = useState(-1);

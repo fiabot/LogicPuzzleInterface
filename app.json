@@ -27,7 +27,7 @@
       "favicon": "./assets/favicon.png"
     },
     "experiments": {
-      "baseUrl": "/pre_post"
+      "baseUrl": "/tactics"
     }
   }
 }

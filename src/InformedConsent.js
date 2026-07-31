@@ -1,26 +1,15 @@
 import * as React from 'react';
-import { RenderPage, RenderPageProps, Viewer } from '@react-pdf-viewer/core';
-
-import '@react-pdf-viewer/core/lib/styles/index.css';
-
-
-import DocViewer, { DocViewerRenderers } from "@cyntler/react-doc-viewer";
 import FailedConsent from './FailedConsent';
 
 const ConsentViewer =({ consent }) => {
     let [rejected, setRejected] = React.useState(false);
-    const docs = [
-        { uri: "./Consent_linked.pdf" }, // Local File
-      ];
 
     if (!rejected){
       return (
       
         <div className='consent'>
-            <div>
-            <DocViewer documents={docs} pluginRenderers={DocViewerRenderers} />
-            </div>
-             
+            <p>Consent to the study</p>
+            <button onClick={consent}>I agree, and confirm that I am 18+, fluent in English, and located in the United States.</button>
         </div>
        )
         ;
