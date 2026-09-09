@@ -10,7 +10,7 @@ let recordHint = (time, hint, strikes, i, instanceId) =>{
 }
 
 
-export default HintDisplay = ({hints, time, strikes, setStrikes, instanceId}) => {
+export default Hints = ({hints, time, strikes, setStrikes, instanceId}) => {
 
 
     let toggleStrike = (idx) => {
@@ -24,7 +24,6 @@ export default HintDisplay = ({hints, time, strikes, setStrikes, instanceId}) =>
             }
           });
           setStrikes(nextStrikes);
-
     }
     
     let makeHint = (hint, setStrikes, idx) =>{
@@ -33,7 +32,7 @@ export default HintDisplay = ({hints, time, strikes, setStrikes, instanceId}) =>
 
         if(strikes.length <= idx){
             setStrikes([...strikes, false]); 
-        }else{
+        } else {
             strike=strikes[idx]
         }
         
@@ -45,12 +44,12 @@ export default HintDisplay = ({hints, time, strikes, setStrikes, instanceId}) =>
         }
     }
 
-    
     let hintsList = hints.map((hint, idx) => makeHint(hint, setStrikes, idx))
     hintsList = <ol>{hintsList}</ol>
+
     return (
         <div>
-            <h1>Hints</h1>
+            <h2>Clues</h2>
             <p className="smalltext"> (click to cross out/uncross) </p>
             {hintsList}
         </div>);

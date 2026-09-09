@@ -1,4 +1,5 @@
 /* Styles.css */
+
 body {
     font-family: Arial, sans-serif;
     text-align: center;
@@ -15,6 +16,7 @@ body {
     margin: 0.2vmin;
     text-align: center;
     vertical-align: bottom;
+    justify-content: center;
 }
 
 .cellContainer {
@@ -48,14 +50,21 @@ body {
     font-size: 1.5vmin;
 }
 
+.topCategoryText {
+    font-size: 2vmin;
+}
 .leftCategoryText {
     writing-mode: vertical-lr;
     display: inline-block;
     width: 3.5vmin;
-    font-size: 2.5vmin;
+    font-size: 2vmin;
     height: 14vmin;
     transform:
         rotate(180deg)
+}
+
+.cellContainer {
+    width: min-content;
 }
 
 .cell {
@@ -173,11 +182,33 @@ body {
 
 .puzzleArea {
     display: flex;
-    margin: 5vmin, 10vmin;
-    overflow-y: scroll;
     justify-content: center;
+    height: 100%;
+}
 
+.mainPuzzleContainer {
+    flex: 1;
+}
+.mainPuzzle {
+    display: flex;
+    justify-content: center;
+    flex: 1;
+    overflow: auto;
+    scrollbar-gutter: stable;
+}
 
+/* .puzzleRight {
+    width: 30vmin;
+} */
+
+.tacticsSidebar {
+    margin-left: auto;
+    border-left-style: solid;
+    border-left-width: 2px;
+    margin-right: 10px;
+    overflow: auto;
+    width: 300px;
+    scrollbar-gutter: stable;
 }
 
 h1 {
@@ -189,15 +220,19 @@ h2 {
     font-size: 2.3vmin;
 }
 
+h3 {
+    font-size: 2vmin;
+}
+
 div {
     font-size: 2.5vmin;
 }
 
 
 .parent {
-    width: 100%;
-    overflow-y: scroll;
-
+    width: 100vw;
+    height: 100%;
+    scrollbar-gutter: stable;
 }
 
 ol {
@@ -248,10 +283,6 @@ li {
 
 .surveyImg {
     width:50vmin;
-}
-
-.puzzleRight{
-    width: 30vmin;
 }
 
 .nextButton {
@@ -315,16 +346,11 @@ li {
 }
 
 .codeBanner {
-    width: 100%;
+    width: 100vw;
     height: 10vmin;
     background-color: #861414;
     color: white;
     justify-content: center;
-}
-
-
-.codeBanner div{
-    padding: 2vmin;
 }
 
 .consentButtonLeft{

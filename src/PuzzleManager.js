@@ -2,13 +2,12 @@ import axios from 'axios';
 import { useState } from "react";
 import ResponseRecorded from "./ResponseRecorded";
 import Category from "./categoryModel";
-import Puzzle from "./puzzle";
+import Puzzle from "./Puzzle";
 import PuzzleModel from "./puzzleModel";
 import Survey from "./survey";
-import { createGamePlayInstance } from './Firestore/sendData';
 import UsePrompts from "./PromptUser";
 
-function createPuzzle(data) {
+export function createPuzzle(data) {
     let categories = []
     for (cat in data.categories) {
         cat = data.categories[cat]
@@ -29,10 +28,9 @@ function load(i, setI, setContent, files, postSurvey, questions, promptMode) {
                 console.log(files[i])
                 let p = createPuzzle(response.data);
                 let hints = response.data["hint_grammar"]
-                let time = new Date()
                 setI(i + 1);
                 setContent(
-                    <Puzzle p={p} hints={hints} puzzleDesc={response.data} time={time} promptMode={promptMode} continue={() => {}}/>
+                    <Puzzle p={p} hints={hints} puzzleDesc={response.data} promptMode={promptMode} continue={() => {}}/>
                 );
             });
     }

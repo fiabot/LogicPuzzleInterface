@@ -1,4 +1,8 @@
-function initializeSubGrid(numRows, numCols, puzzle, recordPuzzle) {
+import { useEffect, useState } from 'react';
+import { createGamePlayInstance } from './Firestore/sendData';
+import SubGrid from "./SubGrid";
+
+function initializeSubGrid(numRows, numCols, recordPuzzle) {
     let subgrid = []
     for (let i = 0; i < numRows; i++) {
         subgrid[i] = [];
@@ -9,10 +13,10 @@ function initializeSubGrid(numRows, numCols, puzzle, recordPuzzle) {
         ) {
             let [state, setState] = useState("*")
             useEffect(() => {
-                // run something every time name changes
+                // run something every time something changes
                 recordPuzzle()
             }, [state]);
-            
+
             subgrid[i][j] = { state: state, setState: setState };
         }
     }
@@ -21,6 +25,9 @@ function initializeSubGrid(numRows, numCols, puzzle, recordPuzzle) {
 }
 
 const rowToString = (row, isFirst = false) => {
+    if (!row || !row[0]) {
+        return ""
+    }
     let str = ""
 
     for (let c = 0; c < row[0][0].length * row.length + row.length + 1; c++) {
@@ -47,6 +54,9 @@ const rowToString = (row, isFirst = false) => {
 }
 
 const puzzleToString = (puzzle) => {
+    if (!puzzle) {
+        return ""
+    }
     str = ""
     for (let row = 0; row < puzzle.length; row++) {
         str += rowToString(puzzle[row], isFirst = row == 0)
@@ -54,9 +64,7 @@ const puzzleToString = (puzzle) => {
     return str
 }
 
-const amountCorrect = (puzzle, solution) => {
-    let gameState = puzzleToString(puzzle)
-
+const amountCorrect = (gameState, solution) => {
     if (gameState.length != solution.length) {
         console.log("Incorrect formatting for puzzle")
         console.log(gameState)
@@ -83,9 +91,8 @@ const amountCorrect = (puzzle, solution) => {
     }
 }
 
-const isSolved = (puzzle, solution) => {
-    let gameState = puzzleToString(puzzle)
-    let [correct, incorrect, total] = amountCorrect(puzzle, solution)
+const isSolved = (gameState, solution) => {
+    let [correct, incorrect, total] = amountCorrect(gameState, solution)
 
     if (gameState.length != solution.length) {
         console.log("Incorrect formatting for puzzle")
@@ -107,20 +114,23 @@ const isSolved = (puzzle, solution) => {
     }
 }
 
-const recordPuzzle = (puzzle, solution, time, instanceId) => {
+const recordPuzzle = (puzzle, setGridStr, solution, time, instanceId) => {
     let newTime = new Date()
     let ms = newTime - time
-    str = puzzleToString(puzzle)
-    let [correct, incorrect, total] = amountCorrect(puzzle, solution)
+    gridStr = puzzleToString(puzzle)
+    console.log(`updating grid str - ${gridStr}`)
+    setGridStr(gridStr)
+    let [correct, incorrect, total] = amountCorrect(gridStr, solution)
 
-    if (instanceId != null){
-        addCellChange(instanceId, ms, str, correct, incorrect, isSolved(puzzle,solution));
+    if (instanceId != null) {
+        addCellChange(instanceId, ms, str, correct, incorrect, isSolved(gridStr, solution));
     }
 }
 
-let clearPuzzle = (puzzle, strikes, setStrikes, instanceId, time) => {
+let clearPuzzle = (puzzle, setPuzzle, strikes, setStrikes, instanceId, time) => {
     addButtonPress(instanceId, time, "clear")
-    for (row of puzzle) {
+    updatePuzzle = puzzle
+    for (row of updatePuzzle) {
         for (subgrid of row) {
             for (let i = 0; i < subgrid.length; i++) {
                 for (
@@ -135,12 +145,12 @@ let clearPuzzle = (puzzle, strikes, setStrikes, instanceId, time) => {
 
     }
     let newStrikes = []
-    for(i in strikes){
-        newStrikes.push(false); 
+    for (i in strikes) {
+        newStrikes.push(false);
     }
 
     setStrikes(newStrikes);
-    
+    setPuzzle(updatePuzzle)
 }
 
 
@@ -155,7 +165,7 @@ const cleanState = (state) => {
         return "O"
     }
     return state
-} 
+}
 const stateGridToArray = (puzzleDesc, stateGrid) => {
     let grid = {};
     for (const [I, subgridrow] of stateGrid.entries()) {
@@ -176,38 +186,38 @@ const stateGridToArray = (puzzleDesc, stateGrid) => {
     return grid
 }
 
-export default PuzzleGrid = () => {
-    let puzzle = [[]];
+export default PuzzleGrid = ({ puzzleName, puzzle, setPuzzle, select, instanceId, setInstanceId, p, setGridStr, time }) => {
+    console.log(`puzzle is now ${puzzleToString(puzzle)}`)
     let displayGrid = [];
-    let [select, setSelect] = useState("O");
     let displayRowIdx = 1;
     let rowLength = p.leftRight.length;
-    let [strikes, setStrikes] = useState([]);
     let [isCorrect, setCorrect] = useState(false);
-    let [instanceId, setInstanceId] = useState(null); 
 
     let getCurGrid = () => {
         return stateGridToArray(p, puzzle)
     }
 
-    useEffect(() => {async function fetchData() {
-        // You can await here
-        createGamePlayInstance(p.num).then((data) => {setInstanceId(data); })
-    } fetchData()}, []);
+    useEffect(() => {
+        async function fetchData() {
+            // You can await here
+            createGamePlayInstance(p.num).then((data) => { setInstanceId(data); })
+        } fetchData()
+    }, []);
 
-    let recordAndSubmit = () =>{
+    let recordAndSubmit = () => {
         let newTime = new Date()
-        let ms = newTime - time 
-        addButtonPress(instanceId, ms, "submit"); 
+        let ms = newTime - time
+        addButtonPress(instanceId, ms, "submit");
         finish();
     }
-  
+
+    updatedPuzzle = puzzle
     for (let row = 0; row < p.topBottom.length; row++) {
-        puzzle[row] = []
+        updatedPuzzle[row] = []
         let displayColIdx = 1;
         for (let col = 0; col < rowLength; col++) {
-            let subgrid = initializeSubGrid(p.numEnt, p.numEnt, puzzle, ()=>{recordPuzzle(puzzle, p.solutionString, time, instanceId)});
-            puzzle[row][col] = subgrid;
+            let subgrid = initializeSubGrid(p.numEnt, p.numEnt, () => { recordPuzzle(puzzle, setGridStr, p.solutionString, time, instanceId) });
+            updatedPuzzle[row][col] = subgrid;
 
             topCat = null;
             leftCat = null;
@@ -218,12 +228,13 @@ export default PuzzleGrid = () => {
             if (col == 0) {
                 leftCat = p.topBottom[row]
             }
-            displayGrid.push(<div style={{ gridRow: displayRowIdx, gridColumn: displayColIdx }} key={row + "," + col}><SubGrid numCols={p.numEnt} numRows={p.numEnt} cells={subgrid} select={select} topCat={topCat} leftCat={leftCat} /></div>);
+            displayGrid.push(<div style={{ gridRow: displayRowIdx, gridColumn: displayColIdx }} key={row + "," + col}><SubGrid puzzleName={puzzleName} numCols={p.numEnt} numRows={p.numEnt} cells={subgrid} select={select} topCat={topCat} leftCat={leftCat} /></div>);
             displayColIdx++;
         }
         rowLength--;
         displayRowIdx++;
     }
+    setPuzzle(updatedPuzzle)
 
     return (<div className="puzzleGrid">{displayGrid}</div>);
 }

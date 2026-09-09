@@ -5,6 +5,9 @@ import InitialSurvey from './src/InitialSurvey';
 import PuzzleManager from './src/PuzzleManager';
 import Tutorial from './src/Tutorial';
 import * as Linking from 'expo-linking';
+import "./src/style.css";
+
+<script src="https://cdn.jsdelivr.net/pyodide/v0.29.3/full/pyodide.js"></script>
 
 let MODE = "consent"
 
@@ -100,12 +103,6 @@ export default function App() {
     addSubject(logicPuz, gridPuzz)
   }
 
-  if (mode == "debug"){
-
-
-    return  <div className='parent'><Debug /></div>
-  }
-
   const url = Linking.useURL();
 
   if (url) {
@@ -118,28 +115,29 @@ export default function App() {
     );
   
 
-  if (mode == "consent") {
-    return (consent)
-  } else if (mode == "survey") {
-    return (
+    mode = "puzzle"
+    if (mode == "consent") {
+      return (consent)
+    } else if (mode == "survey") {
+      return (
 
-      <InitialSurvey postAnswers={submitInitalSurvey} />
-    )
-  } else if (mode == "tutorial") {
-    return (<div className='parent'>{tutorial}</div>)
-  } else {
-    return (<div className='parent'>
-      <div className='codeBanner'>
-        <div>
-          Your completion code is CKKCGFDC<br />
-          You may enter this at anytime
+        <InitialSurvey postAnswers={submitInitalSurvey} />
+      )
+    } else if (mode == "tutorial") {
+      return (<div className='parent'>{tutorial}</div>)
+    } else {
+      return (<div className='parent'>
+        <div className='codeBanner'>
+          <div>
+            Your completion code is CKKCGFDC<br />
+            You may enter this at anytime
+          </div>
+
         </div>
+        {puzzleManager}</div>)
+    }
 
-      </div>
-      {puzzleManager}</div>)
-  }
-
-  }else{
+  } else {
     return <div>Loading</div>
   }
 
