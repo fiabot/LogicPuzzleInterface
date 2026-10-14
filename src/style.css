@@ -7,9 +7,12 @@ body {
 
 .puzzleGrid {
     display: grid;
+    width: min-content;
 }
 
-
+p {
+    font-size: 16px;
+}
 
 .subgrid {
     display: grid;
@@ -22,6 +25,7 @@ body {
 .cellContainer {
     display: inline-block;
     text-align: left;
+    height: min-content;
 }
 
 .innerCellContainer {
@@ -58,7 +62,6 @@ body {
     display: inline-block;
     width: 3.5vmin;
     font-size: 2vmin;
-    height: 14vmin;
     transform:
         rotate(180deg)
 }
@@ -207,8 +210,7 @@ body {
     border-left-width: 2px;
     margin-right: 10px;
     overflow: auto;
-    width: 300px;
-    scrollbar-gutter: stable;
+    width: 400px;
 }
 
 h1 {

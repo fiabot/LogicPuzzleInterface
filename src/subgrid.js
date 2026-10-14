@@ -1,8 +1,8 @@
 // Script.js
 import { useState } from "react";
-import Cell from "./cell";
+import Cell from "./Cell";
 
-export default SubGrid = ({ puzzleName, numRows, numCols, cells, topCat = null, leftCat = null, select = "*" }) => {
+export default SubGrid = ({ puzzleName, puzzle, setPuzzle, row, col, numRows, numCols, cells, topCat = null, leftCat = null, select = "*" }) => {
 
     // displayGrid.push(<div style={{ gridRow: displayRowIdx, gridColumn: displayColIdx }}><span className="leftCategoryText">{leftCategories[row]}</span></div>)
 
@@ -45,7 +45,7 @@ export default SubGrid = ({ puzzleName, numRows, numCols, cells, topCat = null, 
         for (let j = 0; j < numCols; j++) {
             displayGrid.push(
                 <div className="cellContainer" style={{ gridRow: displayRowIdx, gridColumn: displayColIdx }} key={`${i}, ${j}`}>
-                    <Cell puzzleName={puzzleName} coords={[i, j]} mousedown={mousedown} select={select} state={cells[i][j].state} setState={cells[i][j].setState} />
+                    <Cell puzzleName={puzzleName} puzzle={puzzle} setPuzzle={setPuzzle} subGridRow={row} subGridCol={col} row={i} col={j} mousedown={mousedown} select={select} />
                 </div>
             );
             displayColIdx++;

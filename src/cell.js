@@ -1,21 +1,25 @@
 
 const states = ["*", "O", "X", "!", "?"]
 
-let toggleState = (s, setState, select) => {
+let toggleState = (puzzle, setPuzzle, select, subGridRow, subGridCol, row, col) => {
+    updatedPuzzle = JSON.parse(JSON.stringify(puzzle));
+    s = puzzle[subGridRow][subGridCol][row][col]
     if (s == select) {
-        setState("*")
+        updatedPuzzle[subGridRow][subGridCol][row][col] = "*"
     } else {
-        setState(select)
+        updatedPuzzle[subGridRow][subGridCol][row][col] = select
     }
 
-
+    setPuzzle(updatedPuzzle)
     // addUserAction(pid, "mark", {cell, mark}, time)
 }
 
-export default Cell = ({ puzzleName, coords, state, setState, mousedown = false, topText = "", leftText = "", select = "*" }) => {
+export default Cell = ({ puzzleName, puzzle, setPuzzle, subGridRow, subGridCol, row, col, mousedown = false, topText = "", leftText = "", select = "*" }) => {
 
     let className = "";
     let text = ""
+
+    state = puzzle[subGridRow][subGridCol][row][col]
 
     if (state == "X") {
         className = "notlinked"
@@ -32,7 +36,7 @@ export default Cell = ({ puzzleName, coords, state, setState, mousedown = false,
         text = "X"
     }
 
-    return (<div className="cell" onMouseDown={() => { toggleState(state, setState, select); console.log(`mouse click ${select} detected in ${puzzleName} cell ${coords}`) }} onMouseEnter={() => { if (mousedown) { setState(select); console.log(`mouse enter click ${select} detected in ${puzzleName} cell ${coords}`) } }}>
+    return (<div className="cell" onMouseDown={() => { toggleState(puzzle, setPuzzle, select, subGridRow, subGridCol, row, col) }} onMouseEnter={() => { if (mousedown) { toggleState(puzzle, setPuzzle, select, subGridRow, subGridCol, row, col) } }}>
 
         <span className={className}> {text}</span>
 

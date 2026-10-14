@@ -48,7 +48,7 @@ let LikertScale = ({ question, answers, responses, setResponses }) => {
     );
 }
 
-let postResponse = (responses, puzzle, submit) => {
+let postResponse = (responses, instanceId, submit) => {
     let nullResponses = Object.keys(responses).filter((key) => { return responses[key] == -1 });
 
     if (nullResponses.length > 0) {
@@ -61,9 +61,7 @@ let postResponse = (responses, puzzle, submit) => {
 
 }
 
-export default Survey = ({ puzzleId, submit, questions }) => {
-
-
+export default Survey = ({ instanceId, submit, questions }) => {
     let r = {}
     questions.map((question) => r[question] = -1);
     let [responses, setResponses] = useState(r);
@@ -75,6 +73,6 @@ export default Survey = ({ puzzleId, submit, questions }) => {
         <form action="">
             {qs}
 
-            <button className="submit" onClick={() => postResponse(responses, puzzleId, submit)} type="button">Submit</button>
+            <button className="submit" onClick={() => postResponse(responses, instanceId, submit)} type="button">Submit</button>
         </form></div>);
 }

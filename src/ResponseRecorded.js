@@ -1,4 +1,4 @@
-export default ResponseRecorded = ({goToNextPuzzle, finish, morePuzzles}) => {
+export default ResponseRecorded = ({goToNextPuzzle, morePuzzles}) => {
     let numPuzzles = morePuzzles()
     if(numPuzzles > 0){
         return (<div className="recorded">

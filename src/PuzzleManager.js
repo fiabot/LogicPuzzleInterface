@@ -1,61 +1,44 @@
-import axios from 'axios';
-import { useState } from "react";
-import ResponseRecorded from "./ResponseRecorded";
-import Category from "./categoryModel";
+import { useEffect, useState } from "react";
 import Puzzle from "./Puzzle";
-import PuzzleModel from "./puzzleModel";
+import ResponseRecorded from "./ResponseRecorded";
 import Survey from "./survey";
-import UsePrompts from "./PromptUser";
 
-export function createPuzzle(data) {
-    let categories = []
-    for (cat in data.categories) {
-        cat = data.categories[cat]
-        categories.push(new Category(cat.name, cat.entities))
-    }
-
-    return new PuzzleModel(categories, data.hints, data.solution, data.id)
-
+function startSurvey(instanceId, i, setI, setContent, files, postSurvey, questions) {
+    setContent(<Survey instanceId={instanceId} questions={questions} submit={(responses) => {
+        postSurvey(puzzle, responses)
+        showRecordedScreen(setContent, i, setI, files, postSurvey, questions)
+    }} />);
+    setI(i + 1)
 }
 
 
-function load(i, setI, setContent, files, postSurvey, questions, promptMode) {
-    if (i >= files.length) {
-        setContent(<div>No more puzzles</div>);
-    } else {
-        axios.get(files[i])
-            .then(response => {
-                console.log(files[i])
-                let p = createPuzzle(response.data);
-                let hints = response.data["hint_grammar"]
-                setI(i + 1);
-                setContent(
-                    <Puzzle p={p} hints={hints} puzzleDesc={response.data} promptMode={promptMode} continue={() => {}}/>
-                );
-            });
-    }
-
-}
-function finish(setContent) {
-    setContent(<div>No more puzzles!</div>)
+function showRecordedScreen(setContent, i, files, setDoneWithPuzzle) {
+    setContent(<ResponseRecorded goToNextPuzzle={() => { setDoneWithPuzzle(false) }} morePuzzles={() => { return files.length - (i + 1) }} />)
 }
 
-function showRecordedScreen(setContent, i, setI, files, postSurvey, questions, promptMode) {
-    setContent(<ResponseRecorded goToNextPuzzle={() => { load(i + 1, setI, setContent, files, postSurvey, questions, promptMode) }} finish={() => { finish(setContent) }} morePuzzles={() => { return files.length - (i + 1) }} />)
-}
-
-export default PuzzleManager = ({ files, i, setI, pid, postSurvey, questions, promptMode}) => {
+export default PuzzleManager = ({ files, pid, postSurvey, questions, studyMode }) => {
+    let [i, setI] = useState(0);
+    let [file, setFile] = useState(files[i])
+    let [doneWithPuzzle, setDoneWithPuzzle] = useState(false);
     let [content, setContent] = useState(<div>loading</div>);
-    let [puzzle, setPuzzle] = useState(null);
-    let [puzzleId, setPuzzleId] = useState(-1);
 
-    if (files){
-        if (i == 0) {
-            load(i, setI, setContent, files, postSurvey, questions, promptMode);
+    useEffect(() => {
+        console.log(`next puzzle`)
+        if (i > files.length - 1) {
+            setContent(<div>No more puzzles</div>)
         }
-    
+        else {
+            setFile(files[i + 1])
+            setI(i + 1)
+            setContent(<Puzzle file={file} studyMode={studyMode} finish={() => {
+                showRecordedScreen(setContent, i, files, setDoneWithPuzzle)
+            }} />)
+        }
+    }, [doneWithPuzzle]);
+
+    if (files) {
         return (content)
-    }else{
+    } else {
         return <div>Loading files</div>
     }
 
