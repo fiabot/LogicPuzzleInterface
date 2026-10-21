@@ -104,6 +104,20 @@ export const addCellChange = async (instanceId, time, puzzleState, correct, inco
   })
 }
 
+export const addStrugglingToggle = async (instanceId, time, struggling) => {
+  console.log(`log struggling change to ${instanceId}`)
+  if (DEBUG) {
+    return
+  }
+  getCurrentUser().then(async function (user) {
+    const instance = doc(db, "gamePlayInstances", instanceId);
+
+    const updated = await updateDoc(instance, { totalTime: time })
+    let action = doc(instance, "actions", time.toString())
+    action = await setDoc(action, { userId: user, time: time, type: "strugglingToggle", struggling: struggling });
+  })
+}
+
 export const addHintToggle = async (instanceId, time, hint, striked) => {
   if (DEBUG) {
     return

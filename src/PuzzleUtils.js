@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
-import { createGamePlayInstance } from './Firestore/sendData';
+import { addButtonPress, addCellChange, createGamePlayInstance, addStrugglingToggle } from './Firestore/sendData';
 import SubGrid from "./SubGrid";
 import Category from "./categoryModel";
 import PuzzleModel from "./puzzleModel";
-import { addButtonPress } from './Firestore/sendData';
 
 import axios from 'axios';
 export function loadPuzzle(file, setP) {
@@ -99,39 +98,42 @@ const amountCorrect = (gameState, solution) => {
     }
 }
 
-export const checkSolution = (puzzle, solution, setStruggling) => {
+export const checkSolution = (puzzle, solution, tacticSolution, setStruggling, setHelpRequested) => {
     gameState = puzzleToString(puzzle)
     if (gameState.length != solution.length) {
         console.log("Incorrect formatting for puzzle")
         console.log(gameState)
         console.log(solution)
         return [0, 0, 0]
-    } 
+    }
     let correct = 0
     let incorrect = 0
     let todo = 0
-    console.log(solution)
     for (let i = 0; i < gameState.length; i++) {
         if (gameState[i] == "X" || gameState[i] == "O") {
             if (gameState[i] == solution[i]) {
                 correct++;
             } else {
-                incorrect++
+                incorrect++;
+                console.log(solution)
             }
-        } else if (solution[i] == "X" || solution[i] == "O") {
+        } else if (tacticSolution[i] == "X" || tacticSolution[i] == "O") {
             todo++
         }
     }
 
-    if (incorrect + todo == 0) {
+    if (correct + incorrect == 0) {
+        alert("There are no moves to check - use the coloured X and O to make moves.")
+    } else if (incorrect + todo == 0) {
         // The solution is complete and correct
         setStruggling(false);
+        setHelpRequested(false);
         alert("Your solution is correct!")
     } else if (incorrect > 0) {
         // There is at least one mistake
         alert("There is at least one mistake in your solution.")
     } else {
-        // There are no mistakes, but there are still deductions to be made
+        // There are no mistakes, but there are still deductions to be made for the tactic
         alert("Your answers so far are correct, but there is more to discover.")
     }
     return [correct, incorrect, todo]
@@ -164,10 +166,19 @@ export const recordPuzzle = (puzzle, solution, time, instanceId) => {
     let newTime = new Date()
     let ms = newTime - time
     gridStr = puzzleToString(puzzle)
-    let [correct, incorrect, total] = amountCorrect(gridStr, solution)
+    let [correct, incorrect, _] = amountCorrect(gridStr, solution)
 
     if (instanceId != null) {
-        addCellChange(instanceId, ms, str, correct, incorrect, isSolved(gridStr, solution));
+        addCellChange(instanceId, ms, gridStr, correct, incorrect, isSolved(gridStr, solution));
+    }
+}
+
+export const recordStruggling = (puzzle, time, struggling, instanceId) => {
+    let newTime = new Date()
+    let ms = newTime - time
+    gridStr = puzzleToString(puzzle)
+    if (instanceId != null) {
+        addStrugglingToggle(instanceId, time, struggling);
     }
 }
 
@@ -236,7 +247,7 @@ export function createPuzzle(data) {
         categories.push(new Category(cat.name, cat.entities))
     }
 
-    return new PuzzleModel(categories, data.hints, data.hint_grammar, data.solution, data.id)
+    return new PuzzleModel(categories, data.hints, data.hint_grammar, data.solution, data.id, data.tactic_solution)
 }
 
 export const initializePuzzle = (p) => {
@@ -299,7 +310,7 @@ export default PuzzleGrid = ({ puzzleName, puzzle, setPuzzle, select, instanceId
         rowLength--;
         displayRowIdx++;
     }
-    
+
     return (<div className="puzzleGrid">{displayGrid}</div>);
 }
 

@@ -878,7 +878,25 @@ class Insight:
         return sub_dag
 
     def gen_min_puzzle(self, categories):
-        return self._gen_min_puzzle(self.requirements, self.validate, categories)
+
+        changed = False
+        i = 0
+        while not changed and i < 100:
+            i += 1
+            puzzle, hints = self._gen_min_puzzle(self.requirements, self.validate, categories)
+            # Check that generated puzzle actually requires the tactic to find the partial solution.
+            solved, _ = SOLVER.fast_forward(puzzle, hints)
+            forbidden_solver = Solver(self.sub_dag())
+            alt, _ = forbidden_solver.fast_forward(puzzle, hints)
+            _, changed = SOLVER.get_move_diff(solved, alt)
+            print(alt)
+            print(solved)
+
+        if i >= 100:
+            print(f"Unable to generate valid tactics puzzle for ${self}")
+            # We were not able to find a valid tactics puzzle
+            return None, None
+        return puzzle, hints
 
 
 # APPLY_IS: Apply an is hint (given)
@@ -3226,7 +3244,13 @@ def gen_tactic_puzzle(tactic_name):
     for insight in Insight.ALL_INSIGHTS:
         if insight.name == tactic_name:
             puzzle, hints = insight.gen_min_puzzle(CATEGORIES)
-            solution, _, _ = SOLVER.apply_hints(puzzle, hints)
+            solution, _ = SOLVER.fast_forward(puzzle, hints)
+            solution_diff, _ = SOLVER.get_move_diff(puzzle, solution, False)
+
+            tactic_only = deepcopy(puzzle)
+            _, next_available_moves = SOLVER.get_available_moves(puzzle, hints)
+            SOLVER.apply_multi_moves(tactic_only, next_available_moves)
+            tactic_only_diff, _ = SOLVER.get_move_diff(puzzle, tactic_only, False)
             
             jscats = []
             for cat in puzzle.categories:
@@ -3237,9 +3261,12 @@ def gen_tactic_puzzle(tactic_name):
                 jshints.append(hint_to_english(hint))
                 jsgrammar.append(serialized_hint_grammar(hint))
 
+            curr_state, _ = SOLVER.get_move_diff(puzzle, puzzle, False)
+
             jsdata = {
-                "solution": solution.print_grid_small(""),
-                "curr_state": puzzle.grid_state(),
+                "solution": solution_diff.print_grid_small(""),
+                "tactic_solution": tactic_only_diff.print_grid_small(""),
+                "curr_state": curr_state.grid_state(),
                 "categories": jscats,
                 "hints": jshints,
                 "hint_grammar": jsgrammar,

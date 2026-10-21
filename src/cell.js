@@ -18,6 +18,7 @@ export default Cell = ({ puzzleName, puzzle, setPuzzle, subGridRow, subGridCol, 
 
     let className = "";
     let text = ""
+    let frozen = false
 
     state = puzzle[subGridRow][subGridCol][row][col]
 
@@ -35,11 +36,26 @@ export default Cell = ({ puzzleName, puzzle, setPuzzle, subGridRow, subGridCol, 
         className = "notlinkedUnsure"
         text = "X"
     }
+    else if (state == "x") {
+        text = "X"
+        frozen = true
+    } else if (state == "o") {
+        text = "O"
+        frozen = true
+    }
 
-    return (<div className="cell" onMouseDown={() => { toggleState(puzzle, setPuzzle, select, subGridRow, subGridCol, row, col) }} onMouseEnter={() => { if (mousedown) { toggleState(puzzle, setPuzzle, select, subGridRow, subGridCol, row, col) } }}>
+    if (!frozen) {
+        return (<div className="cell" onMouseDown={() => { toggleState(puzzle, setPuzzle, select, subGridRow, subGridCol, row, col) }} onMouseEnter={() => { if (mousedown) { toggleState(puzzle, setPuzzle, select, subGridRow, subGridCol, row, col) } }}>
 
-        <span className={className}> {text}</span>
+            <span className={className}> {text}</span>
 
-    </div>);
+        </div>);
+    } else {
+        return (<div className="cell">
+
+            <span className={className}> {text}</span>
+
+        </div>);
+    }
 
 }

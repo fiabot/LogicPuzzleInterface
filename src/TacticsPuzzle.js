@@ -4,7 +4,7 @@ import PuzzleGrid, { checkSolution, clearPuzzle, createPuzzle, puzzleToString, r
 import StateSelector from "./StateSelector";
 import { usePyodide } from './usePyodide';
 
-export default TacticsPuzzle = ({ mainP, mainGridState, time, studyMode = "PERMANENT", struggling, setStruggling }) => {
+export default TacticsPuzzle = ({ mainP, mainGridState, time, studyMode = "PERMANENT", struggling, setStruggling, helpRequested, setHelpRequested}) => {
     let tacticsSolved = []
     let [select, setSelect] = useState("O");
     let [strikes, setStrikes] = useState([]);
@@ -47,10 +47,8 @@ export default TacticsPuzzle = ({ mainP, mainGridState, time, studyMode = "PERMA
                     logic_solver = pyodide.pyimport("logic_solver");
 
                     const getAvailableTactics = logic_solver.get_available_tactics
-                    const getPyGridStr = logic_solver.grid_str_to_grid_str
                     const genTacticPuzzle = logic_solver.gen_tactic_puzzle
 
-                    let pyGridStr = getPyGridStr(mainPuzzleGridStr, JSON.stringify(categories))
                     let tactics = Array.from(getAvailableTactics(mainPuzzleGridStr, JSON.stringify(categories), JSON.stringify(mainP.hint_grammar)));
                     chosenTactic = null
                     for (tactic of tactics) {
@@ -64,10 +62,14 @@ export default TacticsPuzzle = ({ mainP, mainGridState, time, studyMode = "PERMA
                         chosenTactic = tactics[tactics.length - 1]
                     }
                     if (chosenTactic != currentTactic) {
+                        setStruggling(false)
+                        setHelpRequested(false)
                         setP(null)
                         setCurrentTactic(chosenTactic)
                         tactic_puzzle = JSON.parse(genTacticPuzzle(chosenTactic))
                         setP(createPuzzle(tactic_puzzle));
+                        console.log("CURR STATE")
+                        console.log(tactic_puzzle.curr_state)
                         setGridState(tactic_puzzle.curr_state)
                         console.log(`Next tactic: ${chosenTactic}`)
                     }
@@ -86,26 +88,36 @@ export default TacticsPuzzle = ({ mainP, mainGridState, time, studyMode = "PERMA
     // Otherwise, select the next easiest tactic (preferring one that has not already been solved), according to the puzzle with incorrect marks removed and cross-outs applied.
     // Record which tactic problems are supplied when, as well as the clicks on the tactics problems. 
     
-    if (studyMode == "PERMANENT" || struggling) {
-        if (!p || gridState.length == 0 || gridState[0].length == 0) {
-            return (<div className='tacticsSidebar'>
-                <h2>Mini Puzzle</h2>
-                ...Loading
+    if (studyMode != "NONE") {
+        if (studyMode == "PERMANENT" || (studyMode != "REQUESTED" && struggling) || helpRequested) {
+            if (!p || gridState.length == 0 || gridState[0].length == 0) {
+                return (
+                <div className='tacticsSidebar'>
+                    <h2>Mini Puzzle</h2>
+                    ...Loading
+                </div>)
+            } else {
+                return (
+                <div className='tacticsSidebar'>
+                    <h2>Mini Puzzle</h2>
+                    <p>Fill in as many cells as you can (the grid may not be complete).</p>
+                    <p><i><b>Warning: </b>This puzzle may change or disappear when changes are made to the main puzzle.</i></p>
+                    <Hints hints={p.hints} time={time} setStrikes={setStrikes} strikes={strikes} instanceId={instanceId} />
+                    <PuzzleGrid puzzleName={"tactics"} select={select} puzzle={gridState} setPuzzle={setGridState} instanceId={instanceId} setInstanceId={setInstanceId} p={p} time={time} />
+                    <h3>Select Mark</h3>
+                    <StateSelector selected={select} setSelect={setSelect} />
+                    <button onClick={() => clearPuzzle(gridState, setGridState, strikes, setStrikes, instanceId, time)}>Clear Grid</button>
+                    <button onClick={() => checkSolution(gridState, p.solutionString, p.tacticSolution, setStruggling, setHelpRequested)}>Check Solution</button>
+                </div>);
+            }
+        } else if (studyMode == "REQUESTED") {
+            return (
+            <div className='tacticsSidebar'>
+                <br />
+                <button style={{fontSize: 20}} onClick={() => {setHelpRequested(true); addButtonPress(instanceId, time, "request_help")}}>Request Help</button>
             </div>)
         } else {
-            return (<div className='tacticsSidebar'>
-                <h2>Mini Puzzle</h2>
-                <p>Fill in as many cells as you can (the grid may not be complete).</p>
-                <p><i><b>Warning: </b>This puzzle may change or disappear when changes are made to the main puzzle.</i></p>
-                <Hints hints={p.hints} time={time} setStrikes={setStrikes} strikes={strikes} instanceId={instanceId} />
-                <PuzzleGrid puzzleName={"tactics"} select={select} puzzle={gridState} setPuzzle={setGridState} instanceId={instanceId} setInstanceId={setInstanceId} p={p} time={time} />
-                <h3>Select Mark</h3>
-                <StateSelector selected={select} setSelect={setSelect} />
-                <button onClick={() => clearPuzzle(gridState, setGridState, strikes, setStrikes, instanceId, time)}>Clear Grid</button>
-                <button onClick={() => checkSolution(gridState, p.solutionString, setStruggling)}>Check Solution</button>
-            </div>);
+            return (<div className='tacticsSidebar' />)
         }
-    } else {
-        return (<div className='tacticsSidebar' />)
     }
 }
