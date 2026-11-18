@@ -22,11 +22,18 @@ export default MainPuzzle = ({ p, gridState, setGridState, time, timeout=10, fin
         }
     }, [p])
     useEffect(() => {
+        let hasError = false
         // run something every time something changes
         if (p && gridState.length > 0 && gridState[0].length > 0) {
-            recordPuzzle(gridState, p.solutionString, time, instanceId)
+            [_, incorrect, _] = recordPuzzle(gridState, p.solutionString, time, instanceId)
+            if (incorrect > 0) {
+                hasError = true
+            }
         }
-        setIdleTime(0);
+
+        if (!hasError) {
+            setIdleTime(0);
+        }
     }, [gridState]);
     useEffect(() => {
         if (!struggling) {

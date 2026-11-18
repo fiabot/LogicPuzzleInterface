@@ -98,7 +98,7 @@ const amountCorrect = (gameState, solution) => {
     }
 }
 
-export const checkSolution = (puzzle, solution, tacticSolution, setStruggling, setHelpRequested) => {
+export const checkSolution = (puzzle, solution, tacticSolution, setStruggling, setHelpRequested, setCurrentTactic) => {
     gameState = puzzleToString(puzzle)
     if (gameState.length != solution.length) {
         console.log("Incorrect formatting for puzzle")
@@ -126,9 +126,10 @@ export const checkSolution = (puzzle, solution, tacticSolution, setStruggling, s
         alert("There are no moves to check - use the coloured X and O to make moves.")
     } else if (incorrect + todo == 0) {
         // The solution is complete and correct
-        setStruggling(false);
-        setHelpRequested(false);
-        alert("Your solution is correct!")
+        alert("Your solution is correct! Apply your new knowledge to the main puzzle.")
+        setStruggling(false)
+        setHelpRequested(false)
+        setCurrentTactic("")
     } else if (incorrect > 0) {
         // There is at least one mistake
         alert("There is at least one mistake in your solution.")
@@ -166,11 +167,12 @@ export const recordPuzzle = (puzzle, solution, time, instanceId) => {
     let newTime = new Date()
     let ms = newTime - time
     gridStr = puzzleToString(puzzle)
-    let [correct, incorrect, _] = amountCorrect(gridStr, solution)
+    let [correct, incorrect, total] = amountCorrect(gridStr, solution)
 
     if (instanceId != null) {
         addCellChange(instanceId, ms, gridStr, correct, incorrect, isSolved(gridStr, solution));
     }
+    return [correct, incorrect, total]
 }
 
 export const recordStruggling = (puzzle, time, struggling, instanceId) => {

@@ -3,6 +3,7 @@ import Hints from "./Hints";
 import PuzzleGrid, { checkSolution, clearPuzzle, createPuzzle, puzzleToString, recordPuzzle } from './PuzzleUtils';
 import StateSelector from "./StateSelector";
 import { usePyodide } from './usePyodide';
+import { addButtonPress } from './Firestore/sendData';
 
 export default TacticsPuzzle = ({ mainP, mainGridState, time, studyMode = "PERMANENT", struggling, setStruggling, helpRequested, setHelpRequested}) => {
     let tacticsSolved = []
@@ -61,6 +62,10 @@ export default TacticsPuzzle = ({ mainP, mainGridState, time, studyMode = "PERMA
                         // Fallback to most complex solved.
                         chosenTactic = tactics[tactics.length - 1]
                     }
+                    console.log("chosen: ")
+                    console.log(chosenTactic)
+                    console.log("current: ")
+                    console.log(currentTactic)
                     if (chosenTactic != currentTactic) {
                         setStruggling(false)
                         setHelpRequested(false)
@@ -80,7 +85,7 @@ export default TacticsPuzzle = ({ mainP, mainGridState, time, studyMode = "PERMA
             updateTacticsPuzzle()
             // TODO: when tactic is solved, add to tacticsSolved
         }
-    }, [mainGridState, mainP, pyodide]);
+    }, [mainGridState, mainP, pyodide, struggling]);
 
     // Propagate main puzzle state to be used to select tactic problems.
     // Selecting which tactic:
@@ -101,23 +106,27 @@ export default TacticsPuzzle = ({ mainP, mainGridState, time, studyMode = "PERMA
                 <div className='tacticsSidebar'>
                     <h2>Mini Puzzle</h2>
                     <p>Fill in as many cells as you can (the grid may not be complete).</p>
-                    <p><i><b>Warning: </b>This puzzle may change or disappear when changes are made to the main puzzle.</i></p>
+                    <p><i><b>Warning: </b>This puzzle may change or disappear when changes are made to the main puzzle showing your new knowledge.</i></p>
                     <Hints hints={p.hints} time={time} setStrikes={setStrikes} strikes={strikes} instanceId={instanceId} />
                     <PuzzleGrid puzzleName={"tactics"} select={select} puzzle={gridState} setPuzzle={setGridState} instanceId={instanceId} setInstanceId={setInstanceId} p={p} time={time} />
                     <h3>Select Mark</h3>
                     <StateSelector selected={select} setSelect={setSelect} />
                     <button onClick={() => clearPuzzle(gridState, setGridState, strikes, setStrikes, instanceId, time)}>Clear Grid</button>
-                    <button onClick={() => checkSolution(gridState, p.solutionString, p.tacticSolution, setStruggling, setHelpRequested)}>Check Solution</button>
+                    <button onClick={() => checkSolution(gridState, p.solutionString, p.tacticSolution, setStruggling, setHelpRequested, setCurrentTactic)}>Check Solution</button>
                 </div>);
             }
         } else if (studyMode == "REQUESTED") {
             return (
             <div className='tacticsSidebar'>
                 <br />
-                <button style={{fontSize: 20}} onClick={() => {setHelpRequested(true); addButtonPress(instanceId, time, "request_help")}}>Request Help</button>
+                <button className="helpButton" onClick={() => {setHelpRequested(true); addButtonPress(instanceId, time, "request_help")}}>Request Help</button>
             </div>)
         } else {
-            return (<div className='tacticsSidebar' />)
+            return (
+                <div className='tacticsSidebar'>
+                    <h2>Mini Puzzle</h2>
+                    A mini puzzle may appear here while solving the main puzzle.
+                </div>)
         }
     }
 }

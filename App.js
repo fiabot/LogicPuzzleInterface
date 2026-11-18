@@ -63,30 +63,19 @@ export default function App() {
   let [pid, setPID] = useState(0)
   let [content, setContent] = useState(<Tutorial imageFolder="tutorialSlides" numSlides={29} canSkip={12} startGame={() => { startGame() }} />);
   let [files, setFiles] = useState();
-  let [studyMode, setstudyMode] = useState("none")
+  let [studyMode, setStudyMode] = useState("none")
 
   useEffect(() => {
 
-    let level_modes = ["hub", "scaffolded", "not_scaffolded"];
-    let mode_i = Math.floor(Math.random() * level_modes.length);
-    let level_mode = level_modes[mode_i]
-
-    let prompt_modes = ["none", "generic", "relevant"];
-    mode_i = Math.floor(Math.random() * prompt_modes.length);
-    setstudyMode(prompt_modes[mode_i])
-    let files = []
-
-    if (level_mode == "hub") {
-      files = ["puzzles/hub.json"]
-    } else if (level_mode == "scaffolded") {
-      files = ["puzzles/Spoke1.json", "puzzles/spoke2.json", "puzzles/hub.json"]
-    } else {
-      files = ["puzzles/help1.json", "puzzles/help2.json", "puzzles/hub.json"]
-    }
-
+    let study_modes = ["NONE", "REQUESTED", "PASSIVE", "FORCED",  "PERMANENT"];
+    mode_i = Math.floor(Math.random() * study_modes.length);
+    setStudyMode(study_modes[mode_i])
+    setStudyMode("FORCED")
+    
+    let files = ["puzzles/hub.json"]
     setFiles(files)
 
-    console.log(level_mode, prompt_modes[mode_i])
+    console.log(study_modes[mode_i])
   }, [])
 
   let consent = <div className='parent'><InformedConsent consent={() => setMode("survey")} /></div>

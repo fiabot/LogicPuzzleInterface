@@ -263,12 +263,13 @@ li {
     font-size: 3vmin;
 }
 
+
+
 .recorded {
     width: 100%;
     text-align: center;
     margin-top: 5vmin;
 }
-
 
 .slide {
     width: 100%;
@@ -291,6 +292,13 @@ li {
     margin-top: 3vmin;
     height: 4vmin;
     font-size: 2vmin;
+}
+
+.helpButton {
+    height: 6vmin;
+    font-size: 3vmin;
+    background-color: lightseagreen;
+    border-radius: 10px;
 }
 
 .survey ul {

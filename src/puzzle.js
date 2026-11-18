@@ -12,7 +12,6 @@ export default Puzzle = ({ file, studyMode = "PERMANENT", finish }) => {
         loadPuzzle(file, setMainP)
     }
     let time = new Date()
-    studyMode = "REQUESTED"
     timeout = 10
     return (
         <div className="puzzleArea">
