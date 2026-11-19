@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { addButtonPress, addCellChange, createGamePlayInstance, addStrugglingToggle } from './Firestore/sendData';
+import { addButtonPress, addCellChange, createGamePlayInstance, addStrugglingToggle } from './API/SendToApi';
 import SubGrid from "./SubGrid";
 import Category from "./categoryModel";
 import PuzzleModel from "./puzzleModel";
